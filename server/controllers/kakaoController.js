@@ -1,5 +1,6 @@
 const axios = require("axios");
 const jwt = require('jsonwebtoken');  // JWT 추가
+const User = require('../models/User');  // 사용자 모델 추가
 require('dotenv').config();
 
 const REST_API_KEY = process.env.REST_API_KEY;
@@ -9,7 +10,7 @@ const JWT_SECRET = process.env.JWT_SECRET;  // 환경변수에서 JWT Secret 가
 // 카카오 로그인 비즈니스 로직 처리
 exports.kakaoLogin = async (req, res) => {
     let code = req.query.code;
-  
+
     try {
         // 엑세스 토큰 요청
         const tokenResponse = await axios.post("https://kauth.kakao.com/oauth/token", null, {
@@ -38,16 +39,18 @@ exports.kakaoLogin = async (req, res) => {
         // 사용자 정보에서 id와 nickname을 추출
         const { id: kakaoId, properties: { nickname } } = userInfoResponse.data;
 
+        // 사용자 정보를 데이터베이스에 저장하거나 기존 사용자 찾기
+        const user = await User.findOrCreateUser(kakaoId, nickname, nickname);
+
         // JWT 토큰 생성
         const token = jwt.sign(
             {
-                kakaoId,
-                nickname,
+                kakaoId: user.kakaoId,
+                nickname: user.nickname,
             },
             JWT_SECRET,
             { expiresIn: '1h' }  // 토큰 만료 시간 설정 (1시간)
         );
-
 
         // JWT를 HTTP-Only 쿠키에 저장하여 프론트엔드로 전송
         res.cookie('jwt_token', token, {
@@ -57,7 +60,7 @@ exports.kakaoLogin = async (req, res) => {
             sameSite: 'Strict' // 쿠키는 동일 사이트에서만 사용
         });
 
-   
+        // 성공적으로 로그인 후 리다이렉트
         res.redirect("http://localhost:3000/");
 
     } catch (error) {
@@ -66,7 +69,7 @@ exports.kakaoLogin = async (req, res) => {
     }
 };
 
-
+// JWT 토큰 검증을 위한 함수
 exports.check = async (req, res) => {
     const token = req.cookies.jwt_token; // 쿠키에서 JWT 토큰 가져오기
   
@@ -82,5 +85,3 @@ exports.check = async (req, res) => {
       res.json({ isAuthenticated: false });
     }
 };
-
-

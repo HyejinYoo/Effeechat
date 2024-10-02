@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import KakaoLogin from "./components/Auth/KakaoLogin";
-import Dashboard from "./components/ChatRoom/Dashboard";
+import Dashboard from "./components/ChatRoomList/Dashboard";
 import LogoutButton from "./components/Auth/LogoutButton";
 import axios from 'axios';  // axios 임포트
 
