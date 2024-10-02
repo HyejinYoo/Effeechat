@@ -6,6 +6,7 @@ require('dotenv').config();
 const REST_API_KEY = process.env.REST_API_KEY;
 const REDIRECT_URI = process.env.REDIRECT_URI;
 const JWT_SECRET = process.env.JWT_SECRET;  // 환경변수에서 JWT Secret 가져오기
+const FRONTEND_URL = process.env.FRONTEND_URL; 
 
 // 카카오 로그인 비즈니스 로직 처리
 exports.kakaoLogin = async (req, res) => {
@@ -36,6 +37,7 @@ exports.kakaoLogin = async (req, res) => {
             },
         });
 
+
         // 사용자 정보에서 id와 nickname을 추출
         const { id: kakaoId, properties: { nickname } } = userInfoResponse.data;
 
@@ -52,22 +54,22 @@ exports.kakaoLogin = async (req, res) => {
             { expiresIn: '1h' }  // 토큰 만료 시간 설정 (1시간)
         );
 
-        // JWT를 HTTP-Only 쿠키에 저장하여 프론트엔드로 전송
         res.cookie('jwt_token', token, {
-            httpOnly: true, // 자바스크립트로 접근 불가
+            httpOnly: true, 
             secure: process.env.NODE_ENV === 'production', // HTTPS에서만 사용 (프로덕션 환경일 때)
             maxAge: 3600000, // 1시간 동안 유효
-            sameSite: 'Strict' // 쿠키는 동일 사이트에서만 사용
+            sameSite: 'Strict'
         });
-
+  
         // 성공적으로 로그인 후 리다이렉트
-        res.redirect("http://localhost:3000/");
+        res.redirect(FRONTEND_URL);
 
     } catch (error) {
         console.error("Error during Kakao login or fetching user info:", error);
         res.status(500).send("Kakao login failed");
     }
 };
+
 
 // JWT 토큰 검증을 위한 함수
 exports.check = async (req, res) => {
@@ -79,7 +81,18 @@ exports.check = async (req, res) => {
   
     try {
       const decoded = jwt.verify(token, JWT_SECRET);  // JWT 토큰 검증
-      res.json({ isAuthenticated: true, user: decoded });
+      const kakaoId = decoded.kakaoId;  // JWT에서 카카오 ID 추출
+
+      // 사용자 테이블에서 해당 kakaoId에 맞는 사용자 정보 조회
+      const user = await User.findUserByKakaoId(kakaoId);
+      
+      if (!user) {
+        return res.json({ isAuthenticated: false, message: "User not found" });
+      }
+
+      // 사용자 정보와 함께 응답
+      res.json({ isAuthenticated: true, userId: user.id, user: decoded });
+      
     } catch (error) {
       console.error("JWT verification failed:", error);  // 예외 로그 출력
       res.json({ isAuthenticated: false });
