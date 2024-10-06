@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'; 
 import { fetchRooms, createRoom } from '../../services/chatRoomService'; 
 import { fetchUserId } from '../../services/authService'; 
+import { useNavigate } from 'react-router-dom';
 
 const ChatRoomList = () => {
   const [rooms, setRooms] = useState([]);
@@ -8,6 +9,8 @@ const ChatRoomList = () => {
   const [roomName, setRoomName] = useState('');
   const [description, setDescription] = useState('');
   const [userId, setUserId] = useState(null); 
+
+  const navigate = useNavigate();
 
   // 사용자 ID를 서버에서 가져오기
   useEffect(() => {
@@ -57,6 +60,11 @@ const ChatRoomList = () => {
     }
   };
 
+   // 채팅방 클릭 시 해당 채팅방으로 이동
+  const handleRoomClick = (roomId) => {
+    navigate(`/chatroom/${roomId}`);  // 해당 채팅방으로 이동
+  };
+
   // 방 입장 가능 여부 확인 함수
   const canJoinRoom = (participants, maxParticipants, isOpen) => {
     return isOpen && participants < maxParticipants; 
@@ -101,6 +109,7 @@ const ChatRoomList = () => {
         {filteredRooms.map((room) => (
           <li 
             key={room.id}
+            onClick={() => handleRoomClick(room.id)}  // 채팅방 클릭 시 이동
             className={canJoinRoom(room.participants, room.max_participants, room.is_open) ? 'room-open' : 'room-full'}
           >
             <strong>{room.name}</strong>

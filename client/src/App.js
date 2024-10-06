@@ -2,21 +2,22 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import KakaoLogin from "./components/Auth/KakaoLogin";
 import ChatRoomList from "./components/ChatRoom/ChatRoomList";
+import ChatRoom from "./components/ChatRoom/ChatRoom";
 import LogoutButton from "./components/Auth/LogoutButton";
 import { fetchUserId } from "./services/authService";
+import io from 'socket.io-client';  // socket.io-client import
 
+const API_URL = process.env.REACT_APP_API_URL;  // 환경 변수에서 API URL 가져오기
 
-// 환경 변수에서 API URL 가져오기
-const API_URL = process.env.REACT_APP_API_URL;
+let socket;  // 전역 소켓 변수
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(null);  // null로 설정 (아직 확인되지 않은 상태)
-  const [loading, setLoading] = useState(true);  // 로딩 상태
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        // 서버에서 사용자 ID 확인 (로그인 상태 확인)
         const userId = await fetchUserId();
         if (userId) {
           setIsAuthenticated(true);
@@ -25,43 +26,56 @@ function App() {
         }
       } catch (error) {
         console.error("Error checking authentication status:", error);
-        setIsAuthenticated(false);  // 오류 발생 시 로그인되지 않은 상태로 설정
+        setIsAuthenticated(false);
       } finally {
-        setLoading(false);  // 로딩 상태 해제
+        setLoading(false);
       }
     };
 
-    checkAuthStatus();
-  }, []);  // eslint-disable-line react-hooks/exhaustive-deps
+    // 소켓 연결 (한 번만 생성)
+    if (!socket) {
+      socket = io(API_URL);  // 소켓을 전역적으로 한 번만 연결
+      socket.on('connect', () => {
+        console.log('Connected to server:', socket.id);
+      });
 
-  
-  // 로딩 중일 때 로딩 화면 표시
+      socket.on('disconnect', () => {
+        console.log('Disconnected from server:', socket.id);
+      });
+    }
+
+    checkAuthStatus();
+  }, []);
+
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  // 로그인 상태 확인 후 처리
   return (
     <Router>
       <Routes>
-        {/* 로그인된 상태가 확인된 후에만 리디렉션을 처리 */}
         <Route
           path="/"
           element={
-            isAuthenticated === true ? <ChatRoomList /> : <Navigate to="/login" />
+            isAuthenticated ? <ChatRoomList /> : <Navigate to="/login" />
           }
         />
         
-        {/* 로그인 페이지 */}
         <Route
           path="/login"
           element={
             isAuthenticated === false ? <KakaoLogin /> : <Navigate to="/" />
           }
         />
-        
-        {/* 로그아웃 버튼 */}
+
         <Route path="/logout" element={<LogoutButton />} />
+
+        <Route
+          path="/chatroom/:roomId"
+          element={
+            isAuthenticated ? <ChatRoom socket={socket} /> : <Navigate to="/login" />
+          }
+        />
       </Routes>
     </Router>
   );
