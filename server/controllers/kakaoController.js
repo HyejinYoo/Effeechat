@@ -11,6 +11,8 @@ const FRONTEND_URL = process.env.FRONTEND_URL;
 // 카카오 로그인 비즈니스 로직 처리
 exports.kakaoLogin = async (req, res) => {
     let code = req.query.code;
+    
+    //여기 이메일 인증 절차 추가
 
     try {
         // 엑세스 토큰 요청

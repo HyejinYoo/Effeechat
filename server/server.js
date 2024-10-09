@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');  // 쿠키 파서 미들웨어
 const http = require('http'); // Required for creating an HTTP server
 const { Server } = require('socket.io'); // Import socket.io
 const authRoutes = require('./routes/auth');  // 라우터 경로
-const chatRoomsRoutes = require('./routes/chatRooms');
+const postRoutes = require('./routes/post');
 const app = express();
 const db = require('./config/db');
 const { handleMessage } = require('./controllers/chatController');
@@ -75,7 +75,7 @@ app.get('/', (req, res) => {
 app.use('/auth', authRoutes);
 
 // 채팅방 라우터 연결
-app.use('/chatRooms', chatRoomsRoutes);
+app.use('/post', postRoutes);
 
 // 서버 실행 (server.listen으로 변경)
 server.listen(port, () => {

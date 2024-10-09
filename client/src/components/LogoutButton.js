@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../../services/authService";  // 로그아웃 서비스 함수 불러오기
+import { logout } from "../services/authService";  // 로그아웃 서비스 함수 불러오기
 
 const LogoutButton = () => {
   const navigate = useNavigate();

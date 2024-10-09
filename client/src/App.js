@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
-import KakaoLogin from "./components/Auth/KakaoLogin";
-import ChatRoomList from "./components/ChatRoom/ChatRoomList";
-import ChatRoom from "./components/ChatRoom/ChatRoom";
-import LogoutButton from "./components/Auth/LogoutButton";
+import KakaoLogin from "./components/KakaoLogin";
+import PostList from "./components/PostList";
+import ChatRoom from "./components/ChatRoom";
+import NavBar from "./components/NavBar";
+import LogoutButton from "./components/LogoutButton";
+import CreatePost from "./components/CreatePost";
 import { fetchUserId } from "./services/authService";
 import io from 'socket.io-client';  // socket.io-client import
+import './styles/App.css';
 
 const API_URL = process.env.REACT_APP_API_URL;  // 환경 변수에서 API URL 가져오기
 
@@ -53,30 +56,43 @@ function App() {
 
   return (
     <Router>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            isAuthenticated ? <ChatRoomList /> : <Navigate to="/login" />
-          }
-        />
+      <div className="page-container">
+        <NavBar />
         
-        <Route
-          path="/login"
-          element={
-            isAuthenticated === false ? <KakaoLogin /> : <Navigate to="/" />
-          }
-        />
+        <div className="content">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                isAuthenticated ? <PostList /> : <Navigate to="/login" />
+              }
+            />
+            
+            <Route
+              path="/login"
+              element={
+                isAuthenticated === false ? <KakaoLogin /> : <Navigate to="/" />
+              }
+            />
 
-        <Route path="/logout" element={<LogoutButton />} />
+            <Route
+              path="/createPost"
+              element={
+                isAuthenticated === false ? <KakaoLogin /> : <CreatePost />
+              }
+            />
 
-        <Route
-          path="/chatroom/:roomId"
-          element={
-            isAuthenticated ? <ChatRoom socket={socket} /> : <Navigate to="/login" />
-          }
-        />
-      </Routes>
+            <Route path="/logout" element={<LogoutButton />} />
+            
+            <Route
+              path="/post/:chatRoomId/:menteeId"
+              element={
+                isAuthenticated ? <ChatRoom socket={socket} /> : <Navigate to="/login" />
+              }
+            />
+          </Routes>
+        </div>
+      </div>
     </Router>
   );
 }

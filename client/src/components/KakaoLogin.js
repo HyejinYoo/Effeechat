@@ -1,5 +1,5 @@
 import React from "react";
-import { getKakaoAuthUrl } from "../../services/authService";
+import { getKakaoAuthUrl } from "../services/authService";
 
 const KakaoLogin = () => {
   const kakaoLoginUrl = getKakaoAuthUrl();  // 서비스에서 인증 URL 가져오기
