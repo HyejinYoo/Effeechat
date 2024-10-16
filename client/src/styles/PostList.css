@@ -218,6 +218,9 @@
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
     animation: fadeIn 0.3s ease; /* 부드럽게 나타나는 애니메이션 */
     position: relative;
+    max-height: 80vh; /* 화면(viewport) 높이의 80%로 제한 */
+    overflow-y: auto; /* 세로 스크롤 가능 */
+    overflow-x: hidden; /* 가로 스크롤 숨김 */
   }
   
   /* 닫기 버튼 */
