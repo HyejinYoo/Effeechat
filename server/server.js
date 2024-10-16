@@ -74,8 +74,10 @@ app.get('/', (req, res) => {
 // 카카오 로그인 라우터 연결
 app.use('/auth', authRoutes);
 
-// 채팅방 라우터 연결
+// 포스트 라우터 연결
 app.use('/post', postRoutes);
+
+
 
 // 서버 실행 (server.listen으로 변경)
 server.listen(port, () => {

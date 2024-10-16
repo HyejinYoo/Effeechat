@@ -45,20 +45,22 @@ export const isTokenValid = (token) => {
 };
 
 
-
 // 사용자 ID 가져오기 (인증 체크)
 export const fetchUserId = async () => {
   try {
     const response = await axios.get(`${process.env.REACT_APP_API_URL}/auth/check`, {
       withCredentials: true, // 쿠키를 포함하여 인증 처리
     });
+
     if (response.data.isAuthenticated) {
       return response.data.userId;
     } else {
+      logout();  // 인증되지 않은 경우 로그아웃 처리
       throw new Error('User is not authenticated');
     }
   } catch (error) {
     console.error('Error fetching user ID:', error);
+    logout();  // 오류가 발생하면 로그아웃 처리
     throw error;
   }
 };

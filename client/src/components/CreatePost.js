@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from 'react'; 
-import { fetchPosts, createPost } from '../services/postService'; 
-import { fetchUserId } from '../services/authService'; 
+import React, { useState, useEffect } from 'react';
+import { fetchPosts, createPost } from '../services/postService'; // 파일 업로드는 createPost에서 처리
+import { fetchUserId } from '../services/authService';
 import { useNavigate } from 'react-router-dom';
+import '../styles/CreatePost.css';  // 스타일 파일 추가
 
 const CreatePost = () => {
-  const [posts, setPosts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [category, setCategory] = useState(0); 
+  const [category, setCategory] = useState(0);
   const [userId, setUserId] = useState(null);
-  const [selectedPost, setSelectedPost] = useState(null); // 선택된 포스트 상태값
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달창 열림 상태
+  const [files, setFiles] = useState([]);  // 새로 업로드된 파일 상태 추가
+  const [showFileInput, setShowFileInput] = useState(false); // 파일 선택 창 표시 여부 제어
 
   const navigate = useNavigate();
 
@@ -22,26 +21,27 @@ const CreatePost = () => {
         const userId = await fetchUserId();
         setUserId(userId);
       } catch (error) {
-        console.error(error);
+        console.error('Error fetching user ID:', error);
       }
     };
-
     getUserId();
   }, []);
 
-  // 채팅방 목록 가져오기
-  useEffect(() => {
-    const getPosts = async () => {
-      try {
-        const posts = await fetchPosts();
-        setPosts(posts);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  // 새 파일 선택 핸들러
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setFiles([...files, selectedFile]); // 새 파일 목록에 추가
+    }
+    setShowFileInput(false); // 파일 선택 후 창 숨김
+  };
 
-    getPosts();
-  }, []);
+  // 새 파일 삭제 핸들러
+  const handleRemoveNewFile = (index) => {
+    const updatedFiles = [...files];
+    updatedFiles.splice(index, 1); // 새 파일 배열에서 파일 제거
+    setFiles(updatedFiles);
+  };
 
   // 포스트 생성
   const handleCreatePost = async () => {
@@ -50,79 +50,95 @@ const CreatePost = () => {
       return;
     }
 
+    if (!title || !content) {
+      console.error('Title and content are required.');
+      return; // 제목이나 내용이 비어 있으면 반환
+    }
+
     try {
-      const createdPost = await createPost(userId, title, content, category);
-      console.log(createdPost);
-      setTitle('');
-      setContent('');
-      // 채팅방 목록 업데이트
-      const updatedPosts = await fetchPosts();
-      setPosts(updatedPosts);
+      const formData = new FormData();
+      formData.append('userId', userId);
+      formData.append('title', title);
+      formData.append('content', content);
+      formData.append('category', category);
+
+      // 새 파일 정보 전송
+      files.forEach((file) => {
+        formData.append('files', file); // 새로 추가된 파일 전송
+      });
+
+      // 포스트 생성 API 호출
+      await createPost(formData);
+      navigate('/'); // 홈으로 이동
     } catch (error) {
-      console.error(error);
+      console.error('Error creating post:', error);
     }
   };
 
-  // 포스트 클릭 시 전체 내용 보기 (팝업 띄우기)
-  const handlePostClick = (post) => {
-    setSelectedPost(post); // 선택된 포스트 저장
-    setIsModalOpen(true); // 모달창 열기
-  };
-
-  // 팝업 닫기
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedPost(null); // 선택된 포스트 초기화
-  };
-
-  // 채팅방으로 이동
-  const handleQuestionClick = (postId) => {
-    navigate(`/chat/${postId}`); // 채팅방으로 이동
-  };
-
-  // 방 입장 가능 여부 확인 함수
-  const canJoinRoom = (isOpen) => {
-    return isOpen; 
-  };
-
-  // 채팅방 검색
-  const filteredPosts = posts.filter((post) =>
-    post.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   return (
-    <div>
+    <div className="create-post-container">
+      {/* 카테고리 선택란 */}
+      <select value={category} onChange={(e) => setCategory(Number(e.target.value))}>
+        <option value={0}>Category</option>
+        <option value={1}>Development</option>
+        <option value={2}>Design</option>
+        <option value={3}>Marketing</option>
+        <option value={4}>Finance</option>
+      </select>
 
+      {/* 제목 입력란 */}
+      <input
+        type="text"
+        placeholder="Enter the post title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
 
-        {/* 채팅방 생성 폼 */}
-      <div>
-        <input
-          type="text"
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Content"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        />
+      {/* 본문 입력란 */}
+      <textarea
+        placeholder="Enter the post content"
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+      />
 
-        {/* 카테고리 선택 드롭다운 */}
-        <select
-          value={category}
-          onChange={(e) => setCategory(Number(e.target.value))}  // 선택된 카테고리를 숫자로 설정
-        >  
-          <option value={0}>선택안함</option>
-          <option value={1}>Development</option>
-          <option value={2}>Design</option>
-          <option value={3}>Marketing</option>
-          <option value={4}>Finance</option>
-        </select>
-
-        <button onClick={handleCreatePost}>Create Post</button>
+      {/* 새 파일 목록 */}
+      <div className="files-section">
+        <div className="file-inputs">
+          {files.map((file, index) => (
+            <div key={index} className="file-input-wrapper">
+              <span>{file.name}</span>
+              <button
+                type="button"
+                className="remove-file-btn"
+                onClick={() => handleRemoveNewFile(index)}
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
+
+      {/* 새 파일 업로드 입력란 */}
+      <div className="file-upload-section">
+        <button
+            type="button"
+            className="add-file-btn"
+            onClick={() => setShowFileInput(true)}
+        >
+            +Add File
+        </button>
+        {showFileInput && (
+            <div className="file-input-wrapper">
+            <input type="file" onChange={handleFileChange} />
+            </div>
+        )}
+      </div>
+
+      {/* 생성 버튼 */}
+      <button className="create-post-btn" onClick={handleCreatePost}>
+        Create Post
+      </button>
     </div>
   );
 };

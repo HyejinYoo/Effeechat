@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'; 
-import { fetchPosts, createPost } from '../services/postService'; 
+import { fetchPosts, createPost, deletePost, updatePost } from '../services/postService'; // 삭제, 수정 함수 추가
 import { fetchUserId } from '../services/authService'; 
 import { useNavigate } from 'react-router-dom';
 import '../styles/PostList.css';
@@ -61,7 +61,6 @@ const PostList = () => {
 
     try {
       const createdPost = await createPost(userId, title, content, category);
-      console.log(createdPost);
       setTitle('');
       setContent('');
       const updatedPosts = await fetchPosts();
@@ -83,6 +82,25 @@ const PostList = () => {
     setSelectedPost(null); 
   };
 
+  // 포스트 삭제
+  const handleDeletePost = async () => {
+    if (selectedPost && selectedPost.id) {
+      try {
+        await deletePost(selectedPost.id);
+        setIsModalOpen(false);
+        const updatedPosts = await fetchPosts();
+        setPosts(updatedPosts);
+      } catch (error) {
+        console.error("Error deleting post:", error);
+      }
+    }
+  };
+
+  // 포스트 수정 (새 페이지로 이동)
+  const handleUpdatePost = () => {
+    navigate(`/update/${selectedPost.id}`); // 수정 페이지로 이동
+  };
+
   // 채팅방으로 이동
   const handleQuestionClick = (postId) => {
     navigate(`/chat/${postId}`);
@@ -96,6 +114,11 @@ const PostList = () => {
 
   // 카테고리별로 필터링된 포스트 목록을 반환
   const filteredPosts = posts.filter((post) => {
+    console.log('Post:', post); // post 객체 확인
+    console.log('Post title:', post.title); // title 확인
+    console.log('Search term:', searchTerm); // searchTerm 확인
+  
+    const postTitle = post.title ? post.title.toLowerCase() : ''; // null인지 확인하는 안전 장치
     const matchesSearchTerm = post.title.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === null || post.category === selectedCategory;
     return matchesSearchTerm && matchesCategory;
@@ -103,7 +126,6 @@ const PostList = () => {
 
   return (
     <div>
-
       {/* 카테고리 버튼들 */}
       <div className="category-buttons">
         <button className={selectedCategory === null ? 'active' : ''} onClick={() => handleCategoryClick(null)}>전체</button>
@@ -120,7 +142,7 @@ const PostList = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
       />
 
-      {/* 채팅방 목록 */ }
+      {/* 채팅방 목록 */}
       <ul className="post-list">
         {filteredPosts.map((post) => (
           <li
@@ -130,7 +152,6 @@ const PostList = () => {
           >
             <div className={`post-content ${post.is_open ? '' : 'closed-room'}`}>
               <div className="post-header">
-                {/* 이미지와 작성자 이름을 포함하는 컨테이너 */}
                 <div className="author-info">
                   <img src={post.image ? post.image : '/img/default_img.jpg'} alt="mentor" className="mentor-icon" />
                 </div>
@@ -153,13 +174,11 @@ const PostList = () => {
         ))}
       </ul>
 
-      {/* 선택된 포스트 팝업 모달 */ }
-    
       {isModalOpen && selectedPost && (
         <div className="modal">
           <div className="modal-content">
             <span className="close" onClick={closeModal}>&times;</span>
-            
+
             {/* 작성자 이미지 및 정보 */}
             <div className="modal-header">
               <img 
@@ -167,7 +186,6 @@ const PostList = () => {
                 alt="작성자 프로필" 
                 className="mentor-icon" 
               />
-              {/* 작성자 이름 표시 */}
               {selectedPost.authorName ? (
                 <strong>{selectedPost.authorName}</strong>
               ) : (
@@ -175,26 +193,55 @@ const PostList = () => {
               )}
             </div>
 
-            {/* 제목과 카테고리 */}
+            {/* 제목, 카테고리 및 작성 날짜 */}
             <div className="post-title-row">
               <strong>{selectedPost.title}</strong>
               {selectedPost.category !== 0 && (
                 <span className="post-category">{jobTitles[selectedPost.category]}</span>
               )}
             </div>
+            <p className="post-date" style={{ fontSize: '12px' }}>작성일: {new Date(selectedPost.created_at).toLocaleDateString()}</p>
 
             {/* 콘텐츠 전체 표시 */}
             <p>{selectedPost.content}</p>
- 
 
-            {/* 질문하기 버튼 */}
-            <div className="modal-footer">
-              <button className="modal-button" onClick={() => handleQuestionClick(selectedPost.id)}>질문하기</button>
-            </div>
+            {/* 첨부된 파일들 표시 */}
+            {Array.isArray(selectedPost.files) && selectedPost.files.length > 0 && (
+              <div className="attached-files">
+                <ul>
+                  {selectedPost.files.map((file, index) => {
+                    const fileUrl = file && file.url ? file.url : '';
+                    const decodedFileName = decodeURIComponent(file.originalName);
+                    const originalName = decodedFileName ? decodedFileName : `첨부된 파일 ${index + 1}`;
+                    
+                    return (
+                      <li key={index}>
+                        {fileUrl.endsWith('.jpg') || fileUrl.endsWith('.png') || fileUrl.endsWith('.jpeg') ? (
+                          <img src={fileUrl} alt={`첨부된 이미지 ${index}`} className="attached-image" />
+                        ) : (
+                          <a href={fileUrl} target="_blank" rel="noopener noreferrer">{originalName} 다운로드</a>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            )}
+
+            {/* 삭제 및 수정 버튼 (작성자 본인인 경우) */}
+            {userId === selectedPost.userId ? (
+              <div className="modal-footer">
+                <button className="modal-button" onClick={handleUpdatePost}>수정하기</button>
+                <button className="modal-button" onClick={handleDeletePost}>삭제하기</button>
+              </div>
+            ) : (
+              <div className="modal-footer">
+                <button className="modal-button" onClick={() => handleQuestionClick(selectedPost.id)}>질문하기</button>
+              </div>
+            )}
           </div>
         </div>
       )}
-      
     </div>
   );
 };

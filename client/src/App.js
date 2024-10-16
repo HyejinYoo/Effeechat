@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import KakaoLogin from "./components/KakaoLogin";
 import PostList from "./components/PostList";
+import UpdatePost from './components/UpdatePost';
 import ChatRoom from "./components/ChatRoom";
 import NavBar from "./components/NavBar";
 import LogoutButton from "./components/LogoutButton";
@@ -90,6 +91,9 @@ function App() {
                 isAuthenticated ? <ChatRoom socket={socket} /> : <Navigate to="/login" />
               }
             />
+
+            <Route path="/update/:id" element={<UpdatePost />} />
+
           </Routes>
         </div>
       </div>

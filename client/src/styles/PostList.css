@@ -298,3 +298,8 @@
     font-size: 14px; /* 작성자 이름의 폰트 크기 조정 */
     color: #666; /* 텍스트 색상 */
   }
+
+  .attached-files ul {
+    list-style: none;
+    padding-left: 0;
+  }
