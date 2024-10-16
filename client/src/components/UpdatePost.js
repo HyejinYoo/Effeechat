@@ -62,6 +62,26 @@ const UpdatePost = () => {
     setShowFileInput(false); // 파일 선택 후 창 숨김
   };
 
+  // 새 이미지 복사/붙여넣기 핸들러
+  const handlePaste = (e) => {
+    const clipboardItems = e.clipboardData.items;
+    for (let i = 0; i < clipboardItems.length; i++) {
+      const item = clipboardItems[i];
+      if (item.type.indexOf('image') !== -1) {
+        const blob = item.getAsFile();
+        setNewFiles([...newFiles, blob]);
+      }
+    }
+  };
+
+  // 복사/붙여넣기 이벤트 추가
+  useEffect(() => {
+    document.addEventListener('paste', handlePaste);
+    return () => {
+      document.removeEventListener('paste', handlePaste);
+    };
+  }, [newFiles]);
+
   // 기존 파일 삭제 핸들러
   const handleRemoveExistingFile = (fileId) => {
     setExistingFiles(existingFiles.filter((file) => file.id !== fileId)); // 클라이언트에서 제거
@@ -168,7 +188,7 @@ const UpdatePost = () => {
             <div className="file-inputs">
               {newFiles.map((file, index) => (
                 <div key={index} className="file-input-wrapper">
-                  <span>{file.name}</span>
+                  <span>{file.name || 'Pasted Image'}</span>
                   <button
                     type="button"
                     className="remove-file-btn"

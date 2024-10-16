@@ -205,6 +205,7 @@
     justify-content: center; /* 수평 가운데 정렬 */
     align-items: center; /* 수직 가운데 정렬 */
     z-index: 1000; /* 다른 요소 위에 보이도록 설정 */
+    
   }
   
   /* 모달 컨텐츠 박스 */
@@ -303,3 +304,9 @@
     list-style: none;
     padding-left: 0;
   }
+
+  /* 이미지 크기 조정 */
+.attached-image {
+  max-width: 100%;  /* 이미지의 너비를 모달 안에 맞게 제한 */
+  height: auto;     /* 이미지의 비율을 유지하면서 크기 조정 */
+}

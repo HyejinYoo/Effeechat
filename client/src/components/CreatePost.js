@@ -27,6 +27,28 @@ const CreatePost = () => {
     getUserId();
   }, []);
 
+  // 클립보드 붙여넣기 핸들러 추가
+  useEffect(() => {
+    const handlePaste = (e) => {
+      const items = e.clipboardData.items;
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        if (item.type.startsWith('image/')) {
+          const file = item.getAsFile();
+          setFiles((prevFiles) => [...prevFiles, file]); // 붙여넣은 파일을 파일 목록에 추가
+        }
+      }
+    };
+
+    // 컴포넌트가 마운트될 때 붙여넣기 이벤트 리스너 추가
+    window.addEventListener('paste', handlePaste);
+
+    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener('paste', handlePaste);
+    };
+  }, []);
+
   // 새 파일 선택 핸들러
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
