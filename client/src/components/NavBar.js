@@ -9,7 +9,7 @@ const Navbar = () => {
   return (
     <div className="navbar">
       {/* 로고와 서비스 이름 */}
-      <div className="logo">
+      <div className="logo" onClick={() => navigate('/')}>
         <img src="/img/logo.jpg" alt="서비스 로고" />
         <h1>E-ffeeChat</h1>
       </div>
@@ -23,7 +23,5 @@ const Navbar = () => {
     </div>
   );
 };
-
-
 
 export default Navbar;
