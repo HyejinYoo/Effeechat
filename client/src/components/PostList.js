@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'; 
 import { fetchPosts, createPost, deletePost, updatePost } from '../services/postService'; // 삭제, 수정 함수 추가
 import { fetchUserId } from '../services/authService'; 
-import { createOrGetChatRoom } from '../services/chatService';
+import { createOrGetChatRoom } from '../services/chatRoomService';
 import { useNavigate } from 'react-router-dom';
 import '../styles/PostList.css';
 
@@ -115,7 +115,7 @@ const PostList = () => {
   
     try {
       // 서비스에서 채팅방 ID 가져오기
-      const chatRoomId = await createOrGetChatRoom(postId, mentorId, menteeId);
+      const chatRoomId = await createOrGetChatRoom(mentorId, menteeId);
       
       // 생성된 방으로 이동
       navigate(`/chat/${chatRoomId}`);

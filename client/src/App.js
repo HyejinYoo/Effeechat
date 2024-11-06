@@ -89,7 +89,7 @@ function App() {
             <Route path="/update/:id" element={<UpdatePost />} />
 
             <Route
-              path="/chat/:chatRoomId"
+              path="/chat/:roomId"
               element={
                 isAuthenticated ? <ChatRoom socket={socket} /> : <Navigate to="/login" />
               }

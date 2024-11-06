@@ -26,3 +26,4 @@ exports.findById = async (chatRoomId) => {
   const [rooms] = await db.query(query, [chatRoomId]);
   return rooms.length > 0 ? rooms[0] : null; // 방이 있으면 해당 방 반환, 없으면 null 반환
 };
+

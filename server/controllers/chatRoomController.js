@@ -1,16 +1,18 @@
 const ChatRoom = require('../models/ChatRoom');
+const Chat = require('../models/Chat'); // Chat 모델 가져오기
+
 
 // 채팅방 생성 또는 기존 방 확인 함수
 exports.createOrGetChatRoom = async (req, res) => {
-  const { postId, mentorId, menteeId } = req.body; // 포스트 ID와 멘토, 멘티 ID
+  const {  mentorId, menteeId } = req.body; // 포스트 ID와 멘토, 멘티 ID
 
   try {
     // 동일한 멘토-멘티 쌍의 채팅방이 있는지 확인
-    let chatRoom = await ChatRoom.findExistingRoom(mentorId, menteeId, postId);
+    let chatRoom = await ChatRoom.findExistingRoom(mentorId, menteeId);
     
     if (!chatRoom) {
       // 기존 채팅방이 없다면 새로 생성
-      const chatRoomId = await ChatRoom.createRoom(mentorId, menteeId, postId);
+      const chatRoomId = await ChatRoom.createRoom(mentorId, menteeId);
       chatRoom = { id: chatRoomId }; // 새로 생성된 방 ID
     }
     
@@ -55,5 +57,16 @@ exports.getChatRoomById = async (req, res) => {
   } catch (error) {
     console.error('Error fetching chat room by ID:', error);
     res.status(500).send('Failed to fetch chat room');
+  }
+};
+
+exports.getChatRoomMessages = async (req, res) => {
+  const { chatRoomId } = req.params;
+  try {
+    const messages = await Chat.getMessagesByRoomId(chatRoomId);
+    res.json(messages);
+  } catch (error) {
+    console.error('Error fetching chat messages:', error);
+    res.status(500).json({ error: 'Failed to fetch chat messages' });
   }
 };

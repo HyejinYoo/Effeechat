@@ -1,56 +1,104 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
+import { fetchUserId } from '../services/authService';
+import { fetchChatHistory } from '../services/chatRoomService';
+import { sendMessageToServer } from '../services/chatService';
+import '../styles/ChatRoom.css';
 
 const ChatRoom = ({ socket }) => {
   const { roomId } = useParams();
+  const [userId, setUserId] = useState(null); // userId 상태 추가
   const [message, setMessage] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
+  const [recipientName, setRecipientName] = useState('');
+  const [recipientImage, setRecipientImage] = useState('');
+  const messagesEndRef = useRef(null);
 
-  
+  // 사용자 ID 가져오기
   useEffect(() => {
-    // 방에 입장 (중복 호출 방지)
+    const getUserId = async () => {
+      try {
+        const id = await fetchUserId();
+        setUserId(id); // userId 상태 설정
+      } catch (error) {
+        console.error("Failed to fetch user ID:", error);
+      }
+    };
+    getUserId();
+  }, []);
+
+  // 방에 들어갈 때 DB에서 메시지 불러오기
+  useEffect(() => {
+    const loadChatHistory = async () => {
+      try {
+        const messages = await fetchChatHistory(roomId);
+        setChatMessages(messages);
+      } catch (error) {
+        console.error('Failed to load chat history:', error);
+      }
+    };
+    loadChatHistory();
+  }, [roomId]);
+
+  useEffect(() => {
     if (socket) {
       socket.emit('join room', roomId);
 
-      // 서버로부터 메시지 수신 (이벤트 중복 등록 방지)
-      const handleMessage = (msg) => {
-        console.log('Received message:', msg);
-        setChatMessages((prevMessages) => [...prevMessages, msg.message || JSON.stringify(msg)]);
+      const handleMessageReceive = (msg) => {
+        setChatMessages((prevMessages) => [...prevMessages, msg]);
       };
 
-      socket.on('chat message', handleMessage);
+      socket.on('chat message', handleMessageReceive);
 
       return () => {
-        // 이벤트 핸들러 해제 (중복 방지)
-        socket.off('chat message', handleMessage);
-        socket.emit('leave room', roomId);  // 방을 떠날 때 알림
+        socket.off('chat message', handleMessageReceive);
+        socket.emit('leave room', roomId);
       };
     }
   }, [roomId, socket]);
-;
+
+  // Scroll to bottom whenever chatMessages changes
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [chatMessages]);
 
   const sendMessage = () => {
-    socket.emit('chat message', { roomId, message });
-    setMessage('');  // 메시지 입력창 비우기
+    if (userId) { // userId가 설정되었을 때만 메시지 전송
+      sendMessageToServer(socket, roomId, userId, message);
+      setMessage('');
+    }
   };
 
   return (
-    <div>
-      <h1>Welcome to Chat Room {roomId}</h1>
+    <div className="chat-room">
+      <header className="chat-room-header">
+        {recipientImage && <img src={recipientImage} alt="Recipient Profile" className="profile-image" />}
+        <h2>{recipientName}</h2>
+      </header>
 
-      <div>
+      <div className="chat-messages">
         {chatMessages.map((msg, index) => (
-          <div key={index}>{msg}</div>  // 메시지 표시
+          <div key={index} className={`chat-message-container ${msg.senderId === userId ? 'my-message' : 'other-message'}`}>
+            {msg.senderId !== userId && (
+              <img src={msg.profileImage || '/img/default_img.jpg'} alt="Sender Profile" className="profile-image" />
+            )}
+            <div className="chat-bubble">
+              <span>{msg.message}</span>
+            </div>
+          </div>
         ))}
+        <div ref={messagesEndRef} /> {/* For automatic scroll to bottom */}
       </div>
 
-      <input
-        type="text"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        placeholder="Type a message..."
-      />
-      <button onClick={sendMessage}>Send</button>
+      <div className="chat-input-container">
+        <input
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder="Type a message..."
+        />
+        <button onClick={sendMessage}>Send</button>
+      </div>
     </div>
   );
 };
