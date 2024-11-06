@@ -27,3 +27,14 @@ exports.findById = async (chatRoomId) => {
   return rooms.length > 0 ? rooms[0] : null; // 방이 있으면 해당 방 반환, 없으면 null 반환
 };
 
+exports.findRecipientByRoomId = async (roomId, userId) => {
+  const query = `
+    SELECT Users.id AS userId, Users.username, Users.image AS profileImage
+    FROM ChatRooms
+    JOIN Users ON (ChatRooms.mentorId = Users.id OR ChatRooms.menteeId = Users.id)
+    WHERE ChatRooms.id = ? AND Users.id != ?
+    LIMIT 1;
+  `;
+  const [results] = await db.query(query, [roomId, userId]);
+  return results[0];
+};

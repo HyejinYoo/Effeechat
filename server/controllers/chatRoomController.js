@@ -70,3 +70,23 @@ exports.getChatRoomMessages = async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch chat messages' });
   }
 };
+
+
+// 상대방 정보를 조회하는 API
+exports.getRecipientInfo = async (req, res) => {
+  const { chatRoomId } = req.params;
+  const userId = req.user.id; // 인증된 사용자의 ID
+
+  try {
+    // 상대방 ID 찾기
+    const recipient = await ChatRoom.findRecipientByRoomId(chatRoomId, userId);
+    if (recipient) {
+      res.json({ username: recipient.username, profileImage: recipient.image });
+    } else {
+      res.status(404).json({ message: "Recipient not found" });
+    }
+  } catch (error) {
+    console.error("Error fetching recipient info:", error);
+    res.status(500).json({ error: "Failed to fetch recipient info" });
+  }
+};

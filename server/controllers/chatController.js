@@ -44,3 +44,4 @@ exports.getMessagesByRoom = async (req, res) => {
     res.status(500).send('Failed to fetch messages');
   }
 };
+

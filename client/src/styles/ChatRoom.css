@@ -1,3 +1,4 @@
+
 .chat-room {
   display: flex;
   flex-direction: column;
@@ -7,9 +8,20 @@
 .chat-room-header {
   display: flex;
   align-items: center;
-  padding: 10px;
-  background-color: #f0f0f0;
-  border-bottom: 1px solid #ddd;
+  padding-left: 10px; /* 왼쪽에 여백 추가 */
+  padding-bottom: 10px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #8f8f8f;
+}
+
+.chat-room-header h3 {
+  padding: 10px 25px; /* 텍스트 주변 여백 */
+  background-color: #ffffff; /* 배경색 */
+  border-radius: 20px; /* 둥근 모서리 */
+  margin: 0 10px; /* 헤더 내부 좌우 공간 조절 */
+  font-size: 1.1em;
+  text-align: center;
+  color: #2e2e2e;
 }
 
 .chat-messages {
@@ -37,11 +49,13 @@
 }
 
 .chat-bubble {
+  white-space: pre-line;
   max-width: 60%;
   padding: 8px;
   border-radius: 8px;
   display: inline-block;
   word-break: break-word;
+  text-align: left; 
 }
 
 .my-message .chat-bubble {
@@ -65,8 +79,7 @@
 
 .chat-input-container {
   display: flex;
-  
-  padding: 10px;
+  padding: 20px;
   border-top: 1px solid #ddd;
   height: 80px; /* Height adjustment for the input container */
 }
@@ -93,4 +106,17 @@ button {
 
 button:hover {
   background-color: #0056b3;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  resize: none; /* 크기 조정 비활성화 */
+  height: 10px; /* 기본 높이를 자동으로 */
+  max-height: 50px; /* 최대 높이 제한 */
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-y: auto; /* 텍스트가 많아지면 스크롤 */
+  margin-right: 8px;
 }

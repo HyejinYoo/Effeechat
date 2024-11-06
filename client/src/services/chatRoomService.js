@@ -33,3 +33,17 @@ export const fetchChatHistory = async (roomId) => {
       throw error;
     }
   };
+
+  // 상대방 정보를 가져오는 함수
+export const fetchRecipientInfo = async (roomId, userId) => {
+    try {
+      const response = await axios.get(`${API_URL}/api/chatRoom/${roomId}/recipient`, {
+        withCredentials: true,
+        params: { userId } // 요청에 userId를 포함하여 상대방 정보 요청
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching recipient info:', error);
+      throw error;
+    }
+  };
