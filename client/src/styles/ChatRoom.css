@@ -1,7 +1,7 @@
 .chat-room {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 80vh;
 }
 
 .chat-room-header {
@@ -23,7 +23,7 @@
 .chat-message-container {
   display: flex;
   align-items: flex-end;
-  margin: 5px 0;
+  margin: 6px 0;
 }
 
 .my-message {
@@ -65,10 +65,10 @@
 
 .chat-input-container {
   display: flex;
-  align-items: center;
+  
   padding: 10px;
   border-top: 1px solid #ddd;
-  height: 50px; /* Height adjustment for the input container */
+  height: 80px; /* Height adjustment for the input container */
 }
 
 input[type="text"] {
@@ -81,8 +81,10 @@ input[type="text"] {
 }
 
 button {
+  height: 50px;
+  width: 100px;
   padding: 8px 12px;
-  background-color: #007bff;
+  background-color: #006540;
   color: #fff;
   border: none;
   border-radius: 4px;

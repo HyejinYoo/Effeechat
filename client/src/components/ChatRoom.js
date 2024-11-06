@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchUserId } from '../services/authService';
-import { fetchChatHistory } from '../services/chatRoomService';
+import { fetchChatHistory, fetchRecipientInfo } from '../services/chatRoomService'; // fetchRecipientInfo 추가
 import { sendMessageToServer } from '../services/chatService';
 import '../styles/ChatRoom.css';
 
 const ChatRoom = ({ socket }) => {
   const { roomId } = useParams();
-  const [userId, setUserId] = useState(null); // userId 상태 추가
+  const [userId, setUserId] = useState(null);
   const [message, setMessage] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
   const [recipientName, setRecipientName] = useState('');
@@ -19,13 +19,30 @@ const ChatRoom = ({ socket }) => {
     const getUserId = async () => {
       try {
         const id = await fetchUserId();
-        setUserId(id); // userId 상태 설정
+        setUserId(id);
       } catch (error) {
         console.error("Failed to fetch user ID:", error);
       }
     };
     getUserId();
   }, []);
+
+  // 상대방 정보 가져오기
+  useEffect(() => {
+    const loadRecipientInfo = async () => {
+      try {
+        const { name, image } = await fetchRecipientInfo(roomId, userId); // 상대방 이름과 이미지 가져오기
+        setRecipientName(name);
+        setRecipientImage(image);
+      } catch (error) {
+        console.error("Failed to load recipient info:", error);
+      }
+    };
+
+    if (userId) {
+      loadRecipientInfo();
+    }
+  }, [roomId, userId]);
 
   // 방에 들어갈 때 DB에서 메시지 불러오기
   useEffect(() => {
@@ -63,7 +80,7 @@ const ChatRoom = ({ socket }) => {
   }, [chatMessages]);
 
   const sendMessage = () => {
-    if (userId) { // userId가 설정되었을 때만 메시지 전송
+    if (userId) {
       sendMessageToServer(socket, roomId, userId, message);
       setMessage('');
     }
@@ -73,7 +90,7 @@ const ChatRoom = ({ socket }) => {
     <div className="chat-room">
       <header className="chat-room-header">
         {recipientImage && <img src={recipientImage} alt="Recipient Profile" className="profile-image" />}
-        <h2>{recipientName}</h2>
+        <h2>{recipientName || "Loading..."}</h2> {/* 상대방 이름 표시 */}
       </header>
 
       <div className="chat-messages">
@@ -87,7 +104,7 @@ const ChatRoom = ({ socket }) => {
             </div>
           </div>
         ))}
-        <div ref={messagesEndRef} /> {/* For automatic scroll to bottom */}
+        <div ref={messagesEndRef} />
       </div>
 
       <div className="chat-input-container">
