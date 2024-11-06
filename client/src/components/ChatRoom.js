@@ -105,10 +105,10 @@ const ChatRoom = ({ socket }) => {
             )}
             <div className="chat-bubble">
               <span>{msg.message}</span>
-              <span className={`message-time ${msg.senderId === userId ? 'time-left' : 'time-right'}`}>
-                {new Date(msg.sent_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-              </span>
             </div>
+            <span className={`message-time ${msg.senderId === userId ? 'time-left' : 'time-right'}`}>
+              {new Date(msg.sent_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+            </span>
           </div>
         ))}
         <div ref={messagesEndRef} />

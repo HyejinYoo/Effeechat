@@ -126,14 +126,3 @@ textarea {
   color: #888;
 }
 
-.time-left {
-  position: absolute;
-  bottom: -16px;
-  left: 0;
-}
-
-.time-right {
-  position: absolute;
-  bottom: -16px;
-  right: 0;
-}
