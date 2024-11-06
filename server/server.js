@@ -6,6 +6,8 @@ const http = require('http'); // Required for creating an HTTP server
 const { Server } = require('socket.io'); // Import socket.io
 const authRoutes = require('./routes/auth');  // 라우터 경로
 const postRoutes = require('./routes/post');
+const chatRoutes = require('./routes/chat');
+const chatRoomRoutes = require('./routes/chatRoom');
 const app = express();
 const db = require('./config/db');
 const { handleMessage } = require('./controllers/chatController');
@@ -72,10 +74,14 @@ app.get('/', (req, res) => {
 });
 
 // 카카오 로그인 라우터 연결
-app.use('/auth', authRoutes);
+app.use('/api/auth', authRoutes);
+
+app.use('/api/chat', chatRoutes);
+
+app.use('/api/chatRoom', chatRoomRoutes);
 
 // 포스트 라우터 연결
-app.use('/post', postRoutes);
+app.use('/api/post', postRoutes);
 
 
 

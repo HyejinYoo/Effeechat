@@ -78,7 +78,7 @@ exports.check = async (req, res) => {
     const token = req.cookies.jwt_token; // 쿠키에서 JWT 토큰 가져오기
   
     if (!token) {
-      return res.json({ isAuthenticated: false });
+      return res.json({ isAuthenticated: false, error: 'Authentication required' });
     }
   
     try {
@@ -100,3 +100,5 @@ exports.check = async (req, res) => {
       res.json({ isAuthenticated: false });
     }
 };
+
+

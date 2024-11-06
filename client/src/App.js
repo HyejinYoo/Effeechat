@@ -85,14 +85,15 @@ function App() {
 
             <Route path="/logout" element={<LogoutButton />} />
             
+
+            <Route path="/update/:id" element={<UpdatePost />} />
+
             <Route
-              path="/post/:chatRoomId/:menteeId"
+              path="/chat/:chatRoomId"
               element={
                 isAuthenticated ? <ChatRoom socket={socket} /> : <Navigate to="/login" />
               }
             />
-
-            <Route path="/update/:id" element={<UpdatePost />} />
 
           </Routes>
         </div>

@@ -1,7 +1,9 @@
+const ChatMessage = require('../models/ChatMessage');
+
 // 방별 채팅 기록 저장 (임시 메모리 저장소)
 let chatHistory = {};  // chatHistory 변수를 모듈 범위에 선언
 
-const handleMessage = (socket, io) => {
+exports.handleMessage = (socket, io) => {
   socket.on('chat message', (msg) => {
     const { roomId, message } = msg;
 
@@ -18,4 +20,24 @@ const handleMessage = (socket, io) => {
   });
 };
 
-module.exports = { handleMessage };
+exports.saveMessage = async (req, res) => {
+  const { roomId, senderId, message } = req.body;
+  try {
+    const messageId = await ChatMessage.createMessage(roomId, senderId, message);
+    res.status(201).json({ message: 'Message saved', messageId });
+  } catch (error) {
+    console.error('Error saving message:', error);
+    res.status(500).send('Failed to save message');
+  }
+};
+
+exports.getMessagesByRoom = async (req, res) => {
+  const { roomId } = req.params;
+  try {
+    const messages = await ChatMessage.getMessagesByRoomId(roomId);
+    res.status(200).json(messages);
+  } catch (error) {
+    console.error('Error fetching messages:', error);
+    res.status(500).send('Failed to fetch messages');
+  }
+};

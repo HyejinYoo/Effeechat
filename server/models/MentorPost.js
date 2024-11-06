@@ -7,11 +7,10 @@ exports.getPosts = async () => {
     const query = `
       SELECT MentorPosts.*, Users.image, Users.username AS authorName, COUNT(ChatRooms.menteeId) AS mentees
       FROM MentorPosts
-      LEFT JOIN ChatRooms ON MentorPosts.id = ChatRooms.mentorPostId
+      LEFT JOIN ChatRooms ON MentorPosts.userId = ChatRooms.mentorId
       LEFT JOIN Users ON MentorPosts.userId = Users.id 
       GROUP BY MentorPosts.id
-      ORDER BY MentorPosts.created_at DESC
-      ;
+      ORDER BY MentorPosts.created_at DESC;
     `;
     const [posts] = await db.query(query); // 비동기 쿼리 실행
     return posts;
@@ -22,12 +21,11 @@ exports.getPosts = async () => {
 
 // 특정 ID로 포스트를 가져오는 함수
 exports.findById = async (postId) => {
-
   try {
     const query = `
       SELECT MentorPosts.*, Users.image, Users.username AS authorName, COUNT(ChatRooms.menteeId) AS mentees
       FROM MentorPosts
-      LEFT JOIN ChatRooms ON MentorPosts.id = ChatRooms.mentorPostId
+      LEFT JOIN ChatRooms ON MentorPosts.userId = ChatRooms.mentorId
       LEFT JOIN Users ON MentorPosts.userId = Users.id
       WHERE MentorPosts.id = ?  
       GROUP BY MentorPosts.id;

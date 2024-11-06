@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'; 
 import { fetchPosts, createPost, deletePost, updatePost } from '../services/postService'; // 삭제, 수정 함수 추가
 import { fetchUserId } from '../services/authService'; 
+import { createOrGetChatRoom } from '../services/chatService';
 import { useNavigate } from 'react-router-dom';
 import '../styles/PostList.css';
 
@@ -102,8 +103,25 @@ const PostList = () => {
   };
 
   // 채팅방으로 이동
-  const handleQuestionClick = (postId) => {
-    navigate(`/chat/${postId}`);
+  const handleQuestionClick = async () => {
+    if (!selectedPost || !selectedPost.id || !userId) {
+      console.error('Post ID, Mentor ID, or Mentee ID is not available.');
+      return;
+    }
+  
+    const postId = selectedPost.id; // 선택된 포스트 ID
+    const mentorId = selectedPost.userId; // 게시물 작성자 ID (멘토)
+    const menteeId = userId; // 현재 로그인된 사용자 ID (멘티)
+  
+    try {
+      // 서비스에서 채팅방 ID 가져오기
+      const chatRoomId = await createOrGetChatRoom(postId, mentorId, menteeId);
+      
+      // 생성된 방으로 이동
+      navigate(`/chat/${chatRoomId}`);
+    } catch (error) {
+      console.error('Failed to create or get chat room:', error);
+    }
   };
 
   // 방 입장 가능 여부 확인 함수
@@ -236,7 +254,7 @@ const PostList = () => {
               </div>
             ) : (
               <div className="modal-footer">
-                <button className="modal-button" onClick={() => handleQuestionClick(selectedPost.id)}>질문하기</button>
+                <button className="modal-button" onClick={() => handleQuestionClick()}>질문하기</button>
               </div>
             )}
           </div>

@@ -20,7 +20,7 @@ export const logout = () => {
 // 보호된 데이터 요청 함수 (쿠키 기반)
 export const fetchProtectedData = async () => {
   try {
-    const response = await axios.get(`${API_URL}/auth/check`, {
+    const response = await axios.get(`${API_URL}/api/auth/check`, {
       withCredentials: true,  // 쿠키를 포함하여 요청
     });
     return response.data;  // 받아온 데이터 반환
@@ -48,7 +48,7 @@ export const isTokenValid = (token) => {
 // 사용자 ID 가져오기 (인증 체크)
 export const fetchUserId = async () => {
   try {
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/auth/check`, {
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/auth/check`, {
       withCredentials: true, // 쿠키를 포함하여 인증 처리
     });
 
