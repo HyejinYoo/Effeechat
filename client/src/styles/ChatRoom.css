@@ -39,8 +39,8 @@
 }
 
 .my-message {
+
   justify-content: flex-end;
-  text-align: right;
 }
 
 .other-message {
@@ -126,3 +126,7 @@ textarea {
   color: #888;
 }
 
+.my-message .message-time {
+  order: -1; /* Place time before the bubble for my messages */
+  margin-right: 8px;
+}
