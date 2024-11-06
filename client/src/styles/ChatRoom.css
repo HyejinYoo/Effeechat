@@ -120,3 +120,20 @@ textarea {
   overflow-y: auto; /* 텍스트가 많아지면 스크롤 */
   margin-right: 8px;
 }
+
+.message-time {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+.time-left {
+  position: absolute;
+  bottom: -16px;
+  left: 0;
+}
+
+.time-right {
+  position: absolute;
+  bottom: -16px;
+  right: 0;
+}

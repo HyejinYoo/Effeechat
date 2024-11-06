@@ -56,6 +56,7 @@ const ChatRoom = ({ socket }) => {
       socket.emit('join room', roomId);
 
       const handleMessageReceive = (msg) => {
+        console.log('Received message:', msg);
         setChatMessages((prevMessages) => [...prevMessages, msg]);
       };
 
@@ -104,6 +105,9 @@ const ChatRoom = ({ socket }) => {
             )}
             <div className="chat-bubble">
               <span>{msg.message}</span>
+              <span className={`message-time ${msg.senderId === userId ? 'time-left' : 'time-right'}`}>
+                {new Date(msg.sent_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              </span>
             </div>
           </div>
         ))}

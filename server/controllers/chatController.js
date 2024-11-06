@@ -5,21 +5,21 @@ let chatHistory = {};  // chatHistory 변수를 모듈 범위에 선언
 
 exports.handleMessage = (socket, io) => {
   socket.on('chat message', async (msg) => {
-    const { roomId, senderId, message } = msg; // senderId도 추가
+    const { roomId, senderId, message } = msg;
 
-    console.log('message:', JSON.stringify(msg, null, 2));  // 메시지 로그 출력
+    console.log('Received message:', JSON.stringify(msg, null, 2));
 
-    // 방별로 채팅 기록 저장 (데이터베이스 저장)
     try {
-      // 메시지를 데이터베이스에 저장
-      await Chat.createMessage(roomId, senderId, message);
-      console.log('Message saved to database');
+      // 메시지를 데이터베이스에 저장하고 필요한 정보만 가져옴
+      const savedMessage = await Chat.createMessage(roomId, senderId, message);
+
+      // 클라이언트에 필요한 정보만 전송
+      io.to(roomId).emit('chat message', savedMessage);
+
+      console.log('Message saved to database and sent to clients');
     } catch (error) {
       console.error('Error saving message to database:', error);
     }
-
-    // 방에 있는 모든 클라이언트에게 메시지 전송
-    io.to(roomId).emit('chat message', { roomId, senderId, message });
   });
 };
 
