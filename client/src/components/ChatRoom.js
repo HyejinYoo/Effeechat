@@ -87,6 +87,15 @@ const ChatRoom = ({ socket }) => {
     }
   };
 
+  const formatDate = (date) => {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    return new Date(date).toLocaleDateString(undefined, options);
+  };
+
+  const formatTime = (date) => {
+    return new Date(date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+
   return (
     <div className="chat-room">
       <header className="chat-room-header">
@@ -95,22 +104,29 @@ const ChatRoom = ({ socket }) => {
       </header>
 
       <div className="chat-messages">
-        {chatMessages.map((msg, index) => (
-          <div
-            key={index}
-            className={`chat-message-container ${msg.senderId === userId ? 'my-message' : 'other-message'}`}
-          >
-            {msg.senderId !== userId && (
-              <img src={msg.profileImage || '/img/default_img.jpg'} alt="Sender Profile" className="profile-image" />
-            )}
-            <div className="chat-bubble">
-              <span>{msg.message}</span>
-            </div>
-            <span className={`message-time ${msg.senderId === userId ? 'time-left' : 'time-right'}`}>
-              {new Date(msg.sent_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-            </span>
-          </div>
-        ))}
+        {chatMessages.map((msg, index) => {
+          const showDateDivider =
+            index === 0 || formatDate(msg.sent_at) !== formatDate(chatMessages[index - 1].sent_at);
+
+          return (
+            <React.Fragment key={index}>
+              {showDateDivider && (
+                <div className="date-divider">{formatDate(msg.sent_at)}</div>
+              )}
+              <div className={`chat-message-container ${msg.senderId === userId ? 'my-message' : 'other-message'}`}>
+                {msg.senderId !== userId && (
+                  <img src={msg.profileImage || '/img/default_img.jpg'} alt="Sender Profile" className="profile-image" />
+                )}
+                <div className="chat-bubble">
+                  <span>{msg.message}</span>
+                </div>
+                <span className={`message-time ${msg.senderId === userId ? 'time-left' : 'time-right'}`}>
+                  {formatTime(msg.sent_at)}
+                </span>
+              </div>
+            </React.Fragment>
+          );
+        })}
         <div ref={messagesEndRef} />
       </div>
 
