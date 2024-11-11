@@ -208,7 +208,7 @@ const UpdatePost = () => {
                 className="add-file-btn"
                 onClick={() => setShowFileInput(true)}
             >
-                +Add File
+                + File
             </button>
             {showFileInput && (
                 <div className="file-input-wrapper">
