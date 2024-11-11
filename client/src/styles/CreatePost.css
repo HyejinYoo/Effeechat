@@ -46,7 +46,7 @@
     height: 50px; /* 세로 길이를 50px로 설정 */
   }
   
-  textarea {
+  .post-textarea {
     width: 100%;
     padding: 15px;
     font-size: 18px;

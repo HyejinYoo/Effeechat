@@ -29,6 +29,7 @@
   }
   
   .nav-buttons button {
+    width: 150px;
     background-color: rgb(255, 255, 255);
     color: #565656;
     padding: 10px 10px;

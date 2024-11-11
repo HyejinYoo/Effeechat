@@ -132,6 +132,7 @@ const ChatRoom = ({ socket }) => {
 
       <div className="chat-input-container">
         <textarea
+          className="chat-textarea"
           rows="1"
           value={message}
           onChange={(e) => setMessage(e.target.value)}

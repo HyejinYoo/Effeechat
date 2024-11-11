@@ -118,6 +118,7 @@ const CreatePost = () => {
 
       {/* 본문 입력란 */}
       <textarea
+        className="post-textarea"
         placeholder="Enter the post content"
         value={content}
         onChange={(e) => setContent(e.target.value)}
