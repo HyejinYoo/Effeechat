@@ -84,6 +84,13 @@ const PostList = () => {
     }
   };
 
+  // 선택된 카테고리와 검색어에 따라 게시물 필터링
+  const filteredPosts = posts.filter(post => {
+    const matchesCategory = selectedCategory === null || post.category === selectedCategory;
+    const matchesSearchTerm = post.title.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesCategory && matchesSearchTerm;
+  });
+
   return (
     <div>
       <div className="category-buttons">
@@ -101,7 +108,7 @@ const PostList = () => {
       />
 
       <ul className="post-list">
-        {posts.filter(post => post.title.toLowerCase().includes(searchTerm.toLowerCase())).map((post) => (
+        {filteredPosts.map((post) => (
           <PostItem key={post.id} post={post} jobTitles={jobTitles} onClick={handlePostClick} />
         ))}
       </ul>

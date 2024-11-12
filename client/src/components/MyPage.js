@@ -1,3 +1,4 @@
+// MyPage.js
 import React, { useState, useEffect } from 'react';
 import { fetchUserId } from '../services/authService';
 import { fetchUserChatRooms } from '../services/chatRoomService';
@@ -6,6 +7,7 @@ import { createOrGetChatRoom } from '../services/chatRoomService';
 import { useNavigate } from 'react-router-dom';
 import PostItem from './PostItem';
 import PostModal from './PostModal';
+import ChatItem from './ChatItem';
 import '../styles/MyPage.css';
 
 const MyPage = () => {
@@ -119,9 +121,9 @@ const MyPage = () => {
         {activeTab === 'chats' ? (
           <div>
             <h3>Your Chats</h3>
-            <ul>
+            <ul className="chat-list">
               {userChats.map((chat) => (
-                <li key={chat.id}>{chat.title}</li>
+                <ChatItem key={chat.roomId} chat={chat} />
               ))}
             </ul>
           </div>

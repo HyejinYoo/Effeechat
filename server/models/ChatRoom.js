@@ -43,14 +43,34 @@ exports.findRecipientByRoomId = async (roomId, userId) => {
 
 exports.getUserChats = async (userId) => {
   const query = `
-    SELECT * FROM ChatRooms WHERE menteeId = ? or mentorId = ?;
+    SELECT 
+      ChatRooms.id AS roomId,
+      Users.id AS otherUserId,
+      Users.username AS otherUserName,
+      Users.image AS otherUserProfileImage,
+      ChatMessages.message AS lastMessage,
+      ChatMessages.sent_at AS lastMessageTimestamp
+    FROM ChatRooms
+    JOIN Users ON (ChatRooms.mentorId = Users.id OR ChatRooms.menteeId = Users.id)
+    LEFT JOIN (
+      SELECT chatRoomId, message, sent_at
+      FROM ChatMessages
+      WHERE id IN (
+        SELECT MAX(id)
+        FROM ChatMessages
+        GROUP BY chatRoomId
+      )
+    ) AS ChatMessages ON ChatRooms.id = ChatMessages.chatRoomId
+    WHERE (ChatRooms.mentorId = ? OR ChatRooms.menteeId = ?)
+      AND Users.id != ?
+    ORDER BY ChatMessages.sent_at DESC;
   `;
 
   try {
-    const [rows] = await db.execute(query, [userId, userId]);
-    return rows; // 조회한 게시물 목록 반환
+    const [rows] = await db.query(query, [userId, userId, userId]);
+    return rows;
   } catch (error) {
-    console.error('Error fetching user posts:', error);
+    console.error('Error fetching user chats:', error);
     throw error;
   }
 };
