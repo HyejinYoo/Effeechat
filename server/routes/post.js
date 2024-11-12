@@ -1,9 +1,9 @@
 const express = require('express');
 const postController = require('../controllers/postController');
-const fileController = require('../controllers/fileController');
+//const fileController = require('../controllers/fileController');
 const multer = require('multer');
 const path = require('path');
-
+const { authenticateUser } = require('../middlewares/authMiddleware');
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -19,6 +19,7 @@ router.post('/create', upload.array('files'), postController.createPost); // 'fi
 router.get('/list', postController.getPosts);
 
 
+router.get('/user-posts', authenticateUser, postController.getUserPosts);
 
 // 포스트 삭제 API
 router.delete('/:id', postController.deletePost);
@@ -26,6 +27,7 @@ router.put('/:id', upload.array('files'), postController.updatePost);
 // 특정 ID로 포스트 조회 API
 router.get('/:id', postController.getPostById);
 //router.get('/files/:id', fileController.getFilesByPostId); // 파일 가져오기
+
 
 
 module.exports = router;

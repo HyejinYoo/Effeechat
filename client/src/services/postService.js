@@ -54,3 +54,16 @@ export const fetchPostById = async (postId) => {
   console.log(response.data);
   return response.data;
 };
+
+export const fetchUserPosts = async (userId) => {
+  try {
+    const response = await axios.get(`${API_URL}/api/post/user-posts`, {
+      params: { userId },
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user posts:', error);
+    throw error;
+  }
+};

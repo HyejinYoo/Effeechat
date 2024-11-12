@@ -90,3 +90,15 @@ exports.getRecipientInfo = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch recipient info" });
   }
 };
+
+exports.getUserChatRooms = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    const chats = await ChatRoom.getUserChats(userId); // 모델에서 사용자 채팅 목록 가져오기
+    res.status(200).json(chats);
+  } catch (error) {
+    console.error('Error fetching user chats:', error);
+    res.status(500).json({ error: 'Failed to fetch user chats' });
+  }
+};
+

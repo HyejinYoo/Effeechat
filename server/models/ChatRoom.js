@@ -38,3 +38,19 @@ exports.findRecipientByRoomId = async (roomId, userId) => {
   const [results] = await db.query(query, [roomId, userId]);
   return results[0];
 };
+
+
+
+exports.getUserChats = async (userId) => {
+  const query = `
+    SELECT * FROM ChatRooms WHERE menteeId = ? or mentorId = ?;
+  `;
+
+  try {
+    const [rows] = await db.execute(query, [userId, userId]);
+    return rows; // 조회한 게시물 목록 반환
+  } catch (error) {
+    console.error('Error fetching user posts:', error);
+    throw error;
+  }
+};

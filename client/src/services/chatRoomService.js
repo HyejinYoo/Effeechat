@@ -47,3 +47,16 @@ export const fetchRecipientInfo = async (roomId, userId) => {
       throw error;
     }
   };
+
+  export const fetchUserChatRooms = async (userId) => {
+    try {
+      const response = await axios.get(`${API_URL}/api/chatRoom/user-chats`, {
+        params: { userId },
+        withCredentials: true,
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching user chats:', error);
+      throw error;
+    }
+  };

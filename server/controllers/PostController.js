@@ -149,3 +149,14 @@ exports.getPostById = async (req, res) => {
   }
 };
 
+
+exports.getUserPosts = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    const posts = await MentorPost.getUserPosts(userId); // 모델에서 사용자 게시물 목록 가져오기
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error('Error fetching user posts:', error);
+    res.status(500).json({ error: 'Failed to fetch user posts' });
+  }
+};

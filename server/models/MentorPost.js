@@ -62,18 +62,6 @@ exports.deletePostById = async (postId) => {
 };
 
 
-// 채팅방 참여
-exports.joinRoom = async (mentorPostId, menteeId) => {
-  try {
-    const query = 'INSERT INTO ChatRooms (mentorPostId, menteeId) VALUES (?, ?)';
-    const result = await db.query(query, [mentorPostId, menteeId]); // 비동기 쿼리 실행
-    return result[0]; // 결과 반환
-  } catch (err) {
-    throw new Error('Error joining room: ' + err.message);
-  }
-};
-
-
 
 // 포스트 업데이트
 exports.updatePost = async (postId, title, content, category) => {
@@ -100,4 +88,20 @@ exports.getUpdatedPost = async (postId) => {
   const query = 'SELECT * FROM MentorPosts WHERE id = ?';
   const [rows] = await db.query(query, [postId]);
   return rows[0]; // 업데이트된 포스트 반환
+};
+
+
+
+exports.getUserPosts = async (userId) => {
+  const query = `
+    SELECT * FROM MentorPosts WHERE userId = ?;
+  `;
+
+  try {
+    const [rows] = await db.execute(query, [userId]);
+    return rows; // 조회한 게시물 목록 반환
+  } catch (error) {
+    console.error('Error fetching user posts:', error);
+    throw error;
+  }
 };

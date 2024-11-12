@@ -7,6 +7,7 @@ import ChatRoom from "./components/ChatRoom";
 import NavBar from "./components/NavBar";
 import LogoutButton from "./components/LogoutButton";
 import CreatePost from "./components/CreatePost";
+import MyPage from "./components/MyPage";
 import { fetchUserId } from "./services/authService";
 import io from 'socket.io-client';  // socket.io-client import
 import './styles/App.css';
@@ -80,6 +81,13 @@ function App() {
               path="/createPost"
               element={
                 isAuthenticated === false ? <KakaoLogin /> : <CreatePost />
+              }
+            />
+
+<Route
+              path="/mypage"
+              element={
+                isAuthenticated === false ? <KakaoLogin /> : <MyPage />
               }
             />
 
