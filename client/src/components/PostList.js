@@ -160,7 +160,7 @@ const PostList = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
       />
 
-      {/* 채팅방 목록 */}
+      {/* 포스트 목록 */}
       <ul className="post-list">
         {filteredPosts.map((post) => (
           <li
