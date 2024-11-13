@@ -1,4 +1,5 @@
 import React from 'react';
+import '../styles/PostItem.css';
 
 const PostItem = ({ post, jobTitles, onClick }) => (
   <li

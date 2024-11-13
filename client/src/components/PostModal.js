@@ -1,4 +1,5 @@
 import React from 'react';
+import '../styles/PostModal.css';
 
 const PostModal = ({
   post,
