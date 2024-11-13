@@ -15,21 +15,14 @@ export const fetchUserProfile = async (userId) => {
 };
 
 // 프로필 업데이트 (이미지 포함)
-export const updateUserProfile = async (userId, profileData) => {
-  try {
-    const formData = new FormData();
-    formData.append('username', profileData.username);
-    formData.append('bio', profileData.bio);
-    if (profileData.image) {
-      formData.append('image', profileData.image); // 이미지 파일 추가
+export const updateUserProfile = async (userId, formData) => {
+    try {
+        const response = await axios.put(`${API_URL}/api/user/${userId}/profile`, formData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error updating user profile:', error);
+        throw error;
     }
-
-    const response = await axios.put(`${API_URL}/api/user/${userId}/profile`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' }
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error updating user profile:', error);
-    throw error;
-  }
 };

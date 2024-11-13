@@ -141,12 +141,22 @@ const MyPage = () => {
   };
 
   const handleSaveProfile = async () => {
+    const formData = new FormData();
+    formData.append('username', editedProfile.username);
+    if (editedProfile.image) {
+        formData.append('image', editedProfile.image); // 이미지 파일 추가
+    }
+
     try {
-      await updateUserProfile(userId, editedProfile);
-      setUserProfile(editedProfile);
-      setIsEditingProfile(false);
+        const updatedProfile = await updateUserProfile(userId, formData);
+        setUserProfile((prevProfile) => ({
+            ...prevProfile,
+            username: updatedProfile.username,
+            image: updatedProfile.imageUrl, // 서버에서 반환한 이미지 URL 사용
+        }));
+        setIsEditingProfile(false);
     } catch (error) {
-      console.error("Error updating profile:", error);
+        console.error("Error updating profile:", error);
     }
   };
 
@@ -160,7 +170,7 @@ const MyPage = () => {
           <>
             <input
               type="text"
-              value={editedProfile.username}
+              value={editedProfile.username || ''}
               onChange={(e) => setEditedProfile({ ...editedProfile, username: e.target.value })}
               placeholder="Enter your username"
             />

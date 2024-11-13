@@ -1,4 +1,5 @@
-const db = require('../config/db'); // 데이터베이스 연결 설정
+const uploadToS3 = require('../config/s3');
+const db = require('../config/db');
 
 // 사용자 저장을 위한 쿼리 함수
 exports.findOrCreateUser = async (kakaoId, nickname, username) => {
@@ -40,25 +41,44 @@ exports.findUserByKakaoId = async (kakaoId) => {
 };
 
 
-
-// 사용자 프로필 조회 함수
-exports.getUserProfile = async (req, res) => {
+// 사용자 프로필 정보 조회
+exports.getUserProfileById = async (userId) => {
   try {
-    const { userId } = req.params;
-    
-    // 데이터베이스에서 사용자 정보 조회
-    const [rows] = await db.query(
-      'SELECT username, image FROM Users WHERE id = ?',
-      [userId]
-    );
+      const [rows] = await db.query('SELECT username, image FROM Users WHERE id = ?', [userId]);
+      return rows[0];
+  } catch (error) {
+      throw new Error('Error fetching user profile: ' + error.message);
+  }
+};
 
-    if (rows.length === 0) {
-      return res.status(404).json({ error: 'User not found' }); // 사용자가 없는 경우 404 반환
+
+// 사용자 프로필 업데이트 함수
+exports.updateUserProfileById = async (userId, { username, image }) => {
+  console.log("updateUserProfileById");
+  try {
+    // 업데이트할 필드와 값 배열 초기화
+    const fields = [];
+    const values = [];
+
+    if (username !== undefined) {
+      fields.push('username = ?');
+      values.push(username);
+    }
+    if (image !== undefined) {
+      fields.push('image = ?');
+      values.push(image);
     }
 
-    res.json(rows[0]); // 사용자 프로필 정보 반환
+    if (fields.length === 0) {
+      return; // 업데이트할 항목이 없는 경우 종료
+    }
+
+    // 동적으로 쿼리 생성
+    const query = `UPDATE Users SET ${fields.join(', ')} WHERE id = ?`;
+    values.push(userId);
+
+    await db.query(query, values);
   } catch (error) {
-    console.error('Error fetching user profile:', error);
-    res.status(500).json({ error: 'Server error' }); // 서버 에러 시 500 반환
+    throw new Error('Error updating user profile: ' + error.message);
   }
 };

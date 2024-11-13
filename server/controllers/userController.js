@@ -1,49 +1,70 @@
-// userController.js
+const uploadToS3 = require('../config/s3');
 const User = require('../models/User');
-const multer = require('multer');
 
-// `multer` 설정
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // 파일 업로드 폴더
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  }
-});
-
-const upload = multer({ storage });
-
-// 프로필 조회
+// 사용자 프로필 조회
 exports.getUserProfile = async (req, res) => {
-  try {
-    const userId = req.params.userId;
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ message: '사용자를 찾을 수 없습니다.' });
+    try {
+        const { userId } = req.params;
+        const userProfile = await User.getUserProfileById(userId);
+
+        if (!userProfile) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.json(userProfile);
+    } catch (error) {
+        console.error('Error fetching user profile:', error);
+        res.status(500).json({ error: 'Server error' });
     }
-    res.json(user);
-  } catch (error) {
-    res.status(500).json({ message: '프로필 조회 오류' });
-  }
 };
 
-// 프로필 업데이트
-exports.updateUserProfile = [
-  upload.single('image'), // 이미지 파일 처리
-  async (req, res) => {
+
+// 사용자 프로필 조회
+exports.getUserProfile = async (req, res) => {
     try {
-      const userId = req.params.userId;
-      const { username, bio } = req.body;
-      const image = req.file ? `/uploads/${req.file.filename}` : null;
+        const { userId } = req.params;
+        const userProfile = await User.getUserProfileById(userId);
 
-      const updateData = { username, bio };
-      if (image) updateData.image = image;
+        if (!userProfile) {
+            return res.status(404).json({ error: 'User not found' });
+        }
 
-      const user = await User.findByIdAndUpdate(userId, updateData, { new: true });
-      res.json(user);
+        res.json(userProfile);
     } catch (error) {
-      res.status(500).json({ message: '프로필 업데이트 오류' });
+        console.error('Error fetching user profile:', error);
+        res.status(500).json({ error: 'Server error' });
     }
+};
+
+
+exports.updateUserProfile = async (req, res) => {
+  const { userId } = req.params;
+  const { username } = req.body;
+  const file = req.file;
+
+  try {
+      let imageUrl = null;
+
+      // 파일이 있으면 S3에 업로드
+      if (file) {
+          imageUrl = await uploadToS3(file);
+      } else {
+          // 기존 사용자 정보를 가져와서 현재 이미지 유지
+          const user = await User.getUserProfileById(userId);
+          imageUrl = user.image;
+      }
+
+      // `username`이 빈 값이 아니면 업데이트 실행
+      if (username || imageUrl) {
+          await User.updateUserProfileById(userId, { 
+              username: username || null, 
+              image: imageUrl 
+          });
+      }
+
+      res.json({ message: 'Profile updated successfully', imageUrl });
+  } catch (error) {
+      console.error('Error updating profile:', error);
+      res.status(500).json({ error: 'Failed to update profile' });
   }
-];
+};
