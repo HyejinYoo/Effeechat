@@ -38,3 +38,27 @@ exports.findUserByKakaoId = async (kakaoId) => {
     throw new Error('Error fetching user by kakaoId: ' + err.message);
   }
 };
+
+
+
+// 사용자 프로필 조회 함수
+exports.getUserProfile = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    
+    // 데이터베이스에서 사용자 정보 조회
+    const [rows] = await db.query(
+      'SELECT username, image FROM Users WHERE id = ?',
+      [userId]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' }); // 사용자가 없는 경우 404 반환
+    }
+
+    res.json(rows[0]); // 사용자 프로필 정보 반환
+  } catch (error) {
+    console.error('Error fetching user profile:', error);
+    res.status(500).json({ error: 'Server error' }); // 서버 에러 시 500 반환
+  }
+};

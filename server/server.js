@@ -8,6 +8,8 @@ const authRoutes = require('./routes/auth');  // 라우터 경로
 const postRoutes = require('./routes/post');
 const chatRoutes = require('./routes/chat');
 const chatRoomRoutes = require('./routes/chatRoom');
+const userRoutes = require('./routes/user');
+
 const app = express();
 const db = require('./config/db');
 const { handleMessage } = require('./controllers/chatController');
@@ -79,6 +81,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/chat', chatRoutes);
 
 app.use('/api/chatRoom', chatRoomRoutes);
+
+app.use('/api/user', userRoutes);
 
 // 포스트 라우터 연결
 app.use('/api/post', postRoutes);

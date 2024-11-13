@@ -1,6 +1,6 @@
-// MyPage.js
 import React, { useState, useEffect } from 'react';
 import { fetchUserId } from '../services/authService';
+import { fetchUserProfile, updateUserProfile } from '../services/userService';
 import { fetchUserChatRooms } from '../services/chatRoomService';
 import { fetchUserPosts, deletePost } from '../services/postService';
 import { createOrGetChatRoom } from '../services/chatRoomService';
@@ -12,6 +12,9 @@ import '../styles/MyPage.css';
 
 const MyPage = () => {
   const [userId, setUserId] = useState(null);
+  const [userProfile, setUserProfile] = useState({ username: '', image: '' });
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [editedProfile, setEditedProfile] = useState({ username: '', image: null });
   const [userChats, setUserChats] = useState([]);
   const [userPosts, setUserPosts] = useState([]);
   const [activeTab, setActiveTab] = useState('chats');
@@ -37,6 +40,21 @@ const MyPage = () => {
     };
     getUserId();
   }, []);
+
+  useEffect(() => {
+    const loadUserProfile = async () => {
+      if (userId) {
+        try {
+          const profile = await fetchUserProfile(userId);
+          setUserProfile(profile);
+          setEditedProfile(profile);
+        } catch (error) {
+          console.error('Error fetching user profile:', error);
+        }
+      }
+    };
+    loadUserProfile();
+  }, [userId]);
 
   useEffect(() => {
     const loadUserChats = async () => {
@@ -105,9 +123,60 @@ const MyPage = () => {
     }
   };
 
+  const handleEditProfile = () => {
+    setIsEditingProfile(true);
+  };
+
+  const handleImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setEditedProfile((prevProfile) => ({
+        ...prevProfile,
+        image: e.target.files[0], // 파일 객체 저장
+      }));
+      setUserProfile((prevProfile) => ({
+        ...prevProfile,
+        image: URL.createObjectURL(e.target.files[0]) // 미리보기 URL 설정
+      }));
+    }
+  };
+
+  const handleSaveProfile = async () => {
+    try {
+      await updateUserProfile(userId, editedProfile);
+      setUserProfile(editedProfile);
+      setIsEditingProfile(false);
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    }
+  };
+
   return (
     <div className="my-page-container">
       <h2>My Page</h2>
+
+      {/* User Profile Section */}
+      <div className="profile-section">
+        {isEditingProfile ? (
+          <>
+            <input
+              type="text"
+              value={editedProfile.username}
+              onChange={(e) => setEditedProfile({ ...editedProfile, username: e.target.value })}
+              placeholder="Enter your username"
+            />
+            <input type="file" accept="image/*" onChange={handleImageChange} />
+            {userProfile.image && <img src={userProfile.image} alt="Profile preview" className="profile-image" />}
+            <button onClick={handleSaveProfile}>Save</button>
+          </>
+        ) : (
+          <>
+            <img src={userProfile.image || '/img/default_img.jpg'} alt="Profile" className="profile-image" />
+            <h3>{userProfile.username || 'User'}</h3>
+            <button onClick={handleEditProfile}>Edit Profile</button>
+          </>
+        )}
+      </div>
+
       <div className="tabs">
         <button onClick={() => setActiveTab('chats')} className={activeTab === 'chats' ? 'active' : ''}>
           Chat List
