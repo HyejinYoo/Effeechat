@@ -162,44 +162,55 @@ const MyPage = () => {
 
   return (
     <div className="my-page-container">
-      <h2>My Page</h2>
-
       {/* User Profile Section */}
-      <div className="profile-section">
-        {isEditingProfile ? (
-          <>
-            <input
-              type="text"
-              value={editedProfile.username || ''}
-              onChange={(e) => setEditedProfile({ ...editedProfile, username: e.target.value })}
-              placeholder="Enter your username"
-            />
-            <input type="file" accept="image/*" onChange={handleImageChange} />
-            {userProfile.image && <img src={userProfile.image} alt="Profile preview" className="profile-image" />}
-            <button onClick={handleSaveProfile}>Save</button>
-          </>
-        ) : (
-          <>
-            <img src={userProfile.image || '/img/default_img.jpg'} alt="Profile" className="profile-image" />
-            <h3>{userProfile.username || 'User'}</h3>
-            <button onClick={handleEditProfile}>Edit Profile</button>
-          </>
-        )}
+      <div className="profile-box">
+        <div className="profile-section">
+          {isEditingProfile ? (
+            <>
+              <input
+                type="text"
+                value={editedProfile.username || ''}
+                onChange={(e) => setEditedProfile({ ...editedProfile, username: e.target.value })}
+                placeholder="Enter your username"
+              />
+              <input type="file" accept="image/*" onChange={handleImageChange} />
+              {userProfile.image && (
+                <img src={userProfile.image} alt="Profile preview" className="profile-image" />
+              )}
+              <button onClick={handleSaveProfile}>Save</button>
+            </>
+          ) : (
+            <div className="profile-info">
+              <img
+                src={userProfile.image || '/img/default_img.jpg'}
+                alt="Profile"
+                className="profile-image"
+              />
+              <h3>{userProfile.username || 'User'}</h3>
+              <img
+                src="/img/edit_icon.png"
+                alt="Edit Profile"
+                className="edit-button"
+                onClick={handleEditProfile}
+              />
+            </div>
+          )}
+        </div>
       </div>
+
 
       <div className="tabs">
         <button onClick={() => setActiveTab('chats')} className={activeTab === 'chats' ? 'active' : ''}>
-          Chat List
+          My ChatRooms
         </button>
         <button onClick={() => setActiveTab('posts')} className={activeTab === 'posts' ? 'active' : ''}>
-          Post List
+          My Posts
         </button>
       </div>
 
       <div className="tab-content">
         {activeTab === 'chats' ? (
           <div>
-            <h3>Your Chats</h3>
             <ul className="chat-list">
               {userChats.map((chat) => (
                 <ChatItem 
@@ -212,8 +223,7 @@ const MyPage = () => {
           </div>
         ) : (
           <div>
-            <h3>Your Posts</h3>
-            <ul className="post-list">
+            <ul className="post-list post-list-my">
               {userPosts.map((post) => (
                 <PostItem key={post.id} post={post} jobTitles={jobTitles} onClick={handlePostClick} />
               ))}

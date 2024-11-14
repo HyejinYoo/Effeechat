@@ -24,6 +24,19 @@
   .category-buttons button.active {
     border: 3px solid #00462A;; /* 선택된 버튼의 테두리 색상 */
   }
+
+  
+  /* 기본 카드 스타일 */
+  .post-list-home {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    max-height: 65vh; /* 최대 높이를 500px로 설정 (원하는 값으로 조정 가능) */
+    overflow-y: auto; /* 내용이 넘칠 경우 세로 스크롤바 추가 */
+    padding-right: 10px; /* 스크롤바와 내용 사이에 약간의 간격 */
+    scrollbar-width: thin; /* 스크롤바 두께를 얇게 설정 (Firefox용) */
+  }
+  
   
   
   

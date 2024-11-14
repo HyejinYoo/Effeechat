@@ -107,7 +107,7 @@ const PostList = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
       />
 
-      <ul className="post-list">
+      <ul className="post-list-b post-list-home">
         {filteredPosts.map((post) => (
           <PostItem key={post.id} post={post} jobTitles={jobTitles} onClick={handlePostClick} />
         ))}

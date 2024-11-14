@@ -15,6 +15,7 @@ html, body {
 }
 
 .page-container {
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -26,7 +27,7 @@ html, body {
 }
 
 .content {
-  min-height: 80vh;
+  height: 80vh;
   background-color: white;
   padding: 1.875rem; /* 30px -> 1.875rem */
   border-radius: 1.25rem;  /* 20px -> 1.25rem, 콘텐츠 박스를 둥글게 설정 */

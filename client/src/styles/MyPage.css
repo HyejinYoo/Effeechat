@@ -1,0 +1,119 @@
+.my-page-container {
+    padding: 20px;
+  }
+  
+  /* 프로필 박스 */
+  .profile-box {
+    background-color: #f4f4f4; /* 박스 배경색 */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    position: relative;
+  }
+  
+  /* 프로필 제목 스타일 */
+  .profile-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #00462A;
+    margin-bottom: 10px;
+  }
+  
+  /* 프로필 섹션 */
+  .profile-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  /* 프로필 정보 */
+  .profile-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  
+  .profile-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  h3 {
+    font-size: 18px;
+    margin: 0;
+    color: #00462A; /* 프로필 이름 색상 */
+  }
+  
+  .edit-button {
+    width: 30px; /* 수정 버튼 이미지 크기 */
+    height: 30px;
+    margin: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  
+  .edit-button:hover {
+    transform: scale(1.1); /* 버튼에 호버 효과 */
+  }
+
+  
+  /* 기본 카드 스타일 */
+  .post-list-my {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    max-height: 60vh; /* 최대 높이를 500px로 설정 (원하는 값으로 조정 가능) */
+    overflow-y: auto; /* 내용이 넘칠 경우 세로 스크롤바 추가 */
+    padding-right: 10px; /* 스크롤바와 내용 사이에 약간의 간격 */
+    scrollbar-width: thin; /* 스크롤바 두께를 얇게 설정 (Firefox용) */
+  }
+  
+  .chat-list {
+    max-height: 60vh; /* 최대 높이를 500px로 설정 (원하는 값으로 조정 가능) */
+    overflow-y: auto; /* 내용이 넘칠 경우 세로 스크롤바 추가 */
+    padding-right: 10px; /* 스크롤바와 내용 사이에 약간의 간격 */
+    scrollbar-width: thin; /* 스크롤바 두께를 얇게 설정 (Firefox용) */
+  }
+
+  /* 탭 버튼 컨테이너 */
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 8px;
+  }
+  
+  /* 탭 버튼 스타일 */
+  .tabs button {
+    flex: 1;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    background-color: #e0e0e0; /* 기본 배경색 */
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s; /* 색상 변화 애니메이션 */
+  }
+  
+  .tabs button.active {
+    background-color: #8a8a8a; /* 활성화된 탭 배경색 */
+    color: white; /* 활성화된 탭 글자 색 */
+  }
+  
+  .tabs button:hover {
+    background-color: #8a8a8a; /* 호버시 배경색 */
+  }
+  
+  .tabs button:active {
+    background-color: #00462A; /* 클릭 시 배경색 */
+    color: white; /* 클릭 시 글자 색 */
+  }
+  
+  .tab-content {
+    margin-top: 20px;
+  }
+
