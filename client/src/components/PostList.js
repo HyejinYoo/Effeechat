@@ -112,6 +112,7 @@ const PostList = () => {
           <PostItem key={post.id} post={post} jobTitles={jobTitles} onClick={handlePostClick} />
         ))}
       </ul>
+      
 
       {isModalOpen && selectedPost && (
         <PostModal

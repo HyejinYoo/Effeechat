@@ -92,9 +92,14 @@ exports.getUpdatedPost = async (postId) => {
 
 
 
+// 특정 사용자의 포스트 목록 조회
 exports.getUserPosts = async (userId) => {
   const query = `
-    SELECT * FROM MentorPosts WHERE userId = ?;
+    SELECT MentorPosts.*, Users.image, Users.username AS authorName
+    FROM MentorPosts
+    LEFT JOIN Users ON MentorPosts.userId = Users.id 
+    WHERE MentorPosts.userId = ?
+    ORDER BY MentorPosts.created_at DESC;
   `;
 
   try {

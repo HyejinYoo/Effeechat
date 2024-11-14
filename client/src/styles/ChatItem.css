@@ -72,3 +72,14 @@
 .chat-item {
     animation: fadeIn 0.3s ease;
 }
+
+.profile-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid transparent; /* 기본 테두리 없음 */
+  }
+  
+.mentor-border {
+    border: 2px solid green; /* 멘토인 경우에만 초록색 테두리 */
+}

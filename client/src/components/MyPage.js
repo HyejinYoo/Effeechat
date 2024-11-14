@@ -202,7 +202,11 @@ const MyPage = () => {
             <h3>Your Chats</h3>
             <ul className="chat-list">
               {userChats.map((chat) => (
-                <ChatItem key={chat.roomId} chat={chat} />
+                <ChatItem 
+                  key={chat.roomId} 
+                  chat={chat} 
+                  isMentor={chat.mentorId === userId ? false : true} // 상대방이 멘토인지 확인
+                />
               ))}
             </ul>
           </div>

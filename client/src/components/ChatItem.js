@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/ChatItem.css';
 
-const ChatItem = ({ chat }) => {
+const ChatItem = ({ chat, isMentor }) => {
   const navigate = useNavigate();
 
   const handleChatClick = () => {
@@ -25,13 +25,10 @@ const ChatItem = ({ chat }) => {
     const formattedHours = hours % 12 || 12; // 0시는 12로 표시
 
     if (year !== now.getFullYear()) {
-      // 연도가 다르면 'YYYY년 MM월 DD일 오전/오후 HH:MM' 형식으로 표시
       return `${year}년 ${month}월 ${day}일 ${period} ${formattedHours}:${minutes}`;
     } else if (month !== now.getMonth() + 1 || day !== now.getDate()) {
-      // 연도는 같고 월/일이 다르면 'MM월 DD일 오전/오후 HH:MM' 형식으로 표시
       return `${month}월 ${day}일 ${period} ${formattedHours}:${minutes}`;
     } else {
-      // 연도와 월/일이 모두 같으면 '오전/오후 HH:MM' 형식으로 표시
       return `${period} ${formattedHours}:${minutes}`;
     }
   };
@@ -42,7 +39,7 @@ const ChatItem = ({ chat }) => {
       <img
         src={chat.otherUserProfileImage || '/img/default_img.jpg'}
         alt="Profile"
-        className="profile-image"
+        className={`profile-image ${isMentor ? 'mentor-border' : ''}`} // 멘토일 경우 mentor-border 클래스 추가
       />
       {/* 채팅 정보 */}
       <div className="chat-details">
