@@ -55,8 +55,22 @@
   /* 프로필 정보 */
   .profile-info {
     display: flex;
-    align-items: center;
     gap: 15px;
+  }
+
+  .profile-info input[type="text"] {
+    height: 40px; /* 입력 창 높이 조정 */
+    padding: 0 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .profile-info button {
+    height: 40px; /* 버튼 높이를 입력 창과 맞추기 */
+    padding: 0 15px;
+    font-size: 16px;
+    border-radius: 5px;
   }
   
   
@@ -65,12 +79,6 @@
     height: 50px;
     border-radius: 50%;
     object-fit: cover;
-  }
-  
-  h3 {
-    font-size: 18px;
-    margin: 0;
-    color: #00462A; /* 프로필 이름 색상 */
   }
   
   .edit-button {
