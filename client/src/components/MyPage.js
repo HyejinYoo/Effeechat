@@ -144,57 +144,66 @@ const MyPage = () => {
     const formData = new FormData();
     formData.append('username', editedProfile.username);
     if (editedProfile.image) {
-        formData.append('image', editedProfile.image); // 이미지 파일 추가
+      formData.append('image', editedProfile.image); // 이미지 파일 추가
     }
-
+  
     try {
-        const updatedProfile = await updateUserProfile(userId, formData);
-        setUserProfile((prevProfile) => ({
-            ...prevProfile,
-            username: updatedProfile.username,
-            image: updatedProfile.imageUrl, // 서버에서 반환한 이미지 URL 사용
-        }));
-        setIsEditingProfile(false);
+      await updateUserProfile(userId, formData);
+      // 업데이트 후 프로필 정보를 다시 로드
+      const updatedProfile = await fetchUserProfile(userId);
+      setUserProfile(updatedProfile);
+      setEditedProfile(updatedProfile);
+      setIsEditingProfile(false);
     } catch (error) {
-        console.error("Error updating profile:", error);
+      console.error("Error updating profile:", error);
     }
   };
+
 
   return (
     <div className="my-page-container">
       {/* User Profile Section */}
       <div className="profile-box">
         <div className="profile-section">
-          {isEditingProfile ? (
-            <>
-              <input
-                type="text"
-                value={editedProfile.username || ''}
-                onChange={(e) => setEditedProfile({ ...editedProfile, username: e.target.value })}
-                placeholder="Enter your username"
-              />
-              <input type="file" accept="image/*" onChange={handleImageChange} />
-              {userProfile.image && (
-                <img src={userProfile.image} alt="Profile preview" className="profile-image" />
-              )}
-              <button onClick={handleSaveProfile}>Save</button>
-            </>
-          ) : (
-            <div className="profile-info">
-              <img
-                src={userProfile.image || '/img/default_img.jpg'}
-                alt="Profile"
-                className="profile-image"
-              />
-              <h3>{userProfile.username || 'User'}</h3>
-              <img
-                src="/img/edit_icon.png"
-                alt="Edit Profile"
-                className="edit-button"
-                onClick={handleEditProfile}
+        {isEditingProfile ? (
+          <div className="profile-info">
+            <div className="profile-image-container">
+              <img src={userProfile.image || '/img/default_img.jpg'} alt="Profile preview" className="profile-image" />
+              <label htmlFor="file-upload" className="edit-icon">
+                <img src="/img/image_edit_icon.png" alt="Edit Profile" />
+              </label>
+              <input 
+                id="file-upload" 
+                type="file" 
+                accept="image/*" 
+                onChange={handleImageChange} 
+                style={{ display: 'none' }} 
               />
             </div>
-          )}
+            <input
+              type="text"
+              value={editedProfile.username || ''}
+              onChange={(e) => setEditedProfile({ ...editedProfile, username: e.target.value })}
+              placeholder="Enter your username"
+            />
+            <button onClick={handleSaveProfile}>Save</button>
+          </div>
+        ) : (
+          <div className="profile-info">
+            <img
+              src={userProfile.image || '/img/default_img.jpg'}
+              alt="Profile"
+              className="profile-image"
+            />
+            <h3>{userProfile.username || 'User'}</h3>
+            <img
+              src="/img/edit_icon.png"
+              alt="Edit Profile"
+              className="edit-button"
+              onClick={handleEditProfile}
+            />
+          </div>
+        )}
         </div>
       </div>
 
