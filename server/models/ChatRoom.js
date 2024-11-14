@@ -45,6 +45,7 @@ exports.getUserChats = async (userId) => {
   const query = `
     SELECT 
       ChatRooms.id AS roomId,
+      ChatRooms.mentorId, -- 멘토 아이디 추가
       Users.id AS otherUserId,
       Users.username AS otherUserName,
       Users.image AS otherUserProfileImage,

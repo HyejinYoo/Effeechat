@@ -11,6 +11,7 @@ import MyPage from "./components/MyPage";
 import { fetchUserId } from "./services/authService";
 import io from 'socket.io-client';  // socket.io-client import
 import './styles/App.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const API_URL = process.env.REACT_APP_API_URL;  // 환경 변수에서 API URL 가져오기
 
