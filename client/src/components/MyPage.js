@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import PostItem from './PostItem';
 import PostModal from './PostModal';
 import ChatItem from './ChatItem';
+import LogoutButton from './LogoutButton';
 import '../styles/MyPage.css';
 
 const MyPage = () => {
@@ -167,41 +168,56 @@ const MyPage = () => {
         <div className="profile-section">
         {isEditingProfile ? (
           <div className="profile-info">
+          <div className="profile-left">
             <div className="profile-image-container">
-              <img src={userProfile.image || '/img/default_img.jpg'} alt="Profile preview" className="profile-image" />
+              <img
+                src={userProfile.image || "/img/default_img.jpg"}
+                alt="Profile preview"
+                className="profile-image"
+              />
               <label htmlFor="file-upload" className="edit-icon">
                 <img src="/img/image_edit_icon.png" alt="Edit Profile" />
               </label>
-              <input 
-                id="file-upload" 
-                type="file" 
-                accept="image/*" 
-                onChange={handleImageChange} 
-                style={{ display: 'none' }} 
+              <input
+                id="file-upload"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                style={{ display: "none" }}
               />
             </div>
             <input
               type="text"
-              value={editedProfile.username || ''}
-              onChange={(e) => setEditedProfile({ ...editedProfile, username: e.target.value })}
+              value={editedProfile.username || ""}
+              onChange={(e) =>
+                setEditedProfile({ ...editedProfile, username: e.target.value })
+              }
               placeholder="Enter your username"
             />
-            <button onClick={handleSaveProfile}>Save</button>
           </div>
+          <div className="profile-right">
+            <button onClick={handleSaveProfile} className="save-button">Save</button>
+          </div>
+        </div>
         ) : (
+
           <div className="profile-info">
-            <img
-              src={userProfile.image || '/img/default_img.jpg'}
-              alt="Profile"
-              className="profile-image"
-            />
-            <h3>{userProfile.username || 'User'}</h3>
-            <img
+            <div className="profile-left">
+              <img
+                src={userProfile.image || "/img/default_img.jpg"}
+                alt="Profile"
+                className="profile-image"
+              />
+              <h3>{userProfile.username || "User"}</h3>
+              <img
               src="/img/edit_icon.png"
               alt="Edit Profile"
               className="edit-button"
               onClick={handleEditProfile}
             />
+            </div>
+            
+            <LogoutButton /> {/* 로그아웃 버튼이 오른쪽으로 배치 */}
           </div>
         )}
         </div>

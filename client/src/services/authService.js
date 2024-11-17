@@ -12,10 +12,6 @@ export const getKakaoAuthUrl = () => {
   return `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REACT_APP_REST_API_KEY}&redirect_uri=${REACT_APP_REDIRECT_URI}`;
 };
 
-// 로그아웃 함수
-export const logout = () => {
-  localStorage.removeItem('jwt_token');  // 로컬 스토리지에서 JWT 토큰 삭제
-};
 
 // 보호된 데이터 요청 함수 (쿠키 기반)
 export const fetchProtectedData = async () => {
@@ -27,6 +23,20 @@ export const fetchProtectedData = async () => {
   } catch (error) {
     console.error("Error fetching protected data:", error);
     throw new Error("데이터를 가져오는 데 실패했습니다.");  // 에러 발생 시 예외 던짐
+  }
+};
+
+export const logout = async () => {
+  try {
+    // 서버로 로그아웃 요청
+    await axios.post(`${API_URL}/api/auth/logout`, null, {
+      withCredentials: true, // 쿠키를 포함하여 요청
+    });
+
+    // 클라이언트에서도 로컬 스토리지 JWT 삭제
+    localStorage.removeItem('jwt_token');
+  } catch (error) {
+    console.error("Error during logout:", error);
   }
 };
 
@@ -56,11 +66,11 @@ export const fetchUserId = async () => {
       return response.data.userId;
     } else {
       logout();  // 인증되지 않은 경우 로그아웃 처리
-      throw new Error('User is not authenticated');
+      return false;
     }
   } catch (error) {
     console.error('Error fetching user ID:', error);
     logout();  // 오류가 발생하면 로그아웃 처리
-    throw error;
+    return false
   }
 };

@@ -60,7 +60,8 @@ exports.kakaoLogin = async (req, res) => {
             httpOnly: true, 
             secure: process.env.NODE_ENV === 'production', // HTTPS에서만 사용 (프로덕션 환경일 때)
             maxAge: 3600000, // 1시간 동안 유효
-            sameSite: 'Strict'
+            sameSite: 'Strict',
+            path: '/',
         });
   
         // 성공적으로 로그인 후 리다이렉트
@@ -101,4 +102,16 @@ exports.check = async (req, res) => {
     }
 };
 
+// 로그아웃 처리 컨트롤러
+exports.logout = (req, res) => {
+    console.log("logout");
+    res.clearCookie("jwt_token", {
+      httpOnly: true,
+      secure: false, // HTTPS에서만 사용
+      sameSite: "Strict",
+      path: "/",
+    });
+    res.status(200).send({ message: "Logged out successfully" });
+  };
 
+  

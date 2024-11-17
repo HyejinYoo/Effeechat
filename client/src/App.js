@@ -22,21 +22,6 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const checkAuthStatus = async () => {
-      try {
-        const userId = await fetchUserId();
-        if (userId) {
-          setIsAuthenticated(true);
-        } else {
-          setIsAuthenticated(false);
-        }
-      } catch (error) {
-        console.error("Error checking authentication status:", error);
-        setIsAuthenticated(false);
-      } finally {
-        setLoading(false);
-      }
-    };
 
     // 소켓 연결 (한 번만 생성)
     if (!socket) {
@@ -50,8 +35,25 @@ function App() {
       });
     }
 
-    checkAuthStatus();
   }, []);
+
+  useEffect(() => {
+    if (isAuthenticated === null) {
+      const checkAuthStatus = async () => {
+        try {
+          const userId = await fetchUserId();
+          setIsAuthenticated(!!userId); // userId가 있으면 true, 없으면 false
+        } catch {
+          setIsAuthenticated(false); // 에러 발생 시 인증되지 않은 상태로 설정
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+      checkAuthStatus();
+    }
+  }, [isAuthenticated]);
+
 
   if (loading) {
     return <div>Loading...</div>;

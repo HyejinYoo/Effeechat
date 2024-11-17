@@ -55,15 +55,20 @@
   /* 프로필 정보 */
   .profile-info {
     display: flex;
-    gap: 15px;
+    align-items: center; /* 세로 가운데 정렬 */
+    justify-content: space-between; /* 양쪽 끝으로 배치 */
+    width: 100%; /* 부모 컨테이너의 너비 */
   }
 
   .profile-info input[type="text"] {
+    margin-top: 10px;
     height: 40px; /* 입력 창 높이 조정 */
-    padding: 0 10px;
+    padding: 10px;
     font-size: 16px;
     border: 1px solid #ddd;
+    border-radius: 5px; /* 둥근 모서리 */
     border-radius: 5px;
+    outline: none;
   }
   
   .profile-info button {
@@ -71,6 +76,7 @@
     padding: 0 15px;
     font-size: 16px;
     border-radius: 5px;
+    margin-right: 20px;
   }
   
   
@@ -150,3 +156,44 @@
     margin-top: 20px;
   }
 
+
+  .logout-button {
+    margin-right: 40px;
+    display: flex; /* 아이콘과 텍스트를 수평 정렬 */
+    align-items: center; /* 가운데 정렬 */
+    justify-content: center;
+    gap: 8px; /* 아이콘과 텍스트 간격 */
+    background: none; /* 배경 제거 */
+    border: 1px solid #d9d9d9; /* 얇은 테두리 추가 */
+    color: #4c4c4c; /* 텍스트 색상 */
+    font-size: 0.9rem; /* 텍스트 크기 */
+    font-weight: 600; /* 폰트 두께 */
+    border-radius: 8px; /* 모서리를 둥글게 */
+    padding: 8px 16px; /* 버튼 여백 */
+    cursor: pointer; /* 커서 변경 */
+    transition: all 0.3s ease; /* 전환 효과 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  }
+  
+  .logout-button:hover {
+    background-color: #f5f5f5; /* 호버 시 배경색 변경 */
+    color: #e63946; /* 텍스트 색상 변경 */
+    border-color: #e63946; /* 테두리 색상 변경 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 강화 */
+    transform: translateY(-2px); /* 살짝 위로 올라가는 효과 */
+  }
+  
+  .logout-button:active {
+    background-color: #e63946; /* 클릭 시 배경색 */
+    color: #ffffff; /* 텍스트 색상 */
+    border-color: #e63946; /* 테두리 색상 */
+    transform: translateY(0); /* 클릭 시 원래 위치로 */
+  }
+
+  /* MyPage.css */
+.profile-left {
+  display: flex; /* 수평 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
+  gap: 10px; /* 이미지와 이름 간격 조정 */
+  margin-left: 30px;
+}

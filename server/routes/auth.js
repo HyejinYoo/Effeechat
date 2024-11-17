@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const kakaoController = require('../controllers/kakaoController'); 
+const authController = require('../controllers/authController'); 
 
 // KakaoLogin 라우터 경로
-router.get("/kakaoLogin", kakaoController.kakaoLogin);
-router.get("/check", kakaoController.check);
+router.get("/kakaoLogin", authController.kakaoLogin);
+router.get("/check", authController.check);
+router.post("/logout", authController.logout);
 
 module.exports = router;
