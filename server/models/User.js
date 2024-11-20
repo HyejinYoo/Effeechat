@@ -2,7 +2,7 @@ const uploadToS3 = require('../config/s3');
 const db = require('../config/db');
 
 // 사용자 저장을 위한 쿼리 함수
-exports.findOrCreateUser = async (kakaoId, nickname, username) => {
+exports.findOrCreateUser = async (kakaoId, nickname, username, email) => {
     try {
         // 사용자가 존재하는지 확인
         const [results] = await db.query('SELECT * FROM Users WHERE kakaoId = ?', [kakaoId]);
@@ -13,10 +13,10 @@ exports.findOrCreateUser = async (kakaoId, nickname, username) => {
         } else {
             // 새 사용자 생성
             const [result] = await db.query(
-                'INSERT INTO Users (kakaoId, nickname, username) VALUES (?, ?, ?)', 
-                [kakaoId, nickname, username]
+                'INSERT INTO Users (kakaoId, nickname, username, email) VALUES (?, ?, ?, ?)', 
+                [kakaoId, nickname, username, email]
             );
-            return { kakaoId, nickname, username };
+            return { kakaoId, nickname, username, email};
         }
     } catch (err) {
         throw new Error('Error finding or creating user: ' + err.message);

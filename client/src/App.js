@@ -8,6 +8,7 @@ import NavBar from "./components/NavBar";
 import LogoutButton from "./components/LogoutButton";
 import CreatePost from "./components/CreatePost";
 import MyPage from "./components/MyPage";
+import EmailVerification from "./components/EmailVerification";
 import { fetchUserId } from "./services/authService";
 import io from 'socket.io-client';  // socket.io-client import
 import './styles/App.css';
@@ -87,7 +88,7 @@ function App() {
               }
             />
 
-<Route
+            <Route
               path="/mypage"
               element={
                 isAuthenticated === false ? <KakaoLogin /> : <MyPage />
@@ -107,6 +108,12 @@ function App() {
             />
 
           </Routes>
+
+          <Routes> 
+              {/* 기타 경로 */}
+              <Route path="/email-verification" element={<EmailVerification />} />
+          </Routes>
+
         </div>
       </div>
     </Router>

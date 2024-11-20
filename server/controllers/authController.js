@@ -1,7 +1,14 @@
 const axios = require("axios");
 const jwt = require('jsonwebtoken');  // JWT 추가
 const User = require('../models/User');  // 사용자 모델 추가
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
+
+
+
 require('dotenv').config();
+
+
 
 const REST_API_KEY = process.env.REST_API_KEY;
 const REDIRECT_URI = process.env.REDIRECT_URI;
@@ -11,11 +18,8 @@ const FRONTEND_URL = process.env.FRONTEND_URL;
 // 카카오 로그인 비즈니스 로직 처리
 exports.kakaoLogin = async (req, res) => {
     let code = req.query.code;
-    
-    //여기 이메일 인증 절차 추가
 
     try {
-        // 엑세스 토큰 요청
         const tokenResponse = await axios.post("https://kauth.kakao.com/oauth/token", null, {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
@@ -29,49 +33,38 @@ exports.kakaoLogin = async (req, res) => {
         });
 
         let accessToken = tokenResponse.data.access_token;
-        console.log("Access Token:", accessToken);
 
-        // 사용자 정보 요청
         const userInfoResponse = await axios.get("https://kapi.kakao.com/v2/user/me", {
             headers: {
                 'Authorization': `Bearer ${accessToken}`,
-                "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
             },
         });
 
+        const { id: kakaoId, properties: { nickname }, kakao_account: { email } } = userInfoResponse.data;
 
-        // 사용자 정보에서 id와 nickname을 추출
-        const { id: kakaoId, properties: { nickname } } = userInfoResponse.data;
+        // 이미 가입된 사용자 확인
+        const user = await User.findUserByKakaoId(kakaoId);
+        if (user) {
+            const token = jwt.sign({ kakaoId, nickname }, JWT_SECRET, { expiresIn: '1h' });
 
-        // 사용자 정보를 데이터베이스에 저장하거나 기존 사용자 찾기
-        const user = await User.findOrCreateUser(kakaoId, nickname, nickname);
+            res.cookie('jwt_token', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                maxAge: 3600000,
+                sameSite: 'Strict',
+                path: '/',
+            });
+            return res.redirect(FRONTEND_URL);
+        }
 
-        // JWT 토큰 생성
-        const token = jwt.sign(
-            {
-                kakaoId: user.kakaoId,
-                nickname: user.nickname,
-            },
-            JWT_SECRET,
-            { expiresIn: '1h' }  // 토큰 만료 시간 설정 (1시간)
-        );
-
-        res.cookie('jwt_token', token, {
-            httpOnly: true, 
-            secure: process.env.NODE_ENV === 'production', // HTTPS에서만 사용 (프로덕션 환경일 때)
-            maxAge: 3600000, // 1시간 동안 유효
-            sameSite: 'Strict',
-            path: '/',
-        });
-  
-        // 성공적으로 로그인 후 리다이렉트
-        res.redirect(FRONTEND_URL);
-
+        // 새 사용자: 이메일 인증 절차 필요
+        res.redirect(`${FRONTEND_URL}/email-verification?email=${email}&kakaoId=${kakaoId}&nickname=${nickname}`);
     } catch (error) {
-        console.error("Error during Kakao login or fetching user info:", error);
-        res.status(500).send("Kakao login failed");
+        console.error("Error during Kakao login:", error);
+        res.status(500).json({ message: "Kakao login failed" });
     }
 };
+
 
 
 // JWT 토큰 검증을 위한 함수
@@ -115,3 +108,74 @@ exports.logout = (req, res) => {
   };
 
   
+
+
+  exports.sendVerificationEmail = async (req, res) => {
+    const { email } = req.body;
+
+    // 이메일 도메인 유효성 검사 (학교 이메일만 허용)
+    if (!email.endsWith("@ewhain.net")) {
+        return res.status(400).json({ message: "학교 이메일만 사용 가능합니다." });
+    }
+
+    // 인증 코드 생성 및 저장
+    const code = crypto.randomInt(100000, 999999);
+    verificationCodes[email] = {
+        code,
+        expires: Date.now() + 10 * 60 * 1000, // 10분 유효
+    };
+
+    // Nodemailer 설정
+    const transporter = nodemailer.createTransport({
+        host: "smtp.naver.com", // 네이버 SMTP 서버
+        port: 465, // SSL 포트
+        secure: true, // SSL/TLS 사용
+        auth: {
+            user: process.env.EMAIL_USER, // 네이버 이메일 계정
+            pass: process.env.EMAIL_PASSWORD, // 앱 비밀번호 또는 계정 비밀번호
+        },
+    });
+
+    try {
+        // 이메일 전송
+        await transporter.sendMail({
+            from: process.env.EMAIL_USER, // 보내는 사람
+            to: email, // 받는 사람
+            subject: "E-ffeeChat 이메일 인증 코드", // 제목
+            text: `인증 코드는 ${code}입니다.`, // 내용
+        });
+
+        res.status(200).json({ message: "인증 코드가 이메일로 전송되었습니다." });
+    } catch (error) {
+        console.error("Error sending email:", error);
+        res.status(500).json({ message: "이메일 전송에 실패했습니다." });
+    }
+};
+
+
+// 임시 인증 코드 저장소
+let verificationCodes = {};
+
+exports.verifyAndCreateUser = async (req, res) => {
+    const { email, code, nickname, kakaoId } = req.body;
+
+    const record = verificationCodes[email];
+    if (!record) {
+        return res.status(400).json({ message: "인증 코드를 요청하세요." });
+    }
+
+    if (record.code === parseInt(code) && record.expires > Date.now()) {
+        delete verificationCodes[email];
+
+        // 인증 완료 후 사용자 생성
+        try {
+            const user = await User.findOrCreateUser(kakaoId, nickname, nickname, email);
+            res.status(200).json({ message: "회원가입 성공", user, redirectUrl: "/login" });
+        } catch (error) {
+            console.error("Error creating user:", error);
+            res.status(500).json({ message: "회원가입 실패" });
+        }
+    } else {
+        res.status(400).json({ message: "인증 코드가 유효하지 않거나 만료되었습니다." });
+    }
+};

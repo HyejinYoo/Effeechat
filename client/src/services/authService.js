@@ -74,3 +74,30 @@ export const fetchUserId = async () => {
     return false
   }
 };
+
+
+export const sendEmailVerificationCode = async (email) => {
+  try {
+      const response = await axios.post(`${API_URL}/api/auth/send-email`, { email });
+      return response.data;
+  } catch (error) {
+      console.error("Error sending email verification code:", error);
+      throw error;
+  }
+};
+
+// 이메일 인증 코드 검증 및 회원 생성
+export const verifyAndCreateUser = async (email, code, nickname, kakaoId) => {
+  try {
+      const response = await axios.post(`${API_URL}/api/auth/verify-and-create-user`, {
+          email,
+          code,
+          nickname,
+          kakaoId,
+      });
+      return response.data;
+  } catch (error) {
+      console.error("Error verifying code or creating user:", error);
+      throw error;
+  }
+};
