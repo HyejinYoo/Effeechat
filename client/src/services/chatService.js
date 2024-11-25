@@ -12,3 +12,4 @@ export const sendMessageToServer = (socket, roomId, senderId, message) => {
     socket.emit('chat message', { roomId, senderId, message });
   }
 };
+

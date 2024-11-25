@@ -236,23 +236,31 @@ const MyPage = () => {
       <div className="tab-content">
         {activeTab === 'chats' ? (
           <div>
-            <ul className="chat-list">
-              {userChats.map((chat) => (
-                <ChatItem 
-                  key={chat.roomId} 
-                  chat={chat} 
-                  isMentor={chat.mentorId === userId ? false : true} // 상대방이 멘토인지 확인
-                />
-              ))}
-            </ul>
+            {userChats.length > 0 ? (
+              <ul className="chat-list">
+                {userChats.map((chat) => (
+                  <ChatItem 
+                    key={chat.roomId} 
+                    chat={chat} 
+                    isMentor={chat.mentorId === userId ? false : true} // 상대방이 멘토인지 확인
+                  />
+                ))}
+              </ul>
+            ) : (
+              <p className="no-data-message">참여 중인 채팅방이 없습니다.</p>
+            )}
           </div>
         ) : (
           <div>
-            <ul className="post-list post-list-my">
-              {userPosts.map((post) => (
-                <PostItem key={post.id} post={post} jobTitles={jobTitles} onClick={handlePostClick} />
-              ))}
-            </ul>
+            {userPosts.length > 0 ? (
+              <ul className="post-list post-list-my">
+                {userPosts.map((post) => (
+                  <PostItem key={post.id} post={post} jobTitles={jobTitles} onClick={handlePostClick} />
+                ))}
+              </ul>
+            ) : (
+              <p className="no-data-message">작성한 포스트가 없습니다.</p>
+            )}
           </div>
         )}
       </div>
