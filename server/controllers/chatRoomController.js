@@ -24,22 +24,29 @@ exports.createOrGetChatRoom = async (req, res) => {
 };
 
 exports.verifyRoomAccess = async (req, res, next) => {
-  const { chatRoomId } = req.params;
-  const userId = req.user.id; // 로그인된 사용자 ID (JWT에서 가져온다고 가정)
+  const { chatRoomId } = req.params; // URI에서 채팅방 ID 가져오기
+  const userId = req.user.id; // JWT 또는 세션에서 인증된 사용자 ID 가져오기
 
   try {
-    const chatRoom = await ChatRoom.findById(chatRoomId);
+      // 채팅방 정보 조회
+      const chatRoom = await ChatRoom.findById(chatRoomId);
 
-    if (chatRoom && (chatRoom.mentorId === userId || chatRoom.menteeId === userId)) {
-      // 사용자가 채팅방에 속해 있다면 다음 미들웨어로
-      next();
-    } else {
-      // 접근 권한이 없다면 에러 반환
-      res.status(403).json({ error: 'Access to this chat room is denied' });
-    }
+      if (!chatRoom) {
+          return res.status(404).json({ message: 'Chat room not found' });
+      }
+
+      // 사용자가 멘토 또는 멘티로 채팅방에 참여 중인지 확인
+      const isParticipant = chatRoom.mentorId === userId || chatRoom.menteeId === userId;
+
+      if (!isParticipant) {
+          return res.status(403).json({ message: 'Access to this chat room is denied' });
+      }
+
+      req.chatRoom = chatRoom; // 요청 객체에 채팅방 정보 저장
+      next(); // 다음 미들웨어로 진행
   } catch (error) {
-    console.error('Error verifying room access:', error);
-    res.status(500).send('Failed to verify room access');
+      console.error('Error verifying room access:', error);
+      res.status(500).json({ message: 'Failed to verify room access' });
   }
 };
 

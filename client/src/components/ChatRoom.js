@@ -1,17 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom'; // useNavigate 가져오기
 import { fetchUserId } from '../services/authService';
 import { fetchChatHistory, fetchRecipientInfo } from '../services/chatRoomService';
 import { sendMessageToServer } from '../services/chatService';
 import '../styles/ChatRoom.css';
 
+
 const ChatRoom = ({ socket }) => {
   const { roomId } = useParams();
+  const navigate = useNavigate(); // navigate 정의
   const [userId, setUserId] = useState(null);
   const [message, setMessage] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
   const [recipientName, setRecipientName] = useState('');
   const [recipientImage, setRecipientImage] = useState('');
+  const [errorMessage, setErrorMessage] = useState(''); // setErrorMessage 정의
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -45,11 +48,19 @@ const ChatRoom = ({ socket }) => {
         const messages = await fetchChatHistory(roomId);
         setChatMessages(messages);
       } catch (error) {
-        console.error('Failed to load chat history:', error);
+        if (error.response?.status === 403) {
+          setErrorMessage('잘못된 접근입니다. 3초 후 메인 페이지로 이동합니다.');
+          setTimeout(() => navigate('/'), 3000); // 3초 후 메인 페이지로 이동
+        } else if (error.response?.status === 404) {
+          setErrorMessage('채팅방을 찾을 수 없습니다. 3초 후 메인 페이지로 이동합니다.');
+          setTimeout(() => navigate('/'), 3000); // 3초 후 메인 페이지로 이동
+        } else {
+          console.error('Failed to load chat history:', error);
+        }
       }
     };
     loadChatHistory();
-  }, [roomId]);
+  }, [roomId, navigate]);
 
   useEffect(() => {
     if (socket) {
@@ -98,49 +109,55 @@ const ChatRoom = ({ socket }) => {
 
   return (
     <div className="chat-room">
-      <header className="chat-room-header">
-        {recipientImage && <img src={recipientImage} alt="Recipient Profile" className="profile-image" />}
-        <h3>{recipientName}</h3>
-      </header>
-
-      <div className="chat-messages">
-        {chatMessages.map((msg, index) => {
-          const showDateDivider =
-            index === 0 || formatDate(msg.sent_at) !== formatDate(chatMessages[index - 1].sent_at);
-
-          return (
-            <React.Fragment key={index}>
-              {showDateDivider && (
-                <div className="date-divider">{formatDate(msg.sent_at)}</div>
-              )}
-              <div className={`chat-message-container ${msg.senderId === userId ? 'my-message' : 'other-message'}`}>
-                {msg.senderId !== userId && (
-                  <img src={msg.profileImage || '/img/default_img.jpg'} alt="Sender Profile" className="profile-image" />
-                )}
-                <div className="chat-bubble">
-                  <span>{msg.message}</span>
-                </div>
-                <span className={`message-time ${msg.senderId === userId ? 'time-left' : 'time-right'}`}>
-                  {formatTime(msg.sent_at)}
-                </span>
-              </div>
-            </React.Fragment>
-          );
-        })}
-        <div ref={messagesEndRef} />
-      </div>
-
-      <div className="chat-input-container">
-        <textarea
-          className="chat-textarea"
-          rows="1"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          onKeyPress={handleKeyPress}
-          placeholder="Type a message..."
-        />
-        <button onClick={sendMessage}>Send</button>
-      </div>
+      {errorMessage ? (
+        <div className="error-message">
+          <p>{errorMessage}</p>
+        </div>
+      ) : (
+        <>
+          <header className="chat-room-header">
+            {recipientImage && <img src={recipientImage} alt="Recipient Profile" className="profile-image" />}
+            <h3>{recipientName}</h3>
+          </header>
+  
+          <div className="chat-messages">
+            {chatMessages.map((msg, index) => {
+              const showDateDivider =
+                index === 0 || formatDate(msg.sent_at) !== formatDate(chatMessages[index - 1].sent_at);
+  
+              return (
+                <React.Fragment key={index}>
+                  {showDateDivider && <div className="date-divider">{formatDate(msg.sent_at)}</div>}
+                  <div className={`chat-message-container ${msg.senderId === userId ? 'my-message' : 'other-message'}`}>
+                    {msg.senderId !== userId && (
+                      <img src={msg.profileImage || '/img/default_img.jpg'} alt="Sender Profile" className="profile-image" />
+                    )}
+                    <div className="chat-bubble">
+                      <span>{msg.message}</span>
+                    </div>
+                    <span className={`message-time ${msg.senderId === userId ? 'time-left' : 'time-right'}`}>
+                      {formatTime(msg.sent_at)}
+                    </span>
+                  </div>
+                </React.Fragment>
+              );
+            })}
+            <div ref={messagesEndRef} />
+          </div>
+  
+          <div className="chat-input-container">
+            <textarea
+              className="chat-textarea"
+              rows="1"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Type a message..."
+            />
+            <button onClick={sendMessage}>Send</button>
+          </div>
+        </>
+      )}
     </div>
   );
 };
