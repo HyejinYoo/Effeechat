@@ -88,20 +88,22 @@ export const sendEmailVerificationCode = async (email) => {
 
 // 이메일 인증 코드 검증 및 회원 생성
 export const verifyAndCreateUser = async (email, code, nickname, kakaoId) => {
-  try {
-      const response = await axios.post(`${API_URL}/api/auth/verify-and-create-user`, {
-          email,
-          code,
-          nickname,
-          kakaoId,
-      });
-      return response.data;
-  } catch (error) {
-      console.error("Error verifying code or creating user:", error);
-      throw error;
-  }
+    try {
+        const response = await axios.post(`${API_URL}/api/auth/verify-and-create-user`, {
+            email,
+            code,
+            nickname,
+            kakaoId,
+        });
+        return response.data;
+    } catch (error) {
+        if (error.response && error.response.status === 400) {
+            throw new Error(error.response.data.message); // 에러 메시지 반환
+        }
+        console.error("Error verifying code or creating user:", error);
+        throw error;
+    }
 };
-
 
 // 계정 찾기 서비스
 export const findAccount = async (schoolEmail) => {
@@ -111,5 +113,19 @@ export const findAccount = async (schoolEmail) => {
   } catch (error) {
       // 오류 메시지 반환
       throw error.response?.data?.message || "계정을 찾는 중 오류가 발생했습니다.";
+  }
+};
+
+export const checkDuplicateEmail = async (email) => {
+  try {
+      const response = await axios.post(`${API_URL}/api/auth/check-duplicate-email`, {
+          schoolEmail: email,
+      });
+      return response.data.message;
+  } catch (error) {
+      if (error.response && error.response.data) {
+          throw error.response.data.message;
+      }
+      throw "이메일 중복 확인 중 오류가 발생했습니다.";
   }
 };

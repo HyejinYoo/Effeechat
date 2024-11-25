@@ -169,6 +169,13 @@ exports.verifyAndCreateUser = async (req, res) => {
 
         // 인증 완료 후 사용자 생성
         try {
+
+            // 이메일 중복 확인
+            const existingUser = await User.findUserByEmail(email);
+            if (existingUser) {
+                return res.status(400).json({ message: "이미 가입된 이메일입니다." });
+            }
+
             const user = await User.findOrCreateUser(kakaoId, nickname, nickname, email);
             res.status(200).json({ message: "회원가입 성공", user, redirectUrl: "/login" });
         } catch (error) {
@@ -231,3 +238,25 @@ function maskEmail(email) {
     const maskedLocalPart = localPart.slice(0, 2) + "*".repeat(localPart.length - 2);
     return `${maskedLocalPart}@${domain}`;
 }
+
+exports.checkDuplicateEmail = async (req, res) => {
+    const { schoolEmail } = req.body;
+
+    // 학교 이메일 형식 검증
+    if (!schoolEmail.endsWith("@ewhain.net")) {
+        return res.status(400).json({ message: "학교 이메일만 입력 가능합니다." });
+    }
+
+    try {
+        // 이메일 중복 확인
+        const user = await User.findUserByEmail(schoolEmail);
+        if (user) {
+            return res.status(200).json({ message: "이미 가입된 이메일입니다." });
+        } else {
+            return res.status(404).json({ message: "사용 가능한 이메일입니다." });
+        }
+    } catch (error) {
+        console.error("Error checking duplicate email:", error);
+        res.status(500).json({ message: "서버 오류가 발생했습니다." });
+    }
+};

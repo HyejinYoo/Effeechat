@@ -14,4 +14,6 @@ router.post("/verify-and-create-user", authController.verifyAndCreateUser);
 
 router.post("/find-account", authController.findAccount);
 
+router.post("/check-duplicate-email", authController.checkDuplicateEmail);
+
 module.exports = router;

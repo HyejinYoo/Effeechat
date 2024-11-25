@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
     sendEmailVerificationCode,
     verifyAndCreateUser,
+    checkDuplicateEmail,
 } from "../services/authService";
 import "../styles/EmailVerification.css"; // 스타일 파일 추가
 
@@ -30,6 +31,15 @@ const EmailVerification = () => {
         }
 
         try {
+
+            // 중복 확인
+            const duplicateMessage = await checkDuplicateEmail(email);
+            if (duplicateMessage === "이미 가입된 이메일입니다.") {
+                alert(duplicateMessage);
+                return;
+            }
+
+            // 중복 확인 통과 시 인증 코드 전송
             await sendEmailVerificationCode(email);
             setStep(2);
             alert("인증 코드가 이메일로 전송되었습니다.");
