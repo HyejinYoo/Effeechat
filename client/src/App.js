@@ -9,10 +9,10 @@ import LogoutButton from "./components/LogoutButton";
 import CreatePost from "./components/CreatePost";
 import MyPage from "./components/MyPage";
 import EmailVerification from "./components/EmailVerification";
+import FindAccount from "./components/FindAccount";
 import { fetchUserId } from "./services/authService";
 import io from 'socket.io-client';  // socket.io-client import
 import './styles/App.css';
-import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const API_URL = process.env.REACT_APP_API_URL;  // 환경 변수에서 API URL 가져오기
 
@@ -112,6 +112,13 @@ function App() {
           <Routes> 
               {/* 기타 경로 */}
               <Route path="/email-verification" element={<EmailVerification />} />
+          </Routes>
+
+          <Routes> 
+              {/* 기타 경로 */}
+              <Route path="/email-verification" element={<EmailVerification />} />
+
+              <Route path="/find-account" element={<FindAccount />} />
           </Routes>
 
         </div>

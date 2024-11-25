@@ -101,3 +101,15 @@ export const verifyAndCreateUser = async (email, code, nickname, kakaoId) => {
       throw error;
   }
 };
+
+
+// 계정 찾기 서비스
+export const findAccount = async (schoolEmail) => {
+  try {
+      const response = await axios.post(`${API_URL}/api/auth/find-account`, { schoolEmail });
+      return response.data.message; // 성공 메시지 반환
+  } catch (error) {
+      // 오류 메시지 반환
+      throw error.response?.data?.message || "계정을 찾는 중 오류가 발생했습니다.";
+  }
+};

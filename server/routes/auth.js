@@ -11,4 +11,7 @@ router.post("/logout", authController.logout);
 router.post("/send-email", authController.sendVerificationEmail);
 router.post("/verify-and-create-user", authController.verifyAndCreateUser);
 
+
+router.post("/find-account", authController.findAccount);
+
 module.exports = router;

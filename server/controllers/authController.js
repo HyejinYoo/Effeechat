@@ -179,3 +179,55 @@ exports.verifyAndCreateUser = async (req, res) => {
         res.status(400).json({ message: "인증 코드가 유효하지 않거나 만료되었습니다." });
     }
 };
+
+
+exports.findAccount = async (req, res) => {
+    const { schoolEmail } = req.body;
+
+    // 학교 이메일 형식 검증
+    if (!schoolEmail.endsWith("@ewhain.net")) {
+        return res.status(400).json({ message: "학교 이메일만 입력 가능합니다." });
+    }
+
+    try {
+        // 사용자를 학교 이메일로 조회
+        const user = await User.findUserByEmail(schoolEmail);
+        if (!user) {
+            return res.status(404).json({ message: "해당 이메일로 등록된 사용자를 찾을 수 없습니다." });
+        }
+
+        // 닉네임 가져오기
+        const nickname = user.nickname;
+
+        // 이메일 전송 설정
+        const transporter = nodemailer.createTransport({
+            host: "smtp.naver.com", // SMTP 서버
+            port: 465,
+            secure: true, // SSL/TLS 사용
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASSWORD,
+            },
+        });
+
+        // 이메일 전송
+        await transporter.sendMail({
+            from: process.env.EMAIL_USER,
+            to: schoolEmail,
+            subject: "E-ffeeChat 계정 찾기 안내",
+            text: `안녕하세요! 요청하신 계정 정보입니다:\n\n닉네임: ${nickname}\n\n감사합니다.`,
+        });
+
+        res.status(200).json({ message: "계정 정보가 이메일로 전송되었습니다." });
+    } catch (error) {
+        console.error("Error finding account:", error);
+        res.status(500).json({ message: "서버 오류가 발생했습니다." });
+    }
+};
+
+// 이메일 마스킹 처리 함수
+function maskEmail(email) {
+    const [localPart, domain] = email.split("@");
+    const maskedLocalPart = localPart.slice(0, 2) + "*".repeat(localPart.length - 2);
+    return `${maskedLocalPart}@${domain}`;
+}

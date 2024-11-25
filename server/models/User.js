@@ -82,3 +82,13 @@ exports.updateUserProfileById = async (userId, { username, image }) => {
     throw new Error('Error updating user profile: ' + error.message);
   }
 };
+
+exports.findUserByEmail = async (email) => {
+  try {
+      const query = "SELECT * FROM Users WHERE email = ?";
+      const [result] = await db.query(query, [email]);
+      return result.length > 0 ? result[0] : null;
+  } catch (err) {
+      throw new Error("Error fetching user by email: " + err.message);
+  }
+};

@@ -1,6 +1,7 @@
 import React from "react";
 import { getKakaoAuthUrl } from "../services/authService";
 import "../styles/KakaoLogin.css";
+import { Link } from "react-router-dom";
 
 const KakaoLogin = () => {
   const kakaoLoginUrl = getKakaoAuthUrl(); // 인증 URL 가져오기
@@ -21,7 +22,7 @@ const KakaoLogin = () => {
           />
         </a>
         <p className="form-footer">
-          Forgot your account? <a href="#">Find it here</a>
+          Forgot your account? <Link to="/find-account">Find it here</Link>
         </p>
       </div>
     </div>
