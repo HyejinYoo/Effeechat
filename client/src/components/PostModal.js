@@ -1,9 +1,9 @@
 import React from 'react';
+import categories from '../constants/categories'; // 카테고리를 직접 가져옴
 import '../styles/PostModal.css';
 
 const PostModal = ({
   post,
-  jobTitles,
   userId,
   closeModal,
   handleUpdatePost,
@@ -16,44 +16,46 @@ const PostModal = ({
       <div className="modal-header">
         <img
           src={post.image ? post.image : '/img/default_img.jpg'}
-          alt="작성자 프로필"
+          alt={post.authorName ? `${post.authorName}의 프로필 이미지` : '기본 프로필 이미지'}
           className="mentor-icon"
         />
-        {post.authorName ? (
-          <strong>{post.authorName}</strong>
-        ) : (
-          <strong>Unknown Author</strong>
-        )}
+        <strong>{post.authorName || 'Unknown Author'}</strong>
       </div>
       <div className="post-title-row">
-        <strong>{post.title}</strong>
+        <strong>{post.title || '제목 없음'}</strong>
         {post.category !== 0 && (
-          <span className="post-category">{jobTitles[post.category]}</span>
+          <span className="post-category">
+            {categories.find((cat) => cat.id === post.category)?.name || '카테고리 없음'}
+          </span>
         )}
       </div>
       <p className="post-date" style={{ fontSize: '12px' }}>
-        작성일: {new Date(post.created_at).toLocaleDateString()}
+        작성일: {new Date(post.created_at).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}
       </p>
       <p>{post.content}</p>
-      {Array.isArray(post.files) && post.files.length > 0 && (
+      {Array.isArray(post.files) && post.files.length > 0 ? (
         <div className="attached-files">
           <ul>
             {post.files.map((file, index) => {
               const fileUrl = file?.url || '';
-              const decodedFileName = decodeURIComponent(file.originalName);
+              const decodedFileName = decodeURIComponent(file.originalName || '');
               const originalName = decodedFileName || `첨부된 파일 ${index + 1}`;
               return (
                 <li key={index}>
-                  {fileUrl.endsWith('.jpg') || fileUrl.endsWith('.png') || fileUrl.endsWith('.jpeg') ? (
+                  {fileUrl.match(/\.(jpg|png|jpeg)$/i) ? (
                     <img src={fileUrl} alt={`첨부된 이미지 ${index}`} className="attached-image" />
                   ) : (
-                    <a href={fileUrl} target="_blank" rel="noopener noreferrer">{originalName} 다운로드</a>
+                    <a href={fileUrl} target="_blank" rel="noopener noreferrer">
+                      {originalName} 다운로드
+                    </a>
                   )}
                 </li>
               );
             })}
           </ul>
         </div>
+      ) : (
+        <p></p>
       )}
       {userId === post.userId ? (
         <div className="modal-footer">

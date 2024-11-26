@@ -5,6 +5,7 @@ import { fetchUserId } from '../services/authService';
 import { createOrGetChatRoom } from '../services/chatRoomService';
 import PostItem from './PostItem';
 import PostModal from './PostModal';
+import categories from '../constants/categories'; // categories 가져오기
 import '../styles/PostList.css';
 
 const PostList = () => {
@@ -19,7 +20,6 @@ const PostList = () => {
 
   const navigate = useNavigate();
   const { postId } = useParams();
-  const jobTitles = { 1: 'IT/인터넷', 2: '마케팅/광고/홍보', 3: '경영/사무' };
 
   useEffect(() => {
     const getUserId = async () => {
@@ -116,30 +116,15 @@ const PostList = () => {
   return (
     <div>
       <div className="category-buttons">
-        <button
-          className={selectedCategory === null ? 'active' : ''}
-          onClick={() => setSelectedCategory(null)}
-        >
-          전체
-        </button>
-        <button
-          className={selectedCategory === 1 ? 'active' : ''}
-          onClick={() => setSelectedCategory(1)}
-        >
-          IT/인터넷
-        </button>
-        <button
-          className={selectedCategory === 2 ? 'active' : ''}
-          onClick={() => setSelectedCategory(2)}
-        >
-          마케팅/광고/홍보
-        </button>
-        <button
-          className={selectedCategory === 3 ? 'active' : ''}
-          onClick={() => setSelectedCategory(3)}
-        >
-          경영/사무
-        </button>
+        {categories.map((category) => (
+          <button
+            key={category.id}
+            className={selectedCategory === category.id ? 'active' : ''}
+            onClick={() => setSelectedCategory(category.id)}
+          >
+            {category.name}
+          </button>
+        ))}
       </div>
 
       <input
@@ -154,7 +139,6 @@ const PostList = () => {
           <PostItem
             key={post.id}
             post={post}
-            jobTitles={jobTitles}
             onClick={() => handlePostClick(post)}
           />
         ))}
@@ -176,7 +160,6 @@ const PostList = () => {
       {isModalOpen && selectedPost && (
         <PostModal
           post={selectedPost}
-          jobTitles={jobTitles}
           userId={userId}
           closeModal={closeModal}
           handleUpdatePost={handleUpdatePost}
@@ -186,7 +169,6 @@ const PostList = () => {
       )}
     </div>
   );
-
 };
 
 export default PostList;
