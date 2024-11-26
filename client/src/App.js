@@ -64,7 +64,7 @@ function App() {
           <Routes>
             {/* 메인 경로 */}
             <Route
-              path="/"
+              path="/posts"
               element={
                 isAuthenticated ? <PostList /> : <Navigate to="/login" />
               }
@@ -95,6 +95,12 @@ function App() {
                 isAuthenticated ? <ChatRoom socket={socket} /> : <Navigate to="/login" />
               }
             />
+            <Route
+              path="/posts/:postId"
+              element={
+                isAuthenticated ? <PostList /> : <Navigate to="/login" />
+              }
+            />
             {/* 기타 경로 */}
             <Route path="/email-verification" element={<EmailVerification />} />
             <Route path="/find-account" element={<FindAccount />} />
@@ -104,5 +110,6 @@ function App() {
     </Router>
   );
 }
+
 
 export default App;

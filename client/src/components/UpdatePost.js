@@ -130,7 +130,7 @@ const UpdatePost = () => {
 
       // 포스트 수정 API 호출
       await updatePost(postId, formData);
-      navigate('/'); // 홈으로 이동
+      navigate(`/posts/${postId}`); // 홈으로 이동
     } catch (error) {
       console.error('Error updating post:', error);
     }
