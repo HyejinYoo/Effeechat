@@ -37,16 +37,32 @@
     scrollbar-width: thin; /* 스크롤바 두께를 얇게 설정 (Firefox용) */
   }
   
-  .pagination {
+
+  .pagination-item {
     display: flex;
     justify-content: center;
+    align-items: center;
     margin-top: 20px;
   }
   
-  .pagination button {
-    margin: 0 5px;
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    background-color: rgb(126, 18, 18);
+  .pagination-item button {
+    margin: 0 5px; /* 버튼 간 간격 */
+    padding: 0; /* 내부 여백 제거 */
+    width: 30px;
+    font-size: 14px; /* 숫자 크기 설정 */
+    border: none; /* 테두리 제거 */
+    background-color: transparent; /* 배경색 제거 */
     cursor: pointer;
+    color: #333; /* 기본 텍스트 색상 */
+    transition: color 0.2s ease;
+  }
+  
+  .pagination-item button:hover {
+    color: #006540; /* 숫자에 hover 색상 추가 */
+    background-color: transparent; /* 배경색 제거 */
+  }
+  
+  .pagination-item button.active {
+    font-weight: bold; /* 현재 페이지는 굵게 표시 */
+    color: #003d26; /* 강조된 색상 */
   }

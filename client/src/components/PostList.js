@@ -158,20 +158,20 @@ const PostList = () => {
             onClick={() => handlePostClick(post)}
           />
         ))}
-      </ul>
 
-      {/* 페이지네이션 */}
-      <div className="pagination">
-        {Array.from({ length: totalPages }, (_, index) => (
-          <button
-            key={index + 1}
-            className={currentPage === index + 1 ? 'active' : ''}
-            onClick={() => setCurrentPage(index + 1)}
-          >
-            {index + 1}
-          </button>
-        ))}
-      </div>
+        {/* 페이지네이션 버튼 */}
+        <li className="pagination-item">
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index + 1}
+              className={currentPage === index + 1 ? 'active' : ''}
+              onClick={() => setCurrentPage(index + 1)}
+            >
+              {index + 1}
+            </button>
+          ))}
+        </li>
+      </ul>
 
       {isModalOpen && selectedPost && (
         <PostModal
@@ -186,6 +186,7 @@ const PostList = () => {
       )}
     </div>
   );
+
 };
 
 export default PostList;
