@@ -14,12 +14,13 @@ const PostList = () => {
   const [userId, setUserId] = useState(null);
   const [selectedPost, setSelectedPost] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+  const postsPerPage = 10; // 페이지당 게시물 수
 
   const navigate = useNavigate();
-  const { postId } = useParams(); // URI에서 postId를 가져옴
+  const { postId } = useParams();
   const jobTitles = { 1: 'IT/인터넷', 2: '마케팅/광고/홍보', 3: '경영/사무' };
 
-  // 사용자 ID 가져오기
   useEffect(() => {
     const getUserId = async () => {
       try {
@@ -32,7 +33,6 @@ const PostList = () => {
     getUserId();
   }, []);
 
-  // 게시물 목록 가져오기
   useEffect(() => {
     const getPosts = async () => {
       try {
@@ -45,7 +45,6 @@ const PostList = () => {
     getPosts();
   }, []);
 
-  // URI에 포함된 postId에 따라 모달 상태 설정
   useEffect(() => {
     if (postId) {
       const post = posts.find((p) => p.id === Number(postId));
@@ -59,26 +58,22 @@ const PostList = () => {
     }
   }, [postId, posts]);
 
-  // 모달 열기
   const handlePostClick = (post) => {
-    navigate(`/posts/${post.id}`); // URI에 postId 추가
+    navigate(`/posts/${post.id}`);
   };
 
-  // 모달 닫기
   const closeModal = () => {
-    navigate('/posts'); // URI에서 postId 제거
+    navigate('/posts');
     setIsModalOpen(false);
     setSelectedPost(null);
   };
 
-  // 게시물 업데이트 핸들러
   const handleUpdatePost = () => {
     if (selectedPost) {
       navigate(`/update/${selectedPost.id}`);
     }
   };
 
-  // 게시물 삭제 핸들러
   const handleDeletePost = async () => {
     if (selectedPost) {
       try {
@@ -91,7 +86,6 @@ const PostList = () => {
     }
   };
 
-  // 질문 클릭 핸들러
   const handleQuestionClick = async () => {
     if (selectedPost && selectedPost.userId && userId) {
       try {
@@ -103,7 +97,6 @@ const PostList = () => {
     }
   };
 
-  // 선택된 카테고리와 검색어에 따라 게시물 필터링
   const filteredPosts = posts.filter((post) => {
     const matchesCategory =
       selectedCategory === null || post.category === selectedCategory;
@@ -112,6 +105,13 @@ const PostList = () => {
       .includes(searchTerm.toLowerCase());
     return matchesCategory && matchesSearchTerm;
   });
+
+  // 현재 페이지에 표시할 게시물 계산
+  const startIndex = (currentPage - 1) * postsPerPage;
+  const currentPosts = filteredPosts.slice(startIndex, startIndex + postsPerPage);
+
+  // 페이지 번호 계산
+  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
 
   return (
     <div>
@@ -150,7 +150,7 @@ const PostList = () => {
       />
 
       <ul className="post-list-b post-list-home">
-        {filteredPosts.map((post) => (
+        {currentPosts.map((post) => (
           <PostItem
             key={post.id}
             post={post}
@@ -159,6 +159,19 @@ const PostList = () => {
           />
         ))}
       </ul>
+
+      {/* 페이지네이션 */}
+      <div className="pagination">
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index + 1}
+            className={currentPage === index + 1 ? 'active' : ''}
+            onClick={() => setCurrentPage(index + 1)}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
 
       {isModalOpen && selectedPost && (
         <PostModal

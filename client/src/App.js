@@ -64,6 +64,12 @@ function App() {
           <Routes>
             {/* 메인 경로 */}
             <Route
+              path="/"
+              element={
+                <Navigate to="/posts" />
+              }
+            />
+            <Route
               path="/posts"
               element={
                 isAuthenticated ? <PostList /> : <Navigate to="/login" />

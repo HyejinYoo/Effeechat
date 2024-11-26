@@ -37,6 +37,16 @@
     scrollbar-width: thin; /* 스크롤바 두께를 얇게 설정 (Firefox용) */
   }
   
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
   
-  
-  
+  .pagination button {
+    margin: 0 5px;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    background-color: rgb(126, 18, 18);
+    cursor: pointer;
+  }
