@@ -13,7 +13,7 @@ exports.createMessage = async (roomId, senderId, message) => {
   // 삽입된 메시지 ID로 필요한 정보만 다시 조회
   const messageId = result.insertId;
   const selectQuery = `
-    SELECT senderId, message, sent_at 
+    SELECT id, senderId, message, sent_at 
     FROM ChatMessages
     WHERE id = ?
   `;

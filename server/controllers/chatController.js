@@ -13,6 +13,10 @@ exports.handleMessage = (socket, io) => {
       // 메시지를 데이터베이스에 저장하고 필요한 정보만 가져옴
       const savedMessage = await Chat.createMessage(roomId, senderId, message);
 
+
+      console.log('savedMessage:', savedMessage);
+
+
       // 클라이언트에 필요한 정보만 전송
       io.to(roomId).emit('chat message', savedMessage);
 
@@ -44,5 +48,7 @@ exports.getMessagesByRoom = async (req, res) => {
     res.status(500).send('Failed to fetch messages');
   }
 };
+
+
 
 

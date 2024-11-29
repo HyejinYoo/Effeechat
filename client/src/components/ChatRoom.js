@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; // useNavigate 가져오기
 import { fetchUserId } from '../services/authService';
 import { fetchChatHistory, fetchRecipientInfo } from '../services/chatRoomService';
-import { sendMessageToServer } from '../services/chatService';
+import { sendMessageToServer, updateLastReadMessage } from '../services/chatService';
 import '../styles/ChatRoom.css';
 
 
@@ -44,9 +44,17 @@ const ChatRoom = ({ socket }) => {
 
   useEffect(() => {
     const loadChatHistory = async () => {
+      if (!userId) return; // userId가 없으면 실행하지 않음
       try {
         const messages = await fetchChatHistory(roomId);
         setChatMessages(messages);
+
+        // 마지막 메시지 업데이트
+        if (messages.length > 0) {
+          const lastMessageId = messages[messages.length - 1].id;
+          console.log(`Updating last read message for userId: ${userId}`);
+          await updateLastReadMessage(userId, roomId, lastMessageId);
+        }
       } catch (error) {
         if (error.response?.status === 403) {
           setErrorMessage('잘못된 접근입니다. 3초 후 메인 페이지로 이동합니다.');
@@ -60,25 +68,29 @@ const ChatRoom = ({ socket }) => {
       }
     };
     loadChatHistory();
-  }, [roomId, navigate]);
+  }, [roomId, navigate, userId]);
 
   useEffect(() => {
-    if (socket) {
-      socket.emit('join room', roomId);
-
-      const handleMessageReceive = (msg) => {
-        console.log('Received message:', msg);
-        setChatMessages((prevMessages) => [...prevMessages, msg]);
-      };
-
-      socket.on('chat message', handleMessageReceive);
-
-      return () => {
-        socket.off('chat message', handleMessageReceive);
-        socket.emit('leave room', roomId);
-      };
-    }
-  }, [roomId, socket]);
+    if (!socket || !userId) return; // userId가 없으면 실행하지 않음
+    socket.emit('join room', roomId);
+  
+    const handleMessageReceive = async (msg) => {
+      console.log('Received message:', msg);
+      setChatMessages((prevMessages) => [...prevMessages, msg]);
+  
+      if (msg.id) {
+        console.log('Updating last read for userId:', userId);
+        await updateLastReadMessage(userId, roomId, msg.id);
+      }
+    };
+  
+    socket.on('chat message', handleMessageReceive);
+  
+    return () => {
+      socket.off('chat message', handleMessageReceive);
+      socket.emit('leave room', roomId);
+    };
+  }, [roomId, socket, userId]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });

@@ -84,3 +84,28 @@
     border: 2px solid #9ad79a; /* 초록색 테두리 */
     box-shadow: 0 0 10px 2px #9ad79a; /* 초록색 글로우 효과 */
 }
+
+
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .message-info {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* 타임스탬프와 읽지 않은 메시지 사이 간격 */
+  }
+  
+  .unread-indicator {
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }

@@ -12,7 +12,7 @@ exports.createOrGetChatRoom = async (req, res) => {
     
     if (!chatRoom) {
       // 기존 채팅방이 없다면 새로 생성
-      const chatRoomId = await ChatRoom.createRoom(mentorId, menteeId);
+      const chatRoomId = await ChatRoom.createChatRoom(mentorId, menteeId);
       chatRoom = { id: chatRoomId }; // 새로 생성된 방 ID
     }
     
@@ -109,3 +109,23 @@ exports.getUserChatRooms = async (req, res) => {
   }
 };
 
+exports.updateLastReadMessage = async (req, res) => {
+  const { chatRoomId } = req.params;
+  const { userId, messageId } = req.body;
+  console.log(chatRoomId);
+
+
+  if (!userId || !chatRoomId || !messageId) {
+    return res.status(400).json({ error: 'Missing required parameters' });
+  }
+
+
+
+  try {
+    await ChatRoom.updateLastReadMessage(userId, chatRoomId, messageId);
+    res.status(200).json({ success: true });
+  } catch (error) {
+    console.error('Error updating last read message:', error);
+    res.status(500).json({ error: 'Failed to update last read message' });
+  }
+};

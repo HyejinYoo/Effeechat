@@ -12,6 +12,8 @@ router.get('/user-chats', authenticateUser, chatRoomController.getUserChatRooms)
 // 특정 채팅방 조회 (사용자 인증 및 접근 권한 검증 필요)
 router.get('/:chatRoomId', authenticateUser, chatRoomController.verifyRoomAccess, chatRoomController.getChatRoomById);
 
+router.put('/:chatRoomId/last-read', authenticateUser, chatRoomController.verifyRoomAccess, chatRoomController.updateLastReadMessage);
+
 router.get('/:chatRoomId/recipient', authenticateUser, chatRoomController.verifyRoomAccess, chatRoomController.getRecipientInfo);
 
 router.get('/:chatRoomId/messages', authenticateUser, chatRoomController.verifyRoomAccess, chatRoomController.getChatRoomMessages);

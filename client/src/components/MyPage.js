@@ -23,11 +23,7 @@ const MyPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [chatsLoading, setChatsLoading] = useState(true); 
 
-  const jobTitles = {
-    1: 'IT/인터넷',
-    2: '마케팅/광고/홍보',
-    3: '경영/사무',
-  };
+
 
   const navigate = useNavigate();
 
@@ -264,7 +260,7 @@ const MyPage = () => {
             {userPosts.length > 0 ? (
               <ul className="post-list post-list-my">
                 {userPosts.map((post) => (
-                  <PostItem key={post.id} post={post} jobTitles={jobTitles} onClick={handlePostClick} />
+                  <PostItem key={post.id} post={post} onClick={handlePostClick} />
                 ))}
               </ul>
             ) : (
@@ -277,7 +273,6 @@ const MyPage = () => {
       {isModalOpen && selectedPost && (
         <PostModal
           post={selectedPost}
-          jobTitles={jobTitles}
           userId={userId}
           closeModal={closeModal}
           handleUpdatePost={handleUpdatePost}
