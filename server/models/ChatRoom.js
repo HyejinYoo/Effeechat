@@ -7,7 +7,7 @@ exports.createChatRoom = async (mentorId, menteeId) => {
     VALUES (?, ?, NOW())
   `;
   const queryChatRoomUsers = `
-    INSERT INTO chatroom_users (user_id, room_id) 
+    INSERT INTO ChatRoomLogs (user_id, room_id) 
     VALUES (?, ?), (?, ?)
   `;
 
@@ -16,7 +16,7 @@ exports.createChatRoom = async (mentorId, menteeId) => {
     const [result] = await db.query(queryChatRoom, [mentorId, menteeId]);
     const roomId = result.insertId;
     console.log(roomId);
-    // 2. chatroom_users 테이블에 사용자 추가
+    // 2. ChatRoomLogs 테이블에 사용자 추가
     await db.query(queryChatRoomUsers, [mentorId, roomId, menteeId, roomId]);
 
     return roomId; // 새로 생성된 채팅방 ID 반환
@@ -73,9 +73,9 @@ exports.getUserChats = async (userId) => {
         WHERE ChatMessages.chatRoomId = ChatRooms.id
           AND ChatMessages.id > IFNULL((
             SELECT last_read_message_id
-            FROM chatroom_users
-            WHERE chatroom_users.room_id = ChatRooms.id
-              AND chatroom_users.user_id = ?
+            FROM ChatRoomLogs
+            WHERE ChatRoomLogs.room_id = ChatRooms.id
+              AND ChatRoomLogs.user_id = ?
           ), 0)
       ) AS unreadCount -- 안 읽은 메시지 수 계산
     FROM ChatRooms
@@ -106,7 +106,7 @@ exports.getUserChats = async (userId) => {
 
 exports.updateLastReadMessage = async (userId, roomId, messageId) => {
   const query = `
-      UPDATE chatroom_users
+      UPDATE ChatRoomLogs
       SET last_read_message_id = ?
       WHERE user_id = ? AND room_id = ?;
   `;
@@ -119,7 +119,7 @@ exports.getUnreadMessageCount = async (userId, roomId) => {
       FROM Chats
       WHERE roomId = ? AND id > (
           SELECT last_read_message_id
-          FROM chatroom_users
+          FROM ChatRoomLogs
           WHERE user_id = ? AND room_id = ?
       );
   `;
