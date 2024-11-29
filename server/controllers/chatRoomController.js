@@ -88,7 +88,7 @@ exports.getRecipientInfo = async (req, res) => {
     // 상대방 ID 찾기
     const recipient = await ChatRoom.findRecipientByRoomId(chatRoomId, userId);
     if (recipient) {
-      res.json({ username: recipient.username, profileImage: recipient.image });
+      res.json({ username: recipient.username, profileImage: recipient.profileImage });
     } else {
       res.status(404).json({ message: "Recipient not found" });
     }
