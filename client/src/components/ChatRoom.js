@@ -107,6 +107,10 @@ const ChatRoom = ({ socket }) => {
     return new Date(date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
+  const handleGoBack = () => {
+    navigate(-1); // 브라우저의 뒤로가기 동작
+  };
+
   return (
     <div className="chat-room">
       {errorMessage ? (
@@ -116,6 +120,9 @@ const ChatRoom = ({ socket }) => {
       ) : (
         <>
           <header className="chat-room-header">
+            <button className="back-button" onClick={handleGoBack}>
+              <img src="/img/back_button.png" alt="Back" className="back-button-image" />
+            </button>
             {recipientImage && <img src={recipientImage} alt="Recipient Profile" className="profile-image" />}
             <h3>{recipientName}</h3>
           </header>

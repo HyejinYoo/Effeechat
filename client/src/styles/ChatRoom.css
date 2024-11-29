@@ -148,3 +148,25 @@ button:hover {
   border-bottom: 1px solid rgba(0, 0, 0, 0.2); /* 반투명 선 */
   margin: 0 10px; /* 텍스트와 선 사이 여백 */
 }
+
+.back-button {
+  width: 30px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  outline: none; /* 포커스 시 외곽선 제거 */
+}
+
+.back-button-image {
+  width: 24px;
+  height: 24px;
+}
+
+.back-button:hover {
+  background: none; /* 호버 시 배경색 제거 */
+}
+
+.back-button:hover .back-button-image {
+  opacity: 0.8; /* 이미지에만 효과 적용 */
+}
