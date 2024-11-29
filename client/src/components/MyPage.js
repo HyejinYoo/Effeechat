@@ -21,6 +21,7 @@ const MyPage = () => {
   const [activeTab, setActiveTab] = useState('chats');
   const [selectedPost, setSelectedPost] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [chatsLoading, setChatsLoading] = useState(true); 
 
   const jobTitles = {
     1: 'IT/인터넷',
@@ -60,11 +61,14 @@ const MyPage = () => {
   useEffect(() => {
     const loadUserChats = async () => {
       if (userId) {
+        setChatsLoading(true); // 로딩 시작
         try {
           const chats = await fetchUserChatRooms(userId);
           setUserChats(chats);
         } catch (error) {
           console.error('Error fetching user chats:', error);
+        } finally {
+          setChatsLoading(false); // 로딩 완료
         }
       }
     };
@@ -236,13 +240,18 @@ const MyPage = () => {
       <div className="tab-content">
         {activeTab === 'chats' ? (
           <div>
-            {userChats.length > 0 ? (
+            {chatsLoading ? ( // 로딩 상태 확인
+              <div className="loading-spinner">
+                <p>Loading chat rooms...</p>
+                <img src="/img/spinner.gif" alt="Loading..." className="spinner" />
+              </div>
+            ) : userChats.length > 0 ? (
               <ul className="chat-list">
                 {userChats.map((chat) => (
-                  <ChatItem 
-                    key={chat.roomId} 
-                    chat={chat} 
-                    isMentor={chat.mentorId === userId ? false : true} // 상대방이 멘토인지 확인
+                  <ChatItem
+                    key={chat.roomId}
+                    chat={chat}
+                    isMentor={chat.mentorId === userId ? false : true}
                   />
                 ))}
               </ul>

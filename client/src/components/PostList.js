@@ -16,6 +16,7 @@ const PostList = () => {
   const [selectedPost, setSelectedPost] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
   const postsPerPage = 10; // 페이지당 게시물 수
 
   const navigate = useNavigate();
@@ -28,18 +29,21 @@ const PostList = () => {
         setUserId(userId);
       } catch (error) {
         console.error(error);
-      }
+      } 
     };
     getUserId();
   }, []);
 
   useEffect(() => {
     const getPosts = async () => {
+      setIsLoading(true); // 로딩 시작
       try {
         const posts = await fetchPosts();
         setPosts(posts);
       } catch (error) {
         console.error(error);
+      } finally {
+        setIsLoading(false); // 로딩 완료
       }
     };
     getPosts();
@@ -134,28 +138,35 @@ const PostList = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
       />
 
-      <ul className="post-list-b post-list-home">
-        {currentPosts.map((post) => (
-          <PostItem
-            key={post.id}
-            post={post}
-            onClick={() => handlePostClick(post)}
-          />
-        ))}
-
-        {/* 페이지네이션 버튼 */}
-        <li className="pagination-item">
-          {Array.from({ length: totalPages }, (_, index) => (
-            <button
-              key={index + 1}
-              className={currentPage === index + 1 ? 'active' : ''}
-              onClick={() => setCurrentPage(index + 1)}
-            >
-              {index + 1}
-            </button>
+      {isLoading ? ( // 로딩 상태일 때 스피너 표시
+        <div className="spinner-container">
+          <p>Loading posts...</p>
+          <img src="/img/spinner.gif" alt="Loading" className="spinner" />
+        </div>
+      ) : (
+        <ul className="post-list-b post-list-home">
+          {currentPosts.map((post) => (
+            <PostItem
+              key={post.id}
+              post={post}
+              onClick={() => handlePostClick(post)}
+            />
           ))}
-        </li>
-      </ul>
+
+          {/* 페이지네이션 버튼 */}
+          <li className="pagination-item">
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index + 1}
+                className={currentPage === index + 1 ? 'active' : ''}
+                onClick={() => setCurrentPage(index + 1)}
+              >
+                {index + 1}
+              </button>
+            ))}
+          </li>
+        </ul>
+      )}
 
       {isModalOpen && selectedPost && (
         <PostModal
