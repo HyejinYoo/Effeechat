@@ -49,12 +49,14 @@ const ChatItem = ({ chat, isMentor }) => {
             <span className="message-timestamp">
               {formatTimestamp(chat.lastMessageTimestamp)}
             </span>
-            {chat.unreadCount > 0 && (
-              <span className="unread-indicator">{chat.unreadCount}</span>
-            )}
           </div>
         </div>
-        <p className="last-message">{chat.lastMessage || 'No recent messages'}</p>
+        <div className="chat-contents">
+          <p className="last-message">{chat.lastMessage || 'No recent messages'}</p>
+          {chat.unreadCount > 0 && (
+              <span className="unread-indicator">{chat.unreadCount}</span>
+          )}
+        </div>
       </div>
     </li>
   );

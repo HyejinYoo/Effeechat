@@ -95,17 +95,56 @@
   .message-info {
     display: flex;
     align-items: center;
-    gap: 8px; /* 타임스탬프와 읽지 않은 메시지 사이 간격 */
+  }
+  
+  .chat-contents {
+    display: flex;
+    flex-direction: row; /* 가로 정렬 */
+    justify-content: space-between; /* 자식 요소를 양 끝에 배치 */
+    align-items: center; /* 세로 중앙 정렬 */
+  }
+
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+  
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(107, 132, 154, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(107, 132, 154, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(107, 132, 154, 0);
+    }
+  }
+  
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
   }
   
   .unread-indicator {
-    background-color: red;
+    margin-top: 10px;
+    margin-right: 50px;
+    background-color: #6b849a;
     color: white;
     border-radius: 50%;
-    font-size: 0.8rem;
-    width: 20px;
-    height: 20px;
+    font-size: 1rem;
+    width: 25px;
+    height: 25px;
     display: flex;
     justify-content: center;
     align-items: center;
+    animation: bounce 1s infinite;
   }
