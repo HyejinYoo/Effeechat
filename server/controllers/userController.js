@@ -68,3 +68,18 @@ exports.updateUserProfile = async (req, res) => {
       res.status(500).json({ error: 'Failed to update profile' });
   }
 };
+
+exports.deleteUserAccount = async (req, res) => {
+    const { userId } = req.params;
+  
+    try {
+      // 사용자 삭제
+      await User.deleteUserById(userId);
+  
+      // 성공 응답
+      res.status(200).json({ message: 'User account deleted successfully' });
+    } catch (error) {
+      console.error('Error deleting user account:', error);
+      res.status(500).json({ error: 'Failed to delete user account' });
+    }
+  };

@@ -8,7 +8,8 @@ const PostModal = ({
   closeModal,
   handleUpdatePost,
   handleDeletePost,
-  handleQuestionClick
+  handleQuestionClick,
+  is_open,
 }) => (
   <div className="modal">
     <div className="modal-content">
@@ -64,7 +65,14 @@ const PostModal = ({
         </div>
       ) : (
         <div className="modal-footer">
-          <button className="modal-button" onClick={handleQuestionClick}>질문하기</button>
+          <button
+            className={`modal-button ${!post.is_open ? 'disabled-button' : ''}`} // is_open에 따라 스타일 클래스 적용
+            onClick={handleQuestionClick}
+            disabled={!post.is_open} // is_open이 false면 버튼 비활성화
+            title={!post.is_open ? '질문이 불가능합니다.' : ''} // 비활성화 이유 표시
+          >
+            질문하기
+          </button>
         </div>
       )}
     </div>

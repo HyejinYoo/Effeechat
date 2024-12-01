@@ -86,11 +86,6 @@
     box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
   }
   
-  /* CLOSED 상태일 때 배경색을 회색으로 설정 */
-  .closed-room {
-    background-color: #e0e0e0;
-  }
-  
   /* 헤더 부분: 사진과 제목을 가로로 배열 */
   .post-header {
     display: flex; /* Flexbox 사용 */

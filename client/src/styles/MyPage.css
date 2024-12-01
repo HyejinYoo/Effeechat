@@ -54,6 +54,7 @@
   
   /* 프로필 정보 */
   .profile-info {
+    height: 70px;
     display: flex;
     align-items: center; /* 세로 가운데 정렬 */
     justify-content: space-between; /* 양쪽 끝으로 배치 */
@@ -73,7 +74,6 @@
   
   .profile-info button {
     height: 40px; /* 버튼 높이를 입력 창과 맞추기 */
-    padding: 0 15px;
     font-size: 16px;
     border-radius: 5px;
     margin-right: 20px;
@@ -162,14 +162,12 @@
     display: flex; /* 아이콘과 텍스트를 수평 정렬 */
     align-items: center; /* 가운데 정렬 */
     justify-content: center;
-    gap: 8px; /* 아이콘과 텍스트 간격 */
     background: none; /* 배경 제거 */
     border: 1px solid #d9d9d9; /* 얇은 테두리 추가 */
     color: #4c4c4c; /* 텍스트 색상 */
     font-size: 0.9rem; /* 텍스트 크기 */
     font-weight: 600; /* 폰트 두께 */
     border-radius: 8px; /* 모서리를 둥글게 */
-    padding: 8px 16px; /* 버튼 여백 */
     cursor: pointer; /* 커서 변경 */
     transition: all 0.3s ease; /* 전환 효과 */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
@@ -217,4 +215,51 @@
   width: 50px;
   height: 50px;
   margin-top: 10px;
+}
+
+.profile-right{
+  margin-top: 30px;
+}
+
+.profile-right .delete-account-button {
+  font-size: 0.5rem;
+  color: red;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-top: 0px; /* 여백 */
+  text-decoration: underline;
+  padding-top: 20px;
+  padding-left: 50px;
+  margin-bottom: 0px;
+}
+
+.delete-account-button:hover {
+  color: darkred;
+  background-color: transparent; /* 호버 시 배경색 제거 */
+}
+
+.save-button{
+  margin-bottom: 35px;
+  margin-right: 40px;
+    display: flex; /* 아이콘과 텍스트를 수평 정렬 */
+    align-items: center; /* 가운데 정렬 */
+    justify-content: center;
+    background: none; /* 배경 제거 */
+    border: 1px solid #d9d9d9; /* 얇은 테두리 추가 */
+    color: #4c4c4c; /* 텍스트 색상 */
+    font-size: 0.9rem; /* 텍스트 크기 */
+    font-weight: 600; /* 폰트 두께 */
+    border-radius: 8px; /* 모서리를 둥글게 */
+    cursor: pointer; /* 커서 변경 */
+    transition: all 0.3s ease; /* 전환 효과 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+}
+
+.save-button:hover {
+  background-color: #f5f5f5; /* 호버 시 배경색 변경 */
+  color: #1d885a; /* 텍스트 색상 변경 */
+  border-color: #1d885a; /* 테두리 색상 변경 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 강화 */
+  transform: translateY(-2px); /* 살짝 위로 올라가는 효과 */
 }

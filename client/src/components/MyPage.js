@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchUserId } from '../services/authService';
-import { fetchUserProfile, updateUserProfile } from '../services/userService';
+import { fetchUserProfile, updateUserProfile, deleteUserAccount } from '../services/userService';
 import { fetchUserChatRooms } from '../services/chatRoomService';
 import { fetchUserPosts, deletePost } from '../services/postService';
 import { createOrGetChatRoom } from '../services/chatRoomService';
@@ -160,6 +160,19 @@ const MyPage = () => {
     }
   };
 
+  const handleDeleteAccount = async () => {
+    if (window.confirm('정말로 회원탈퇴 하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
+      try {
+        await deleteUserAccount(userId); 
+        alert('회원탈퇴가 완료되었습니다.');
+        window.location.href = "/login";
+      } catch (error) {
+        console.error('Error deleting account:', error);
+        alert('회원탈퇴 중 오류가 발생했습니다. 다시 시도해주세요.');
+      }
+    }
+  };
+
 
   return (
     <div className="my-page-container">
@@ -217,7 +230,13 @@ const MyPage = () => {
             />
             </div>
             
-            <LogoutButton /> {/* 로그아웃 버튼이 오른쪽으로 배치 */}
+            <div className="profile-right">
+              <LogoutButton /> {/* 로그아웃 버튼이 오른쪽으로 배치 */}
+              <button className="delete-account-button" onClick={handleDeleteAccount}>
+                회원탈퇴
+              </button>
+            </div>
+
           </div>
         )}
         </div>

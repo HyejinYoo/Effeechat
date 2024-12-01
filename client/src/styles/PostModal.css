@@ -119,3 +119,15 @@
   max-width: 100%;  /* 이미지의 너비를 모달 안에 맞게 제한 */
   height: auto;     /* 이미지의 비율을 유지하면서 크기 조정 */
 }
+
+.disabled-button {
+  background-color: #ccc;
+  cursor: not-allowed;
+  color: #888;
+}
+
+.disabled-button:hover {
+  background-color: #ccc;
+  cursor: not-allowed;
+  color: #888;
+}

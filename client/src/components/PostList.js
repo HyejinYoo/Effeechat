@@ -17,8 +17,8 @@ const PostList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
-  const postsPerPage = 10; // 페이지당 게시물 수
 
+  const postsPerPage = 10; // 페이지당 게시물 수
   const navigate = useNavigate();
   const { postId } = useParams();
 

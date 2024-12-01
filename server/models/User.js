@@ -92,3 +92,44 @@ exports.findUserByEmail = async (email) => {
       throw new Error("Error fetching user by email: " + err.message);
   }
 };
+
+exports.deleteUserById = async (userId) => {
+  const updateUserQuery = `
+    UPDATE Users
+    SET kakaoId = NULL,
+        username = '(알 수 없음)',
+        nickname = '(알 수 없음)',
+        email = NULL,
+        image = NULL
+    WHERE id = ?;
+  `;
+
+  const updatePostsQuery = `
+    UPDATE MentorPosts
+    SET is_open = false
+    WHERE userId = ?;
+  `;
+
+  const connection = await db.getConnection(); // 연결 풀에서 개별 연결 가져오기
+
+  try {
+    // 트랜잭션 시작
+    await connection.beginTransaction();
+
+    // Users 테이블 업데이트
+    await connection.query(updateUserQuery, [userId]);
+
+    // MentorPosts 테이블 업데이트
+    await connection.query(updatePostsQuery, [userId]);
+
+    // 트랜잭션 커밋
+    await connection.commit();
+  } catch (error) {
+    // 오류 발생 시 트랜잭션 롤백
+    await connection.rollback();
+    console.error('Error updating user and posts in database:', error);
+    throw error;
+  } finally {
+    connection.release(); // 연결 반환
+  }
+};

@@ -13,7 +13,8 @@ router.get('/:userId/profile',  upload.single('image'), userController.getUserPr
 // 사용자 프로필 업데이트
 router.put('/:userId/profile',  upload.single('image'), userController.updateUserProfile);
 
-
+// 회원 탈퇴
+router.delete('/:userId', userController.deleteUserAccount);
 
 
 module.exports = router;
