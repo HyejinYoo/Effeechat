@@ -19,8 +19,8 @@ export const fetchPosts = async () => {
 // 포스트 생성하기
 export const createPost = async (data) => {
 
-
   try {
+
     const response = await axios.post(`${API_URL}/api/post/create`, data);
     
     return response.data;

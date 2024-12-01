@@ -39,10 +39,14 @@ exports.findById = async (postId) => {
 };
 
 //포스트 생성
-exports.createPost = async (userId, title, content, category) => {
+exports.createPost = async (userId, title, content, category, isChatAllowed) => {
   try {
-    const query = 'INSERT INTO MentorPosts (userId, title, content, category) VALUES (?, ?, ?, ?)';
-    const result = await db.query(query, [userId, title, content, category]); 
+    console.log('isChatAllowed');
+
+    console.log(isChatAllowed);
+
+    const query = 'INSERT INTO MentorPosts (userId, title, content, category, is_open) VALUES (?, ?, ?, ?, ?)';
+    const result = await db.query(query, [userId, title, content, category, isChatAllowed]); 
     return result[0].insertId; // 쿼리의 첫 번째 결과에서 `insertId` 반환
   } catch (err) {
     throw new Error('Error creating post: ' + err.message);
@@ -64,18 +68,19 @@ exports.deletePostById = async (postId) => {
 
 
 // 포스트 업데이트
-exports.updatePost = async (postId, title, content, category) => {
+exports.updatePost = async (postId, title, content, category, isChatAllowed) => {
   console.log('updatepost/model');
   //console.log('title: '+title); undefined
   //console.log('postid: '+postId); 62
+  console.log(isChatAllowed);
   const query = `
     UPDATE MentorPosts
-    SET title = ?, content = ?, category = ?
+    SET title = ?, content = ?, category = ?, is_open = ?
     WHERE id = ?
   `;
 
   // 매개변수의 순서를 쿼리 내에서 사용된 순서에 맞게 배열로 전달
-  const [result] = await db.query(query, [title, content, category,  postId]);
+  const [result] = await db.query(query, [title, content, category, isChatAllowed, postId]);
   
   // 결과 확인
   console.log('Update result:', result);

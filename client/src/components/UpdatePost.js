@@ -16,6 +16,8 @@ const UpdatePost = () => {
   const [deletedFiles, setDeletedFiles] = useState([]);
   const [isOwner, setIsOwner] = useState(false);
   const [showFileInput, setShowFileInput] = useState(false);
+  const [isChatAllowed, setIsChatAllowed] = useState(1); // 채팅 허용 상태 추가
+
 
   const { id: postId } = useParams();
   const navigate = useNavigate();
@@ -44,6 +46,7 @@ const UpdatePost = () => {
         setExistingFiles(post.files || []);
         setPostUserId(post.userId);
         setIsOwner(post.userId === userId);
+        setIsChatAllowed(post.is_open);
       } catch (error) {
         console.error('Error fetching post:', error);
       }
@@ -109,6 +112,8 @@ const UpdatePost = () => {
       formData.append('title', title);
       formData.append('content', content);
       formData.append('category', category);
+      formData.append('isChatAllowed', isChatAllowed); 
+
 
       existingFiles.forEach((file) => {
         formData.append('existingFiles[]', file.id);
@@ -207,6 +212,19 @@ const UpdatePost = () => {
                 <input type="file" onChange={handleFileChange} />
               </div>
             )}
+          </div>
+
+          {/* 채팅 허용 슬라이드 버튼 */}
+          <div className="chat-allow-toggle">
+            <label className="switch">
+              <input
+                type="checkbox"
+                checked={isChatAllowed === 1} // 상태가 1이면 체크
+                onChange={() => setIsChatAllowed(isChatAllowed === 1 ? 0 : 1)} // 1과 0을 토글
+              />
+              <span className="slider"></span>
+            </label>
+            <span>{isChatAllowed === 1 ? '채팅 허용' : '채팅 비허용'}</span>
           </div>
 
           {/* 수정 버튼 */}

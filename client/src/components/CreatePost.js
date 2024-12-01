@@ -12,6 +12,7 @@ const CreatePost = () => {
   const [userId, setUserId] = useState(null);
   const [files, setFiles] = useState([]);  // 새로 업로드된 파일 상태 추가
   const [showFileInput, setShowFileInput] = useState(false); // 파일 선택 창 표시 여부 제어
+  const [isChatAllowed, setIsChatAllowed] = useState(1); // 채팅 허용 상태 추가
 
   const navigate = useNavigate();
 
@@ -84,11 +85,13 @@ const CreatePost = () => {
       formData.append('title', title);
       formData.append('content', content);
       formData.append('category', category);
+      formData.append('isChatAllowed', isChatAllowed); 
 
       // 새 파일 정보 전송
       files.forEach((file) => {
         formData.append('files', file); // 새로 추가된 파일 전송
       });
+
 
       // 포스트 생성 API 호출
       await createPost(formData);
@@ -103,12 +106,12 @@ const CreatePost = () => {
       {/* 카테고리 선택란 */}
       <select value={category} onChange={(e) => setCategory(Number(e.target.value))}>
         {categories.map((cat) => (
-            <option key={cat.id} value={cat.id}>
-              {cat.name}
-            </option>
+          <option key={cat.id} value={cat.id}>
+            {cat.name}
+          </option>
         ))}
       </select>
-
+  
       {/* 제목 입력란 */}
       <input
         type="text"
@@ -116,7 +119,7 @@ const CreatePost = () => {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
-
+  
       {/* 본문 입력란 */}
       <textarea
         className="post-textarea"
@@ -124,7 +127,7 @@ const CreatePost = () => {
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />
-
+  
       {/* 새 파일 목록 */}
       <div className="files-section">
         <div className="file-inputs">
@@ -142,23 +145,36 @@ const CreatePost = () => {
           ))}
         </div>
       </div>
-
+  
       {/* 새 파일 업로드 입력란 */}
       <div className="file-upload-section">
         <button
-            type="button"
-            className="add-file-btn"
-            onClick={() => setShowFileInput(true)}
+          type="button"
+          className="add-file-btn"
+          onClick={() => setShowFileInput(true)}
         >
-            + File
+          + File
         </button>
         {showFileInput && (
-            <div className="file-input-wrapper">
+          <div className="file-input-wrapper">
             <input type="file" onChange={handleFileChange} />
-            </div>
+          </div>
         )}
       </div>
-
+  
+      {/* 채팅 허용 슬라이드 버튼 */}
+      <div className="chat-allow-toggle">
+        <label className="switch">
+          <input
+            type="checkbox"
+            checked={isChatAllowed === 1} // 상태가 1이면 체크
+            onChange={() => setIsChatAllowed(isChatAllowed === 1 ? 0 : 1)} // 1과 0을 토글
+          />
+          <span className="slider"></span>
+        </label>
+        <span>{isChatAllowed === 1 ? '채팅 허용' : '채팅 비허용'}</span>
+      </div>
+  
       {/* 생성 버튼 */}
       <button className="create-post-btn" onClick={handleCreatePost}>
         Create Post
