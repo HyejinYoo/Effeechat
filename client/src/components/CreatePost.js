@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { fetchPosts, createPost } from '../services/postService'; // 파일 업로드는 createPost에서 처리
 import { fetchUserId } from '../services/authService';
 import { useNavigate } from 'react-router-dom';
+import categories from '../constants/categories'; // 카테고리 가져오기
 import '../styles/CreatePost.css';  // 스타일 파일 추가
 
 const CreatePost = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [category, setCategory] = useState(0);
+  const [category, setCategory] = useState(categories[0]?.id);
   const [userId, setUserId] = useState(null);
   const [files, setFiles] = useState([]);  // 새로 업로드된 파일 상태 추가
   const [showFileInput, setShowFileInput] = useState(false); // 파일 선택 창 표시 여부 제어
@@ -101,11 +102,11 @@ const CreatePost = () => {
     <div className="create-post-container">
       {/* 카테고리 선택란 */}
       <select value={category} onChange={(e) => setCategory(Number(e.target.value))}>
-        <option value={0}>Category</option>
-        <option value={1}>Development</option>
-        <option value={2}>Design</option>
-        <option value={3}>Marketing</option>
-        <option value={4}>Finance</option>
+        {categories.map((cat) => (
+            <option key={cat.id} value={cat.id}>
+              {cat.name}
+            </option>
+        ))}
       </select>
 
       {/* 제목 입력란 */}
