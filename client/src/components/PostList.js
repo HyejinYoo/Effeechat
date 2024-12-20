@@ -118,7 +118,7 @@ const PostList = () => {
   const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
 
   return (
-    <div>
+    <div className='post-list-container'>
       <div className="category-buttons">
         {categories.map((category) => (
           <button
@@ -131,12 +131,15 @@ const PostList = () => {
         ))}
       </div>
 
-      <input
-        type="text"
-        placeholder="Search posts..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
+      <div className="search-container">
+        <input
+          type="text"
+          className="search-input"
+          placeholder="   Search posts..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
 
       {isLoading ? ( // 로딩 상태일 때 스피너 표시
         <div className="spinner-container">

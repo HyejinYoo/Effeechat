@@ -103,22 +103,23 @@ const CreatePost = () => {
 
   return (
     <div className="create-post-container">
-      {/* 카테고리 선택란 */}
-      <select value={category} onChange={(e) => setCategory(Number(e.target.value))}>
-        {categories.map((cat) => (
-          <option key={cat.id} value={cat.id}>
-            {cat.name}
-          </option>
-        ))}
-      </select>
-  
-      {/* 제목 입력란 */}
-      <input
-        type="text"
-        placeholder="Enter the post title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
+      {/* 제목과 카테고리 입력란 */}
+        <div className="title-category-row">
+          <input
+            type="text"
+            placeholder="Enter the post title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+
+          <select value={category} onChange={(e) => setCategory(Number(e.target.value))}>
+            {categories.map((cat) => (
+              <option key={cat.id} value={cat.id}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
+        </div>
   
       {/* 본문 입력란 */}
       <textarea
@@ -153,7 +154,7 @@ const CreatePost = () => {
           className="add-file-btn"
           onClick={() => setShowFileInput(true)}
         >
-          + File
+          파일 첨부
         </button>
         {showFileInput && (
           <div className="file-input-wrapper">
@@ -172,7 +173,7 @@ const CreatePost = () => {
           />
           <span className="slider"></span>
         </label>
-        <span>{isChatAllowed === 1 ? '채팅 허용' : '채팅 비허용'}</span>
+        <span className="toggle-text">{isChatAllowed === 1 ? '채팅 허용' : '채팅 비허용'}</span>
       </div>
   
       {/* 생성 버튼 */}

@@ -17,7 +17,7 @@ const Navbar = () => {
       {/* 로고 */}
       <div className="logo" onClick={() => navigate("/")}>
         <img src="/img/logo.jpg" alt="서비스 로고" />
-        <h1>E-ffeeChat</h1>
+        <p>E-ffeeChat</p>
       </div>
 
       {/* 네비게이션 버튼 */}

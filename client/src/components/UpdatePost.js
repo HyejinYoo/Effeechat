@@ -3,7 +3,7 @@ import { fetchPostById, updatePost } from '../services/postService';
 import { fetchUserId } from '../services/authService';
 import { useNavigate, useParams } from 'react-router-dom';
 import categories from '../constants/categories'; // 카테고리 파일 가져오기
-import '../styles/UpdatePost.css';
+import '../styles/CreatePost.css';
 
 const UpdatePost = () => {
   const [title, setTitle] = useState('');
@@ -138,17 +138,8 @@ const UpdatePost = () => {
     <div className="create-post-container">
       {isOwner ? (
         <>
-          {/* 카테고리 선택란 */}
-          <select value={category} onChange={(e) => setCategory(Number(e.target.value))}>
-            <option value={0}>카테고리 선택</option>
-            {categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.name}
-              </option>
-            ))}
-          </select>
-
-          {/* 제목 입력란 */}
+          {/* 제목 카테고리 선택란 */}
+          <div className="title-category-row">
           <input
             type="text"
             placeholder="Enter the post title"
@@ -156,8 +147,18 @@ const UpdatePost = () => {
             onChange={(e) => setTitle(e.target.value)}
           />
 
+          <select value={category} onChange={(e) => setCategory(Number(e.target.value))}>
+            {categories.map((cat) => (
+              <option key={cat.id} value={cat.id}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
           {/* 본문 입력란 */}
           <textarea
+            className="post-textarea"
             placeholder="Enter the post content"
             value={content}
             onChange={(e) => setContent(e.target.value)}
@@ -185,7 +186,7 @@ const UpdatePost = () => {
             <div className="file-inputs">
               {newFiles.map((file, index) => (
                 <div key={index} className="file-input-wrapper">
-                  <span>{file.name || 'Pasted Image'}</span>
+                  <span>{file.name}</span>
                   <button
                     type="button"
                     className="remove-file-btn"
@@ -205,7 +206,7 @@ const UpdatePost = () => {
               className="add-file-btn"
               onClick={() => setShowFileInput(true)}
             >
-              + File
+              파일 첨부
             </button>
             {showFileInput && (
               <div className="file-input-wrapper">
@@ -224,7 +225,7 @@ const UpdatePost = () => {
               />
               <span className="slider"></span>
             </label>
-            <span>{isChatAllowed === 1 ? '채팅 허용' : '채팅 비허용'}</span>
+            <span className="toggle-text">{isChatAllowed === 1 ? '채팅 허용' : '채팅 비허용'}</span>
           </div>
 
           {/* 수정 버튼 */}

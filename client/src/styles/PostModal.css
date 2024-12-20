@@ -19,7 +19,7 @@
     background-color: #fff;
     padding: 40px;
     border-radius: 10px;
-    max-width: 800px;
+    max-width: 600px;
     width: 100%;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
     animation: fadeIn 0.3s ease; /* 부드럽게 나타나는 애니메이션 */
@@ -57,13 +57,15 @@
   }
   
   .mentor-icon {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     margin-right: 20px;
+    border: 1px solid #0028183e; /* 초록색 테두리 */
   }
 
   .modal-footer {
+    gap: 5px;
     display: flex;
     justify-content: flex-end; /* 버튼을 오른쪽에 정렬 */
     width: 100%; /* 부모 요소의 너비를 100%로 설정 */
@@ -71,14 +73,15 @@
   }
   
   .modal-button {
+    width: 70px;
+    height: 35px;
     background-color: transparent; /* 기본 배경 투명 */
     border: 2px solid #00462A; /* 초록색 테두리 */
     color: #00462A; /* 텍스트 색상 초록색 */
-    padding: 10px 10px;
+    padding: 5px 5px;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.4s ease, color 0.4s ease; /* 서서히 배경과 텍스트 색상 변경 */
+    font-size: 10px;
   }
   
   .modal-button:hover {
@@ -91,22 +94,36 @@
     flex-direction: column;
   }
 
+  .post-date {
+    font-size: 9px;
+  }
 
-  .post-category {
-    margin-top: 5px; /* 이 값을 더 작게 설정하면 간격이 줄어듭니다 */
+  .post-box{
+    padding: 15px;
+    background-color: #fafbfa;
+    border-radius: 15px;
+  }
+
+  .modal-content .post-title-row .post-category {
+    margin-left: 10px;
     display: inline-block;
+    position: relative; /* 상대 위치 조정 */
+    top: -4px;
     background-color: #e0e0e0;
     padding: 3px 10px;
     border-radius: 10px;
     max-width: fit-content;
-    font-size: 0.9rem;
+    font-size: 12px;
   }
 
+  .post-body p {
+    font-size: 15px; /* 작성자 이름의 폰트 크기 조정 */
+    color: #252c25; /* 텍스트 색상 */
+  }
   
   .author-name {
-    margin-top: 10px; /* 이미지와 작성자 이름 사이에 여백을 추가 */
-    font-size: 14px; /* 작성자 이름의 폰트 크기 조정 */
-    color: #666; /* 텍스트 색상 */
+    font-size: 15px; /* 작성자 이름의 폰트 크기 조정 */
+    color: #252c25; /* 텍스트 색상 */
   }
 
   .attached-files ul {
@@ -131,3 +148,9 @@
   cursor: not-allowed;
   color: #888;
 }
+
+.modal-content .post-title-row strong{
+    font-size: 20px;
+    color: #252c25; /* 텍스트 색상 */
+}
+

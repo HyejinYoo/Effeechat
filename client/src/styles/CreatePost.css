@@ -1,153 +1,164 @@
 .create-post-container {
-    
-    margin: 0 auto;
-    padding: 50px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* 요소들 간의 간격 */
-    justify-content: center;
-  }
-  
-  h2 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: bold;
-  }
-
-  select {
-    width: 150px; /* 가로 너비를 줄이기 위해 200px로 설정 */
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 0px; /* 카테고리 선택란과 제목 간의 간격 */
-  }
-  
-  input[type="text"] {
-    width: 100%; /* 제목의 너비를 100%로 설정 */
-    padding: 5px;
-    font-size: 18px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 10px; /* 제목과 본문 사이의 간격 */
-    height: 50px; /* 세로 길이를 50px로 설정 */
-  }
-  
-  .post-textarea {
-    width: 100%;
-    padding: 15px;
-    font-size: 18px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    height: 700px; /* 세로 길이를 더 크게 설정 */
-    resize: none; /* 사용자가 사이즈를 조정할 수 없게 설정 */
-    margin-bottom: 20px; /* 본문과 크리에이트 버튼 사이의 간격 */
-  }
-  
-  .create-post-btn {
-    width: 200px; /* 버튼의 가로 길이를 짧게 설정 */
-    padding: 15px;
-    font-size: 20px;
-    color: white;
-    background-color: #4CAF50;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin: 0 auto; /* 버튼을 가운데 정렬 */
-  }
-  
-  .create-post-btn:hover {
-    background-color: #45a049;
-  }
-
-
-.file-input-wrapper {
-  margin-bottom: 10px;
+  margin: 0 auto;
+  padding: 40px;
+  background-color: #ffffff; /* 순수한 흰색 배경 */
+  border-radius: 12px; /* 부드러운 둥근 모서리 */
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 20px; /* 요소 간의 간격 */
+  max-width: 800px; /* 중앙에 적절한 크기 제한 */
+  min-height: 400px;
 }
 
-.add-file-btn {
-  margin-top: 10px;
-  padding: 8px;
-  background-color: #007BFF;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+
+.title-category-row {
+  display: flex; /* 제목과 카테고리를 일렬로 배치 */
+  align-items: center; /* 세로 정렬 */
+  gap: 15px; /* 제목과 카테고리 사이 간격 */
 }
 
-.add-file-btn:hover {
-  background-color: #0056b3;
+
+h2 {
+  text-align: center;
+  color: #222; /* 다소 진한 색상 */
+  font-weight: 600;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  font-size: 14px;
+  color: #444;
+}
+
+.create-post-container .title-category-row select {
+  width: 150px; /* 가로를 늘려 시각적으로 일관성 유지 */
+  height: 30px;
+  margin-bottom: 10px;
+  padding: 5px;
+  font-size: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px; /* 더 부드러운 둥근 모서리 */
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease;
+}
+
+.create-post-container .title-category-row select:hover {
+  border-color: #999;
+}
+
+.create-post-container .title-category-row input[type="text"] {
+  flex: 1; /* 제목의 너비를 유연하게 설정 */
+  height: 30px;
+  padding: 12px;
+  font-size: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.05); /* 안쪽 그림자 */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.create-post-container input[type="text"]:hover,
+.create-post-container input[type="text"]:focus {
+  border-color: #5a5a5a;
+  box-shadow: 0px 0px 5px rgba(95, 175, 210, 0.3);
+}
+
+.create-post-container .post-textarea {
+  width: 100%;
+  padding: 15px;
+  font-size: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  height: 300px; /* 적절한 높이 */
+  resize: none;
+  background-color: #fefefe;
+  box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.05); /* 안쪽 그림자 */
+}
+
+.post-textarea:hover,
+.post-textarea:focus {
+  border-color: #5a5a5a;
+  box-shadow: 0px 0px 5px rgba(95, 175, 210, 0.3);
 }
 
 .create-post-btn {
-  padding: 15px;
-  width: 200px;
-  background-color: #4CAF50;
+  padding: 5px;
+  width: 20%;
+  height: 35px;
+  background-color: #7e7777;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  box-shadow: 0px 6px 10px rgba(95, 175, 210, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+
+  /* 추가된 스타일 */
+  margin-left: auto; /* 오른쪽으로 밀어냄 */
+  display: block; /* 부모의 정렬과 상관없이 블록으로 처리 */
+}
+
+.create-post-btn:hover {
+  background-color: #4b4b4b;
+  transform: translateY(-2px); /* 버튼이 약간 떠 있는 듯한 효과 */
+}
+
+.create-post-btn:active {
+  transform: translateY(1px); /* 클릭 시 버튼이 눌린 듯한 효과 */
+}
+
+.file-input-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 8px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.add-file-btn {
+  width: 45px;
+  height: 20px;
+  padding: 5px;
+  background-color: #2c7696;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 20px;
-}
-
-
-.file-upload-section {
-    align-items: center; /* 세로 정렬 맞춤 */
-}
-  
-.add-file-btn {
-    width: 75px;
-    height: 30px; /* 파일 선택창과 동일한 높이로 설정 */
-    line-height: 40px; /* 텍스트를 가운데 정렬 */
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    display: flex; /* 버튼과 파일 선택을 수평으로 정렬 */
-    align-items: center; /* 버튼 내 텍스트 세로 정렬 */
+  font-size: 8px;
+  font-weight: bold;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .add-file-btn:hover {
-    background-color: #0056b3;
+  background-color: #165678;
+  box-shadow: 0px 4px 6px rgba(75, 148, 187, 0.3);
+}
+.chat-allow-toggle {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10px; /* 텍스트 크기 */
+  font-weight: bold;
 }
 
-input[type="file"] {
-    padding-top: 10px;
-    height: 40px; /* AddFile 버튼과 같은 높이로 설정 */
-    vertical-align: middle; /* 파일 선택 버튼의 텍스트와 수직 정렬 */
-    display: inline-block; /* AddFile 버튼 옆에 오게 설정 */
+.chat-allow-toggle .toggle-text {
+  transform: translateY(-3px); /* 텍스트만 이동 */
 }
-
-
 
 .switch {
   position: relative;
   display: inline-block;
-  width: 34px;
-  height: 20px;
-  margin-right: 10px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
+  width: 30px; /* 토글 너비 줄이기 */
+  height: 16px; /* 토글 높이 줄이기 */
 }
 
 .slider {
@@ -157,21 +168,28 @@ input[type="file"] {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: #ddd;
   transition: 0.4s;
-  border-radius: 34px;
+  border-radius: 16px; /* 둥글기 조정 */
+}
+
+.switch input {
+  opacity: 0; /* 체크박스를 숨김 */
+  width: 0;
+  height: 0;
+  position: absolute;
 }
 
 .slider:before {
   position: absolute;
   content: '';
-  height: 14px;
-  width: 14px;
-  left: 3px;
-  bottom: 3px;
+  height: 12px; /* 슬라이더 내부 원 크기 줄이기 */
+  width: 12px; /* 슬라이더 내부 원 너비 줄이기 */
+  left: 2px;
+  bottom: 2px;
   background-color: white;
   transition: 0.4s;
-  border-radius: 50%;
+  border-radius: 50%; /* 둥근 원 */
 }
 
 input:checked + .slider {
@@ -179,5 +197,58 @@ input:checked + .slider {
 }
 
 input:checked + .slider:before {
-  transform: translateX(14px);
+  transform: translateX(14px); /* 슬라이더 원 이동 거리 */
+}
+
+
+.files-section {
+  margin-bottom: 10px; /* 섹션 하단 간격 */
+}
+
+.file-inputs {
+  display: flex;
+  flex-direction: column;
+}
+
+.file-input-wrapper {
+  display: flex;
+  height: 30px;
+  justify-content: space-between; /* 파일 이름과 버튼을 양쪽 끝으로 배치 */
+  align-items: center; /* 수직 정렬 */
+  padding: 10px;
+  background-color: #f9f9f9; /* 밝은 배경색 */
+  border: 1px solid #ddd; /* 얇은 테두리 */
+  border-radius: 8px; /* 둥근 모서리 */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05); /* 부드러운 그림자 */
+}
+
+.file-input-wrapper span {
+  font-size: 10px; /* 파일 이름 글자 크기 */
+  color: #333; /* 진한 회색 텍스트 */
+  word-break: break-all; /* 긴 파일 이름도 줄바꿈 */
+}
+
+.remove-file-btn {
+  padding: 5px 10px;
+  height: 20px;
+  width: 10%;
+  font-size: 10px; /* 작은 버튼 텍스트 */
+  background-color: #4e4e4e; /* 기본 배경색 (연한 빨간색) */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.remove-file-btn:hover {
+  background-color: #4e3535; /* 호버 시 더 진한 빨간색 */
+  transform: translateY(-2px); /* 살짝 떠오르는 효과 */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.remove-file-btn:active {
+  transform: translateY(1px); /* 클릭 시 눌리는 효과 */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }

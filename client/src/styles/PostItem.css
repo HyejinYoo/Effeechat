@@ -3,7 +3,7 @@
     border-radius: 15px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     margin: 30px;
-    padding: 30px;
+    padding: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -22,29 +22,21 @@
     width: 100%;
   }
   
-  /* 멘토 아이콘 */
-  .mentor-icon {
-    height: 60px;
-    width: 60px;
-    margin-right: 20px;
-    border-radius: 50%;
-    background-color: #e4e4e4;
-  }
-  
+
   /* 포스트 정보 */
   .post-info {
     flex: 1;
   }
   
   .post-info strong {
-    font-size: 18px;
+    font-size: 10px;
     display: block;
     margin-bottom: 5px;
   }
   
   .post-info p {
     color: #666;
-    font-size: 14px;
+    font-size: 9px;
   }
   
   /* 좋아요 버튼과 카운트 */
@@ -57,7 +49,7 @@
     background-color: transparent;
     border: none;
     cursor: pointer;
-    font-size: 24px;
+    font-size: 10px;
     color: #00462A;
   }
   
@@ -68,7 +60,6 @@
   }
     
   .post-item {
-    margin-bottom: 20px; /* 포스트 사이 간격 */
     padding: 0; /* 기본 패딩 제거 */
   }
   
@@ -77,7 +68,7 @@
     background-color: white;
     border-radius: 15px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    padding: 15px;
     transition: box-shadow 0.3s ease;
   }
   
@@ -93,36 +84,31 @@
     gap: 15px; /* 사진과 제목 사이 간격 */
   }
   
-  /* 멘토 아이콘 */
-  .mentor-icon {
-    height: 60px;
-    width: 60px;
-    border-radius: 50%;
-    background-color: #e4e4e4;
-  }
-  
+
   /* 제목과 카테고리 일렬로 정렬 */
-  .post-title-row {
+  .post-info .post-title-row{
     display: flex;
     align-items: center; /* 제목과 카테고리 수직 정렬 */
-    gap: 10px; /* 제목과 카테고리 사이의 간격 */
+    gap: 5px; /* 제목과 카테고리 사이의 간격 */
   }
   
   .post-title-row strong {
-    font-size: 18px;
+    font-size: 11px;
   }
   
-  .post-category {
-    font-size: 14px;
+  .post-info .post-title-row .post-category {
+    font-size: 8px;
     background-color: #f0f0f0;
     padding: 2px 8px;
     border-radius: 8px;
     color: #333;
+    margin-bottom: 5px;
   }
   
   /* 좋아요 버튼과 멘티 수 */
   .post-footer {
     display: flex;
+    width: 100px;
     flex-direction: column; /* 하트와 숫자를 수직으로 정렬 */
     align-items: center;
   }
@@ -136,7 +122,7 @@
   }
   
   .like-count {
-    font-size: 16px;
+    font-size: 10px;
     color: #666;
     margin-top: 5px; /* 하트와 숫자 사이 간격 */
   }

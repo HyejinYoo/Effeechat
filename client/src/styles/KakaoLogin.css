@@ -2,16 +2,16 @@
 .form-container {
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 75vh;
-    background-color: #f9f9f9;
+    height: 100%;
+    background-color: #ffffff;
     padding-bottom: 200px;
   }
   
-  .form-box {
-    height: 40vh;
-    width: 600px;
-    padding: 60px;
+  .form-container .form-box {
+    margin-top: 150px;
+    height: 500px; 
+    width: 580px;
+    padding: 50px;
     border-radius: 10px;
     background-color: #ffffff;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -30,6 +30,7 @@
     font-size: 14px; /* 작은 글씨 크기 */
     color: #666;
     margin-bottom: 15px; /* 버튼과 간격 조정 */
+    white-space: pre-line; /* 줄바꿈과 공백을 유지 */
   }
   
   .kakao-button {
@@ -40,7 +41,9 @@
   }
   
   .kakao-button-image {
-    width: 100%;
+    width: 100%; /* 버튼 이미지가 버튼 너비에 맞게 */
+    max-width: 300px; /* 최대 너비 제한 */
+    height: auto;
   }
   
   .form-footer {

@@ -11,7 +11,7 @@ const KakaoLogin = () => {
       <div className="form-box">
         <h1 className="form-title">E-ffeeChat</h1>
         <p className="form-info">
-           E-ffeeChat은 이화여자대학교 재학생 및 졸업생을 위한 커뮤니티입니다. 
+           E-ffeeChat은 이화여자대학교 재학생 및 졸업생을 위한 커뮤니티입니다. <br />
            학교 이메일 인증 후 이용 가능합니다.
         </p>
         <a href={kakaoLoginUrl} className="kakao-button">

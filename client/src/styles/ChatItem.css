@@ -1,7 +1,7 @@
 .chat-item {
     display: flex;
     align-items: center;
-    padding: 15px 10px;
+    padding: 5px 5px;
     border-radius: 8px;
     border-bottom: 1px solid #e0e0e0;
     cursor: pointer;
@@ -16,11 +16,12 @@
 }
 
 .profile-image {
-    width: 55px;
-    height: 55px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     margin-right: 15px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* 프로필 이미지에 그림자 추가 */
+    border: 2px solid transparent; /* 기본 테두리 없음 */
 }
 
 .chat-details {
@@ -34,20 +35,20 @@
 }
 
 .chat-title {
-    font-size: 16px;
+    font-size: 12px;
     font-weight: bold;
     color: #00462A; /* 더 짙은 초록색으로 제목 강조 */
     margin: 0;
 }
 
 .message-timestamp {
-    font-size: 12px;
+    font-size: 10px;
     color: #a3a3a3;
     font-weight: 500;
 }
 
 .last-message {
-    font-size: 14px;
+    font-size: 10px;
     color: #555;
     margin: 8px 0 0;
     font-style: italic;
@@ -73,13 +74,6 @@
     animation: fadeIn 0.3s ease;
 }
 
-.profile-image {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: 2px solid transparent; /* 기본 테두리 없음 */
-}
-  
 .mentor-border {
     border: 2px solid #9ad79a; /* 초록색 테두리 */
     box-shadow: 0 0 10px 2px #9ad79a; /* 초록색 글로우 효과 */

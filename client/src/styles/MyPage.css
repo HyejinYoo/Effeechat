@@ -1,9 +1,15 @@
 .my-page-container {
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* 화면 전체 높이 */
+    box-sizing: border-box; /* 패딩 포함 계산 */
   }
   
   /* 프로필 박스 */
   .profile-box {
+    flex: 0 0 auto;
+    height: 80px;
     background-color: #f4f4f4; /* 박스 배경색 */
     padding: 20px;
     border-radius: 10px;
@@ -54,7 +60,7 @@
   
   /* 프로필 정보 */
   .profile-info {
-    height: 70px;
+    height: 40px;
     display: flex;
     align-items: center; /* 세로 가운데 정렬 */
     justify-content: space-between; /* 양쪽 끝으로 배치 */
@@ -73,8 +79,9 @@
   }
   
   .profile-info button {
-    height: 40px; /* 버튼 높이를 입력 창과 맞추기 */
-    font-size: 16px;
+    height: 30px; /* 버튼 높이를 입력 창과 맞추기 */
+    width: 70px;
+    font-size: 12px;
     border-radius: 5px;
     margin-right: 20px;
   }
@@ -88,9 +95,9 @@
   }
   
   .edit-button {
-    width: 30px; /* 수정 버튼 이미지 크기 */
-    height: 30px;
-    margin: 10px;
+    width: 20px; /* 수정 버튼 이미지 크기 */
+    height: 20px;
+    margin: 5px;
     cursor: pointer;
     transition: transform 0.3s ease;
   }
@@ -105,21 +112,21 @@
     list-style-type: none;
     padding: 0;
     margin: 0;
-    max-height: 60vh; /* 최대 높이를 500px로 설정 (원하는 값으로 조정 가능) */
+    max-height: 55vh; /* 최대 높이를 500px로 설정 (원하는 값으로 조정 가능) */
     overflow-y: auto; /* 내용이 넘칠 경우 세로 스크롤바 추가 */
     padding-right: 10px; /* 스크롤바와 내용 사이에 약간의 간격 */
     scrollbar-width: thin; /* 스크롤바 두께를 얇게 설정 (Firefox용) */
   }
-  
+
   .chat-list {
-    max-height: 60vh; /* 최대 높이를 500px로 설정 (원하는 값으로 조정 가능) */
+    max-height: 55vh; /* 최대 높이를 500px로 설정 (원하는 값으로 조정 가능) */
     overflow-y: auto; /* 내용이 넘칠 경우 세로 스크롤바 추가 */
     padding-right: 10px; /* 스크롤바와 내용 사이에 약간의 간격 */
     scrollbar-width: thin; /* 스크롤바 두께를 얇게 설정 (Firefox용) */
   }
 
   /* 탭 버튼 컨테이너 */
-.tabs {
+  .my-page-container .tabs {
     display: flex;
     justify-content: center;
     margin-top: 20px;
@@ -127,10 +134,12 @@
   }
   
   /* 탭 버튼 스타일 */
-  .tabs button {
+  .my-page-container .tabs button {
     flex: 1;
-    padding: 10px 20px;
-    font-size: 16px;
+    height: 30px;
+    padding: 5px 5px;
+    font-size: 12px;
+    font-weight: 600; /* 기본 글씨 굵기 */
     border: none;
     background-color: #e0e0e0; /* 기본 배경색 */
     color: #333;
@@ -144,16 +153,19 @@
   }
   
   .tabs button:hover {
-    background-color: #8a8a8a; /* 호버시 배경색 */
+    font-size: 13px; /* 텍스트 크기 약간 확대 */
   }
   
   .tabs button:active {
-    background-color: #00462A; /* 클릭 시 배경색 */
+    background-color: #8a8a8a; /* 클릭 시 배경색 */
     color: white; /* 클릭 시 글자 색 */
   }
   
   .tab-content {
     margin-top: 20px;
+    flex: 1 1 auto; /* 남은 공간을 채움 */
+    overflow-y: auto; /* 내용이 넘칠 경우 스크롤 */
+    padding: 10px;
   }
 
 
@@ -175,16 +187,16 @@
   
   .logout-button:hover {
     background-color: #f5f5f5; /* 호버 시 배경색 변경 */
-    color: #e63946; /* 텍스트 색상 변경 */
-    border-color: #e63946; /* 테두리 색상 변경 */
+    color: darkred; /* 텍스트 색상 변경 */
+    border-color: darkred; /* 테두리 색상 변경 */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 강화 */
     transform: translateY(-2px); /* 살짝 위로 올라가는 효과 */
   }
   
   .logout-button:active {
-    background-color: #e63946; /* 클릭 시 배경색 */
+    background-color: darkred; /* 클릭 시 배경색 */
     color: #ffffff; /* 텍스트 색상 */
-    border-color: #e63946; /* 테두리 색상 */
+    border-color: darkred; /* 테두리 색상 */
     transform: translateY(0); /* 클릭 시 원래 위치로 */
   }
 
@@ -218,19 +230,19 @@
 }
 
 .profile-right{
-  margin-top: 30px;
+  width: 100px;
+  margin-top: 10px;
 }
 
 .profile-right .delete-account-button {
-  font-size: 0.5rem;
-  color: red;
+  font-size: 5px;
   background: none;
+  height: 15px;
+  color: red;
   border: none;
   cursor: pointer;
   margin-top: 0px; /* 여백 */
   text-decoration: underline;
-  padding-top: 20px;
-  padding-left: 50px;
   margin-bottom: 0px;
 }
 

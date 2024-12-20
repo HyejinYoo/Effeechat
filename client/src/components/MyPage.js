@@ -179,36 +179,36 @@ const MyPage = () => {
       {/* User Profile Section */}
       <div className="profile-box">
         <div className="profile-section">
-        {isEditingProfile ? (
-          <div className="profile-info">
-          <div className="profile-left">
-            <div className="profile-image-container">
-              <img
-                src={userProfile.image || "/img/default_img.jpg"}
-                alt="Profile preview"
-                className="profile-image"
-              />
-              <label htmlFor="file-upload" className="edit-icon">
-                <img src="/img/image_edit_icon.png" alt="Edit Profile" />
-              </label>
-              <input
-                id="file-upload"
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                style={{ display: "none" }}
-              />
-            </div>
-            <input
-              type="text"
-              value={editedProfile.username || ""}
-              onChange={(e) =>
-                setEditedProfile({ ...editedProfile, username: e.target.value })
-              }
-              placeholder="Enter your username"
-            />
-          </div>
-          <div className="profile-right">
+          {isEditingProfile ? (
+            <div className="profile-info">
+              <div className="profile-left">
+                <div className="profile-image-container">
+                  <img
+                    src={userProfile.image || "/img/default_img.jpg"}
+                    alt="Profile preview"
+                    className="profile-image"
+                  />
+                  <label htmlFor="file-upload" className="edit-icon">
+                    <img src="/img/image_edit_icon.png" alt="Edit Profile" />
+                  </label>
+                  <input
+                    id="file-upload"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    style={{ display: "none" }}
+                  />
+                </div>
+                <input
+                  type="text"
+                  value={editedProfile.username || ""}
+                  onChange={(e) =>
+                    setEditedProfile({ ...editedProfile, username: e.target.value })
+                  }
+                  placeholder="Enter your username"
+                />
+              </div>
+              <div className="profile-right">
             <button onClick={handleSaveProfile} className="save-button">Save</button>
           </div>
         </div>
@@ -229,7 +229,6 @@ const MyPage = () => {
               onClick={handleEditProfile}
             />
             </div>
-            
             <div className="profile-right">
               <LogoutButton /> {/* 로그아웃 버튼이 오른쪽으로 배치 */}
               <button className="delete-account-button" onClick={handleDeleteAccount}>
@@ -244,11 +243,17 @@ const MyPage = () => {
 
 
       <div className="tabs">
-        <button onClick={() => setActiveTab('chats')} className={activeTab === 'chats' ? 'active' : ''}>
-          My ChatRooms
+        <button
+          onClick={() => setActiveTab('chats')}
+          className={`tab-button ${activeTab === 'chats' ? 'active' : ''}`}
+        >
+          대화 기록
         </button>
-        <button onClick={() => setActiveTab('posts')} className={activeTab === 'posts' ? 'active' : ''}>
-          My Posts
+        <button
+          onClick={() => setActiveTab('posts')}
+          className={`tab-button ${activeTab === 'posts' ? 'active' : ''}`}
+        >
+          내 글 목록
         </button>
       </div>
 
