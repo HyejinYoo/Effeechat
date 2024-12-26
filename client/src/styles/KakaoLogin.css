@@ -1,0 +1,58 @@
+
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 75vh;
+    background-color: #f9f9f9;
+    padding-bottom: 200px;
+  }
+  
+  .form-box {
+    height: 40vh;
+    width: 600px;
+    padding: 60px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .form-title {
+    font-size: 24px;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .form-info {
+    padding: 15px;
+    font-size: 14px; /* 작은 글씨 크기 */
+    color: #666;
+    margin-bottom: 15px; /* 버튼과 간격 조정 */
+  }
+  
+  .kakao-button {
+    padding-top: 80px;
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .kakao-button-image {
+    width: 100%;
+  }
+  
+  .form-footer {
+    font-size: 14px;
+    color: #888;
+  }
+  
+  .form-footer a {
+    color: #0056b3;
+    text-decoration: none;
+  }
+  
+  .form-footer a:hover {
+    text-decoration: underline;
+  }

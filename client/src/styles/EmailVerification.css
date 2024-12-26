@@ -1,0 +1,63 @@
+.email-verification-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 75vh;
+    background: #f7f9fc;
+}
+
+.verification-card {
+    width: 400px;
+    padding: 20px 30px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.verification-step h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.verification-step .instruction {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 20px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+}
+
+.primary-button {
+    width: 100%;
+    padding: 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.primary-button:hover {
+    background: #0056b3;
+}
+
+.primary-button:focus {
+    outline: none;
+}

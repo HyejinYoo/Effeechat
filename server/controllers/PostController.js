@@ -26,12 +26,12 @@ exports.getPosts = async (req, res) => {
 
 // 포스트 생성
 exports.createPost = async (req, res) => {
-  const { userId, title, content, category } = req.body;
+  const { userId, title, content, category, isChatAllowed } = req.body;
   const files = req.files || [];; ;  // 업로드된 파일들
 
   try {
     // 포스트 생성 후 ID 가져오기
-    const postId = await MentorPost.createPost(userId, title, content, category);
+    const postId = await MentorPost.createPost(userId, title, content, category, isChatAllowed);
 
     // 파일 업로드 및 DB에 파일 정보 저장
     if (files && files.length > 0) {
@@ -89,7 +89,7 @@ exports.updatePost = async (req, res) => {
   const postId = req.params.id;
 
   // req.body에서 데이터 추출
-  const { title, content, category } = req.body;
+  const { title, content, category, isChatAllowed } = req.body;
   
   // req.body에서 배열로 전송된 기존 파일 및 삭제 파일 처리
   const deletedFiles = req.body.deletedFiles || []; // 배열로 받아서 바로 사용
@@ -104,7 +104,7 @@ exports.updatePost = async (req, res) => {
     }
 
     // 포스트 업데이트
-    await MentorPost.updatePost(postId, title, content, category);
+    await MentorPost.updatePost(postId, title, content, category, isChatAllowed);
 
     // 파일 삭제 처리
     if (deletedFiles.length > 0) {
@@ -149,3 +149,14 @@ exports.getPostById = async (req, res) => {
   }
 };
 
+
+exports.getUserPosts = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    const posts = await MentorPost.getUserPosts(userId); // 모델에서 사용자 게시물 목록 가져오기
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error('Error fetching user posts:', error);
+    res.status(500).json({ error: 'Failed to fetch user posts' });
+  }
+};

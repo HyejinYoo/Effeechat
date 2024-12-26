@@ -1,11 +1,11 @@
-/* App.css 파일 */
 
 html, body {
-  height: 100%;  /* 페이지 전체 높이를 100%로 설정 */
+  height: 100vh;  /* 페이지 전체 높이를 뷰포트 높이로 설정 */
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   background-color: #f0f0f0;  /* 배경색을 설정 */
+  font-size: 16px; /* 기본 폰트 크기를 rem 단위 기준으로 설정 */
 }
 
 *,
@@ -15,23 +15,24 @@ html, body {
 }
 
 .page-container {
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;  /* 가로 너비를 화면 전체로 설정 */
-  max-width: 1200px;  /* 최대 가로 너비 제한 */
-  margin: 0 auto;  /* 중앙 정렬 */
-  padding: 0 20px;  /* 좌우 여백 */
+  width: 100vw;  /* 가로 너비를 뷰포트 너비 기준으로 설정 */
+  max-width: 75rem;  /* 최대 가로 너비 제한 (1rem = 16px, 75rem = 1200px) */
+  margin: 0 auto;
+  padding: 0 1.25rem;  /* 좌우 여백 (1.25rem = 20px) */
 }
 
 .content {
+  height: 80vh;
   background-color: white;
-  padding: 30px;
-  border-radius: 20px;  /* 콘텐츠 박스를 둥글게 설정 */
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  width: 100%;  /* 본문 너비를 100%로 설정 */
-  max-width: 1600px;  /* 최대 너비 제한 */
-  margin: 20px auto;  /* 중앙 정렬 */
+  padding: 1.875rem; /* 30px -> 1.875rem */
+  border-radius: 1.25rem;  /* 20px -> 1.25rem, 콘텐츠 박스를 둥글게 설정 */
+  box-shadow: 0px 0.25rem 0.625rem rgba(0, 0, 0, 0.1); /* 4px 10px -> 0.25rem 0.625rem */
+  width: 100%;
+  max-width: 100rem;  /* 최대 너비 제한 (1rem = 16px, 100rem = 1600px) */
+  margin: 1.25rem auto;  /* 중앙 정렬 (20px -> 1.25rem) */
 }
-

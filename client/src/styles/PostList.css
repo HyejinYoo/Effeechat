@@ -6,6 +6,7 @@
   }
   
   .category-buttons button {
+    width: 170px;
     background-color: #f0f0f0; /* 기본 배경색 */
     color: #333; /* 기본 텍스트 색상 */
     padding: 10px 20px; /* 버튼의 내부 여백 */
@@ -23,293 +24,65 @@
   .category-buttons button.active {
     border: 3px solid #00462A;; /* 선택된 버튼의 테두리 색상 */
   }
-  
-  
+
   
   /* 기본 카드 스타일 */
-  .post-list {
+  .post-list-home {
     list-style-type: none;
     padding: 0;
     margin: 0;
-    max-height: 1000px; /* 최대 높이를 500px로 설정 (원하는 값으로 조정 가능) */
+    max-height: 65vh; /* 최대 높이를 500px로 설정 (원하는 값으로 조정 가능) */
     overflow-y: auto; /* 내용이 넘칠 경우 세로 스크롤바 추가 */
     padding-right: 10px; /* 스크롤바와 내용 사이에 약간의 간격 */
     scrollbar-width: thin; /* 스크롤바 두께를 얇게 설정 (Firefox용) */
   }
   
-  
-  .post-item {
-    background-color: white;
-    border-radius: 15px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    margin: 30px 0;
-    padding: 30px;
+
+  .pagination-item {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    transition: box-shadow 0.3s ease;
+    margin-top: 20px;
   }
   
-  .post-item:hover {
-    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* 콘텐츠 스타일 */
-  .post-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-  }
-  
-  /* 멘토 아이콘 */
-  .mentor-icon {
-    height: 60px;
-    width: 60px;
-    margin-right: 20px;
-    border-radius: 50%;
-    background-color: #e4e4e4;
-  }
-  
-  /* 포스트 정보 */
-  .post-info {
-    flex: 1;
-  }
-  
-  .post-info strong {
-    font-size: 18px;
-    display: block;
-    margin-bottom: 5px;
-  }
-  
-  .post-info p {
-    color: #666;
-    font-size: 14px;
-  }
-  
-  /* 좋아요 버튼과 카운트 */
-  .post-footer {
-    display: flex;
-    align-items: center;
-  }
-  
-  .like-button {
-    background-color: transparent;
-    border: none;
+  .pagination-item button {
+    margin: 0 5px; /* 버튼 간 간격 */
+    padding: 0; /* 내부 여백 제거 */
+    width: 30px;
+    font-size: 14px; /* 숫자 크기 설정 */
+    border: none; /* 테두리 제거 */
+    background-color: transparent; /* 배경색 제거 */
     cursor: pointer;
-    font-size: 24px;
-    color: #00462A;
+    color: #333; /* 기본 텍스트 색상 */
+    transition: color 0.2s ease;
   }
   
-  .like-count {
-    font-size: 16px;
-    margin-left: 10px;
-    color: #666;
+  .pagination-item button:hover {
+    color: #006540; /* 숫자에 hover 색상 추가 */
+    background-color: transparent; /* 배경색 제거 */
   }
   
-  .post-list {
-    list-style-type: none; /* 리스트 스타일 제거 */
-    padding: 0;
-    margin: 0;
-  }
-  
-  .post-item {
-    margin-bottom: 20px; /* 포스트 사이 간격 */
-    padding: 0; /* 기본 패딩 제거 */
-  }
-  
-  /* 카드 스타일 */
-  .post-content {
-    background-color: white;
-    border-radius: 15px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    transition: box-shadow 0.3s ease;
-  }
-  
-  /* Hover 상태일 때 카드 강조 */
-  .post-content:hover {
-    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* CLOSED 상태일 때 배경색을 회색으로 설정 */
-  .closed-room {
-    background-color: #e0e0e0;
-  }
-  
-  /* 헤더 부분: 사진과 제목을 가로로 배열 */
-  .post-header {
-    display: flex; /* Flexbox 사용 */
-    align-items: center; /* 세로 정렬: 가운데로 정렬 */
-    gap: 15px; /* 사진과 제목 사이 간격 */
-  }
-  
-  /* 멘토 아이콘 */
-  .mentor-icon {
-    height: 60px;
-    width: 60px;
-    border-radius: 50%;
-    background-color: #e4e4e4;
-  }
-  
-  /* 제목과 카테고리 일렬로 정렬 */
-  .post-title-row {
-    display: flex;
-    align-items: center; /* 제목과 카테고리 수직 정렬 */
-    gap: 10px; /* 제목과 카테고리 사이의 간격 */
-  }
-  
-  .post-title-row strong {
-    font-size: 18px;
-  }
-  
-  .post-category {
-    font-size: 14px;
-    background-color: #f0f0f0;
-    padding: 2px 8px;
-    border-radius: 8px;
-    color: #333;
-  }
-  
-  /* 좋아요 버튼과 멘티 수 */
-  .post-footer {
-    display: flex;
-    flex-direction: column; /* 하트와 숫자를 수직으로 정렬 */
-    align-items: center;
-  }
-  
-  .like-button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 24px;
-    color: #4CAF50;
-  }
-  
-  .like-count {
-    font-size: 16px;
-    color: #666;
-    margin-top: 5px; /* 하트와 숫자 사이 간격 */
+  .pagination-item button.active {
+    font-weight: bold; /* 현재 페이지는 굵게 표시 */
+    color: #003d26; /* 강조된 색상 */
   }
 
-
-  /* 모달의 전체 배경 (모달 창 외부를 클릭하면 닫히게 하는 배경) */
-.modal {
-    position: fixed; /* 화면에 고정 */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* 반투명한 검은색 배경 */
-    display: flex;
-    justify-content: center; /* 수평 가운데 정렬 */
-    align-items: center; /* 수직 가운데 정렬 */
-    z-index: 1000; /* 다른 요소 위에 보이도록 설정 */
-    
-  }
-  
-  /* 모달 컨텐츠 박스 */
-  .modal-content {
-    background-color: #fff;
-    padding: 40px;
-    border-radius: 10px;
-    max-width: 800px;
-    width: 100%;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
-    animation: fadeIn 0.3s ease; /* 부드럽게 나타나는 애니메이션 */
-    position: relative;
-    max-height: 80vh; /* 화면(viewport) 높이의 80%로 제한 */
-    overflow-y: auto; /* 세로 스크롤 가능 */
-    overflow-x: hidden; /* 가로 스크롤 숨김 */
-  }
-  
-  /* 닫기 버튼 */
-  .close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 20px;
-    cursor: pointer;
-  }
-  
-  /* 모달 애니메이션 */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-20px); /* 위에서 부드럽게 내려오는 효과 */
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .modal-header {
-    display: flex;
-    align-items: center; /* 수직 가운데 정렬 */
-    margin-bottom: 20px;
-  }
-  
-  .mentor-icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 20px;
-  }
-
-  .modal-footer {
-    display: flex;
-    justify-content: flex-end; /* 버튼을 오른쪽에 정렬 */
-    width: 100%; /* 부모 요소의 너비를 100%로 설정 */
-    padding-top: 20px; /* 위쪽에 여백 추가 */
-  }
-  
-  .modal-button {
-    background-color: transparent; /* 기본 배경 투명 */
-    border: 2px solid #00462A; /* 초록색 테두리 */
-    color: #00462A; /* 텍스트 색상 초록색 */
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.4s ease, color 0.4s ease; /* 서서히 배경과 텍스트 색상 변경 */
-  }
-  
-  .modal-button:hover {
-    background-color: #00462A; /* 마우스 오버 시 배경색 초록색으로 변경 */
-    color: white; /* 텍스트 색상을 흰색으로 변경 */
-  }
-
-  .post-info {
+  .spinner-container {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
   }
-
-
-  .post-category {
-    margin-top: 5px; /* 이 값을 더 작게 설정하면 간격이 줄어듭니다 */
-    display: inline-block;
-    background-color: #e0e0e0;
-    padding: 3px 10px;
-    border-radius: 10px;
-    max-width: fit-content;
-    font-size: 0.9rem;
-  }
-
   
-  .author-name {
-    margin-top: 10px; /* 이미지와 작성자 이름 사이에 여백을 추가 */
-    font-size: 14px; /* 작성자 이름의 폰트 크기 조정 */
-    color: #666; /* 텍스트 색상 */
+  .spinner {
+    width: 50px; /* 스피너 크기 */
+    height: 50px;
+    margin-top: 10px; /* 텍스트와 스피너 간격 */
   }
-
-  .attached-files ul {
-    list-style: none;
-    padding-left: 0;
+  
+  .spinner-container p {
+    font-size: 16px;
+    color: #555; /* 텍스트 색상 */
+    margin-bottom: 10px; /* 텍스트와 스피너 사이 간격 */
   }
-
-  /* 이미지 크기 조정 */
-.attached-image {
-  max-width: 100%;  /* 이미지의 너비를 모달 안에 맞게 제한 */
-  height: auto;     /* 이미지의 비율을 유지하면서 크기 조정 */
-}

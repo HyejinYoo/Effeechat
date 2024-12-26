@@ -1,0 +1,82 @@
+.find-account-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 75vh;
+    background: #f4f6f9;
+    font-family: 'Arial', sans-serif;
+}
+
+.find-account-card {
+    width: 400px;
+    margin-bottom: 100px;
+    padding: 60px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.find-account-card h2 {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.find-account-card p {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.form-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px; /* 필드와 버튼 간격 */
+    margin-bottom: 20px;
+}
+
+.find-account-input {
+    flex: 1; /* 입력 필드가 공간을 더 차지하도록 설정 */
+    padding: 12px 15px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s ease;
+}
+
+.find-account-input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+}
+
+.find-account-button {
+    padding: 12px 20px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.find-account-button:hover {
+    background: #0056b3;
+}
+
+.find-account-button:focus {
+    outline: none;
+}
+
+.message {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #28a745;
+    font-weight: bold;
+    text-align: center;
+}

@@ -1,0 +1,150 @@
+.chat-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 10px;
+    border-radius: 8px;
+    border-bottom: 1px solid #e0e0e0;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    background-color: #fff;
+    margin-bottom: 10px;
+}
+
+.chat-item:hover {
+    background-color: #f2f9f5;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-image {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    margin-right: 15px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* 프로필 이미지에 그림자 추가 */
+}
+
+.chat-details {
+    flex: 1;
+}
+
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #00462A; /* 더 짙은 초록색으로 제목 강조 */
+    margin: 0;
+}
+
+.message-timestamp {
+    font-size: 12px;
+    color: #a3a3a3;
+    font-weight: 500;
+}
+
+.last-message {
+    font-size: 14px;
+    color: #555;
+    margin: 8px 0 0;
+    font-style: italic;
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* 너무 긴 경우 말줄임 표시 */
+}
+
+/* 애니메이션 효과 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.chat-item {
+    animation: fadeIn 0.3s ease;
+}
+
+.profile-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid transparent; /* 기본 테두리 없음 */
+}
+  
+.mentor-border {
+    border: 2px solid #9ad79a; /* 초록색 테두리 */
+    box-shadow: 0 0 10px 2px #9ad79a; /* 초록색 글로우 효과 */
+}
+
+
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .message-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .chat-contents {
+    display: flex;
+    flex-direction: row; /* 가로 정렬 */
+    justify-content: space-between; /* 자식 요소를 양 끝에 배치 */
+    align-items: center; /* 세로 중앙 정렬 */
+  }
+
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+  
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(107, 132, 154, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(107, 132, 154, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(107, 132, 154, 0);
+    }
+  }
+  
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+  
+  .unread-indicator {
+    margin-top: 10px;
+    margin-right: 50px;
+    background-color: #6b849a;
+    color: white;
+    border-radius: 50%;
+    font-size: 1rem;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: bounce 1s infinite;
+  }
