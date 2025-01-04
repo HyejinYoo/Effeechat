@@ -240,22 +240,35 @@ function maskEmail(email) {
 }
 
 exports.checkDuplicateEmail = async (req, res) => {
+    console.log("11111");
+
     const { schoolEmail } = req.body;
 
     // 학교 이메일 형식 검증
     if (!schoolEmail.endsWith("@ewhain.net")) {
         return res.status(400).json({ message: "학교 이메일만 입력 가능합니다." });
     }
+    console.log("2222");
 
     try {
+        console.log("33");
+
         // 이메일 중복 확인
         const user = await User.findUserByEmail(schoolEmail);
+        console.log("4");
+
         if (user) {
-            return res.status(200).json({ message: "이미 가입된 이메일입니다." });
+            console.log("5");
+
+            return res.status(404).json({ message: "이미 가입된 이메일입니다." });
         } else {
-            return res.status(404).json({ message: "사용 가능한 이메일입니다." });
+            console.log("6");
+
+            return res.status(200).json({ message: "사용 가능한 이메일입니다." });
         }
     } catch (error) {
+        console.log("44");
+
         console.error("Error checking duplicate email:", error);
         res.status(500).json({ message: "서버 오류가 발생했습니다." });
     }

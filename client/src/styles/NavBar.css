@@ -12,14 +12,15 @@
   }
   
   .logo {
+    height: 80px;
     display: flex;
     align-items: center;
   }
   
   .logo img {
     height: 50px;
-    margin-left: 5px;
-    margin-right: 20px;
+    margin-left: 15px;
+    margin-right: 15px;
   }
 
   .logo p {
@@ -54,6 +55,7 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 12px;
     font-weight: bold;
     font-family: 'Arial', sans-serif;
     position: relative;

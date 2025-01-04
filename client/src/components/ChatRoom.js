@@ -182,7 +182,9 @@ const ChatRoom = ({ socket }) => {
               onKeyPress={handleKeyPress}
               placeholder="Type a message..."
             />
-            <button onClick={sendMessage}>Send</button>
+            <button onClick={sendMessage} className="send-button">
+              <img src="/img/arrow.png" alt="Send" className="send-icon" />
+            </button>
           </div>
         </>
       )}

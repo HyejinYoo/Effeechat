@@ -3,14 +3,14 @@
     justify-content: center;
     align-items: center;
     height: 75vh;
-    background: #f4f6f9;
     font-family: 'Arial', sans-serif;
 }
 
 .find-account-card {
-    width: 400px;
+    width: 580px;
+    height: 500px;
     margin-bottom: 100px;
-    padding: 60px;
+    padding: 40px;
     background: white;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -20,7 +20,8 @@
 .find-account-card h2 {
     font-size: 26px;
     font-weight: bold;
-    margin-bottom: 15px;
+    margin-top:50px;
+    margin-bottom: 20px;
     color: #333;
 }
 
@@ -32,6 +33,7 @@
 }
 
 .form-group {
+    margin-top:150px;
     display: flex;
     justify-content: space-between;
     gap: 10px; /* 필드와 버튼 간격 */
