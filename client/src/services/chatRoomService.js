@@ -1,4 +1,3 @@
-// services/chatRoomService.js
 import axios from 'axios';
 
 // 환경 변수에서 API URL 가져오기
@@ -9,18 +8,13 @@ const API_URL = process.env.REACT_APP_API_URL;
 export const createOrGetChatRoom = async (mentorId, menteeId) => {
   try {
     const response = await axios.post(`${API_URL}/api/chatRoom/createOrGet`, { mentorId, menteeId });
-    return response.data.id; // 채팅방 ID 반환
+    return response.data.id; 
   } catch (error) {
     console.error('Failed to create or get chat room:', error);
-    throw error; // 에러를 상위 호출 함수로 전달
+    throw error; 
   }
 };
 
-/**
- * 특정 채팅방의 메시지 기록을 가져오는 함수
- * @param {number} roomId - 채팅방 ID
- * @returns {Promise<Array>} - 채팅 메시지 배열
- */
 
 export const fetchChatHistory = async (roomId) => {
     try {
@@ -34,7 +28,6 @@ export const fetchChatHistory = async (roomId) => {
     }
   };
 
-  // 상대방 정보를 가져오는 함수
 export const fetchRecipientInfo = async (roomId, userId) => {
     try {
       const response = await axios.get(`${API_URL}/api/chatRoom/${roomId}/recipient`, {

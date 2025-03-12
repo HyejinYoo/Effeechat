@@ -1,5 +1,5 @@
 import axios from "axios";
-import { jwtDecode } from 'jwt-decode'; // 올바른 import
+import { jwtDecode } from 'jwt-decode'; 
 
 // 환경 변수에서 API URL 가져오기
 const API_URL = process.env.REACT_APP_API_URL;
@@ -45,9 +45,9 @@ export const isTokenValid = (token) => {
   if (!token) return false;
 
   try {
-    const decodedToken = JSON.parse(atob(token.split('.')[1])); // JWT Payload 디코드
-    const currentTime = Math.floor(Date.now() / 1000); // 현재 시간 (초 단위)
-    return decodedToken.exp > currentTime; // 만료 시간 확인
+    const decodedToken = JSON.parse(atob(token.split('.')[1])); 
+    const currentTime = Math.floor(Date.now() / 1000); 
+    return decodedToken.exp > currentTime;
   } catch (error) {
     console.error("Invalid token format", error);
     return false;
@@ -59,18 +59,18 @@ export const isTokenValid = (token) => {
 export const fetchUserId = async () => {
   try {
     const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/auth/check`, {
-      withCredentials: true, // 쿠키를 포함하여 인증 처리
+      withCredentials: true, 
     });
 
     if (response.data.isAuthenticated) {
       return response.data.userId;
     } else {
-      logout();  // 인증되지 않은 경우 로그아웃 처리
+      logout();  
       return false;
     }
   } catch (error) {
     console.error('Error fetching user ID:', error);
-    logout();  // 오류가 발생하면 로그아웃 처리
+    logout();  
     return false
   }
 };
@@ -109,9 +109,8 @@ export const verifyAndCreateUser = async (email, code, nickname, kakaoId) => {
 export const findAccount = async (schoolEmail) => {
   try {
       const response = await axios.post(`${API_URL}/api/auth/find-account`, { schoolEmail });
-      return response.data.message; // 성공 메시지 반환
+      return response.data.message; 
   } catch (error) {
-      // 오류 메시지 반환
       throw error.response?.data?.message || "계정을 찾는 중 오류가 발생했습니다.";
   }
 };

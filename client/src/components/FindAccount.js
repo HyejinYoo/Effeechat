@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { findAccount } from "../services/authService"; // 서비스 호출
+import { findAccount } from "../services/authService"; 
 import "../styles/FindAccount.css";
 
 const FindAccount = () => {
@@ -10,10 +10,10 @@ const FindAccount = () => {
         e.preventDefault();
 
         try {
-            const successMessage = await findAccount(email); // 서비스 호출
+            const successMessage = await findAccount(email); 
             setMessage(successMessage);
         } catch (errorMessage) {
-            setMessage(errorMessage); // 오류 메시지 설정
+            setMessage(errorMessage); 
         }
     };
 

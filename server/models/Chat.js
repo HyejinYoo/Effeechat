@@ -1,4 +1,3 @@
-// ChatMessage.js
 const db = require('../config/db');
 
 // 메시지 생성 함수

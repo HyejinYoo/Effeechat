@@ -1,5 +1,5 @@
 import React from 'react';
-import categories from '../constants/categories'; // 카테고리를 직접 가져옴
+import categories from '../constants/categories'; 
 import '../styles/PostModal.css';
 
 const PostModal = ({

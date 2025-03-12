@@ -18,18 +18,6 @@ router.get('/:chatRoomId/recipient', authenticateUser, chatRoomController.verify
 
 router.get('/:chatRoomId/messages', authenticateUser, chatRoomController.verifyRoomAccess, chatRoomController.getChatRoomMessages);
 
-router.get(
-    '/:chatRoomId',
-    authenticateUser,
-    chatRoomController.verifyRoomAccess,
-    chatRoomController.getChatRoomById
-);
-router.get(
-    '/:chatRoomId/messages',
-    authenticateUser,
-    chatRoomController.verifyRoomAccess,
-    chatRoomController.getChatRoomMessages
-);
 
 
 module.exports = router;

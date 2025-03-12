@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/NavBar.css"; // CSS 파일 import
+import "../styles/NavBar.css"; 
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // 로그인 상태 관리
+  const [isLoggedIn, setIsLoggedIn] = useState(true); 
 
   const handleLogout = () => {
-    // 로그아웃 로직 (예: 토큰 삭제)
     setIsLoggedIn(false);
-    navigate("/login"); // 로그아웃 후 로그인 페이지로 이동
+    navigate("/login"); 
   };
 
   return (

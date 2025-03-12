@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../services/authService";
-import "../styles/MyPage.css"; // MyPage.css 가져오기
+import "../styles/MyPage.css"; 
 
 const LogoutButton = () => {
   const navigate = useNavigate();
